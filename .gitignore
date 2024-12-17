@@ -46,3 +46,6 @@ _notes
 
 # Hosting stuff
 s3_website.yml
+
+# React Component Preview
+previewConfig.json
