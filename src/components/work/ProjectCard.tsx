@@ -9,9 +9,18 @@ interface ProjectCardProps {
   tags?: string[]
 }
 
+interface Project {
+  title: string
+  description: string
+  imageSrc: string
+  tags?: string[]
+}
+
+export type { Project }
+
 export function ProjectCard({ title, description, imageSrc, tags }: ProjectCardProps) {
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden max-w-80">
+    <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden w-full">
       <div className="relative h-32">
         <Image
           src={imageSrc}

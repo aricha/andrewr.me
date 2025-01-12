@@ -1,0 +1,7 @@
+.scroller-mask-left {
+    background: linear-gradient(to right, var(--bg-color), transparent 80%);
+}
+
+.scroller-mask-right {
+    background: linear-gradient(to left, var(--bg-color), transparent 80%);
+}
