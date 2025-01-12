@@ -9,15 +9,14 @@ interface Project {
   tags?: string[]
 }
 
+type SVGIcon = React.FC<React.SVGProps<SVGSVGElement>>
+
 interface WorkExperienceProps {
   company: string
   role: string
   period: string
   description: string
-  Icon: LucideIcon | {
-    src: string;
-    alt: string;
-  }
+  Icon: LucideIcon | SVGIcon
   projects: Project[]
 }
 
@@ -33,17 +32,7 @@ export function WorkExperience({
     <div className="py-6">
       <div className="flex items-start gap-4">
         <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-lg w-12 h-12 flex items-center justify-center">
-          {('src' in Icon) ? (
-            <Image
-              src={Icon.src}
-              alt={Icon.alt}
-              width={32}
-              height={32}
-              className="w-8 h-8"
-            />
-          ) : (
-            <Icon size={32} />
-          )}
+          <Icon className="w-8 h-8 stroke-zinc-900 dark:stroke-zinc-100" />
         </div>
         <div>
           <h2 className="text-2xl font-bold mb-1">{role}</h2>

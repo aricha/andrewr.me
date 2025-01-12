@@ -1,5 +1,7 @@
-import { Smartphone, Laptop, Server, Wrench } from 'lucide-react'
+import { Smartphone, Wrench } from 'lucide-react'
 import { WorkExperience } from '@/components/work/WorkExperience'
+import AppleVisionIcon from '../../assets/vision-pro-icon.svg'
+import HomeKitIcon from '../../assets/homekit-icon.svg'
 
 export default function Work() {
   const experiences = [
@@ -8,10 +10,7 @@ export default function Work() {
       role: 'visionOS UI Frameworks',
       period: '2019 - 2024',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      Icon: {
-        src: '/images/apple-vision-pro-icon.svg',
-        alt: 'Apple Vision Pro'
-      },
+      Icon: AppleVisionIcon,
       projects: [
         {
           title: 'WWDC Talk',
@@ -38,10 +37,7 @@ export default function Work() {
       role: 'Home app',
       period: '2015 - 2019',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      Icon: {
-        src: '/images/homekit-icon-2.svg',
-        alt: 'Apple HomeKit'
-      },
+      Icon: HomeKitIcon,
       projects: [
         {
           title: 'Feature X',
