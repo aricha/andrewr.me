@@ -20,8 +20,8 @@ export type { Project }
 
 export function ProjectCard({ title, description, imageSrc, tags }: ProjectCardProps) {
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden w-full">
-      <div className="relative h-32">
+    <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden w-full h-full flex flex-col">
+      <div className="relative h-32 flex-shrink-0">
         <Image
           src={imageSrc}
           alt={title}
@@ -29,11 +29,11 @@ export function ProjectCard({ title, description, imageSrc, tags }: ProjectCardP
           className="object-cover"
         />
       </div>
-      <div className="p-4">
+      <div className="p-4 flex-grow flex flex-col">
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <p className="text-zinc-600 dark:text-zinc-300">{description}</p>
+        <p className="text-zinc-600 dark:text-zinc-300 flex-grow">{description}</p>
         {SHOW_TAGS && tags && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 mt-2">
             {tags.map((tag) => (
               <span
                 key={tag}
