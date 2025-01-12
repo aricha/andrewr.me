@@ -2,14 +2,34 @@
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
 import { Sun, Moon, Menu, X } from 'lucide-react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  // Add useEffect to handle mounting state
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Don't render theme toggle until mounted
+  const renderThemeChanger = () => {
+    if (!mounted) return null
+
+    return (
+      <button
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        className="p-2 text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-lg"
+      >
+        {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+      </button>
+    )
+  }
 
   return (
-    <nav className="fixed top-0 w-full bg-gray-50/70 dark:bg-gray-900/70 backdrop-blur-md z-50">
+    <nav className="fixed top-0 w-full bg-zinc-50/70 dark:bg-zinc-950/70 backdrop-blur-md z-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -20,25 +40,20 @@ export function Navigation() {
 
           {/* Desktop navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link href="/work" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">
+            <Link href="/work" className="text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white">
               Work
             </Link>
-            <Link href="/travel" className="text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-white">
+            <Link href="/travel" className="text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white">
               Travel
             </Link>
-            <button
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="p-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
-            >
-              {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
-            </button>
+            {renderThemeChanger()}
           </div>
 
           {/* Mobile menu button */}
           <div className="flex items-center sm:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="p-2 rounded-md text-gray-700 dark:text-gray-200"
+              className="p-2 rounded-md text-zinc-700 dark:text-zinc-200"
             >
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -52,13 +67,13 @@ export function Navigation() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/work"
-              className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="block px-3 py-2 rounded-md text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
               Work
             </Link>
             <Link
               href="/travel"
-              className="block px-3 py-2 rounded-md text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="block px-3 py-2 rounded-md text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
             >
               Travel
             </Link>
