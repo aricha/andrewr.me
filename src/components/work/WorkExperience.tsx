@@ -29,9 +29,13 @@ export function WorkExperience({
           <h2 className="text-2xl font-bold mb-1">{role}</h2>
           <h3 className="text-xl text-zinc-600 dark:text-zinc-300 mb-1">{company}</h3>
           <p className="text-sm text-zinc-500 mb-4">{period}</p>
-          <p className="text-zinc-600 dark:text-zinc-300 mb-4 max-w-2xl">{description}</p>
+          <p className="text-zinc-600 dark:text-zinc-300 max-w-2xl">{description}</p>
           
-          <ProjectScroller projects={projects} />
+          {projects.length > 0 && (
+            <div className="mt-4">
+              <ProjectScroller projects={projects} />
+            </div>
+          )}
         </div>
       </div>
     </div>
