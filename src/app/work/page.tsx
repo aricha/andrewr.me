@@ -38,7 +38,8 @@ export default function Work() {
           description: 'Built a real-time collaboration system...',
           imageSrc: '/images/wwdc-talk.jpg'
         }
-      ]
+      ],
+      backgroundImage: '/images/living-room-background.jpg'
     },
     {
       company: 'Apple Inc.',
@@ -65,7 +66,8 @@ export default function Work() {
           `,
           imageSrc: '/images/homekit-location-automation.png',
         }
-      ]
+      ],
+      backgroundImage: '/images/living-room-background-2.jpg'
     },
     {
       company: 'Apple Inc.',
@@ -73,7 +75,8 @@ export default function Work() {
       period: '2013 - 2014',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       Icon: Smartphone,
-      projects: []
+      projects: [],
+      backgroundImage: '/images/living-room-background.jpg'
     },
     {
       company: '',
@@ -100,16 +103,22 @@ export default function Work() {
           description: 'A beautiful widget for easily controlling your music.',
           imageSrc: '/images/jukebox.jpg',
         }
-      ]
+      ],
+      backgroundImage: '/images/living-room-background-2.jpg',
     },
   ]
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <h1 className="text-4xl font-bold mb-2">Work</h1>
-      {experiences.map((experience) => (
-        <WorkExperience key={experience.company + experience.role} {...experience} />
-      ))}
+    <div className="flex flex-col min-h-screen mt-[-var(--navbar-height)]">
+      <div className="flex-grow h-screen overflow-y-auto snap-y snap-mandatory">
+        {experiences.map((experience) => (
+          <WorkExperience 
+            key={experience.company + experience.role} 
+            {...experience} 
+            className="h-screen min-h-[600px] relative snap-start"
+          />
+        ))}
+      </div>
     </div>
   )
 }

@@ -12,5 +12,6 @@
   }
   :root {
     --bg-color: rgb(250 250 250) /* #fafafa */;
+    --navbar-height: 4rem;
   }
 }

@@ -20,7 +20,7 @@ export type { Project }
 
 export function ProjectCard({ title, description, imageSrc, tags }: ProjectCardProps) {
   return (
-    <div className="bg-white dark:bg-zinc-800 rounded-lg shadow-md overflow-hidden w-full h-full flex flex-col">
+    <div className="bg-zinc-950/40 backdrop-blur-md rounded-lg shadow-md overflow-hidden w-full h-full flex flex-col">
       <div className="relative h-32 flex-shrink-0">
         <Image
           src={imageSrc}
