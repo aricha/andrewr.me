@@ -39,7 +39,7 @@ export default function Work() {
           imageSrc: '/images/wwdc-talk.jpg'
         }
       ],
-      backgroundImage: '/images/living-room-background.jpg'
+      backgroundImage: '/images/living-room-background-2.jpg'
     },
     {
       company: 'Apple Inc.',
