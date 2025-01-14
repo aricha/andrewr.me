@@ -29,7 +29,7 @@ export function Navigation() {
   }
 
   return (
-    <nav className="fixed top-0 w-full bg-zinc-50/70 dark:bg-zinc-950/40 backdrop-blur-md z-50">
+    <nav className="fixed top-0 w-full bg-zinc-50/40 dark:bg-zinc-950/40 backdrop-blur-md z-50">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
