@@ -17,29 +17,63 @@ export default function Work() {
       `,
       Icon: AppleVisionIcon,
       projects: [
-        {
-          title: 'WWDC23 Talk',
-          description: `
-          I presented the headline talk introducing SwiftUI for visionOS, 
-          "Meet SwiftUI for spatial computing", at WWDC23.
-          `,
-          imageSrc: '/images/wwdc-talk.jpg'
-        },
-        {
-          title: 'Privacy-Preserving Hover Effects',
-          description: `
-          I designed the privacy-preserving system to provide visual feedback
-          when looking at UI elements.
-          `,
-          imageSrc: '/images/vision-pro-privacy.png'
-        },
-        {
-          title: 'Patents',
-          description: 'Built a real-time collaboration system...',
-          imageSrc: '/images/wwdc-talk.jpg'
-        }
+        // {
+        //   title: 'WWDC23 Talk',
+        //   description: `
+        //   I presented the headline talk introducing SwiftUI for visionOS, 
+        //   "Meet SwiftUI for spatial computing", at WWDC23.
+        //   `,
+        //   imageSrc: '/images/wwdc-talk.jpg'
+        // },
+        // {
+        //   title: 'Privacy-Preserving Hover Effects',
+        //   description: `
+        //   I designed the privacy-preserving system to provide visual feedback
+        //   when looking at UI elements.
+        //   `,
+        //   imageSrc: '/images/vision-pro-privacy.png'
+        // },
+        // {
+        //   title: 'Patents',
+        //   description: 'Built a real-time collaboration system...',
+        //   imageSrc: '/images/wwdc-talk.jpg'
+        // }
       ],
-      backgroundImage: '/images/living-room-background-2.jpg'
+      backgroundImage: '/images/living-room-background-2.jpg',
+      customContent: (
+        <div className='mx-auto flex flex-col md:flex-row py-8 gap-8 justify-center'>
+          <div style={{  perspective: '500px', perspectiveOrigin: 'left' }} className="flex-grow">
+            <div style={{ transformOrigin: 'right', transform: 'rotateY(8deg)' }}>
+              <div className=''>
+                <div className="my-4 p-3 bg-black/30 backdrop-blur-xl rounded-lg">
+                  {/* <div className="w-60 h-60 bg-blue-700 rounded-lg"></div> */}
+                  {/* <h3 className="text-sm font-medium mb-2">Hover effects</h3> */}
+                  <iframe
+                  className="w-full aspect-video rounded-lg"
+                  src="https://www.youtube.com/embed/GYkq9Rgoj8E?si=yC5JPZIv1mZ3VgfF&clip=Ugkxi91CdonqnXXC93VcFUzw-if7WMM5vZ7_&clipt=EJOntQMYlIS4Aw&autoplay=1&controls=0&loop=1&mute=1&playsinline=1&rel=0&showinfo=0"
+                  title="Privacy-preserving hover effects"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen />
+                </div>
+                <div className='w-fit mx-auto flex flex-row gap-2'>
+                  <div style={{ scale: '1.4' }} className="w-1 h-1 bg-white/30 backdrop-blur-md rounded-full"></div>
+                  <div className="w-14 h-1 bg-white/30 backdrop-blur-md rounded-full"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='my-4'>
+            <h3 className="text-2xl font-semibold mb-2">Privacy-preserving hover effects</h3>
+            <p className="text-zinc-200 max-w-lg">
+              I designed the privacy-preserving system to provide visual feedback
+              when looking at UI elements.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
+              Soluta rerum similique blanditiis repellat, eum necessitatibus a atque, vero ex debitis ducimus 
+              voluptate temporibus, molestias nisi alias ab at voluptatum? Fuga.
+            </p>
+          </div>
+        </div>
+      ),
     },
     {
       company: 'Apple Inc.',
@@ -109,13 +143,13 @@ export default function Work() {
   ]
 
   return (
-    <div className="flex flex-col min-h-screen mt-[-var(--navbar-height)]">
-      <div className="flex-grow h-screen overflow-y-auto snap-y snap-mandatory">
+    <div style={{ scrollPaddingTop: 'var(--navbar-height)' }} className="flex flex-col min-h-screen">
+      <div className="flex-grow h-screen overflow-y-auto snap-y">
         {experiences.map((experience) => (
           <WorkExperience 
             key={experience.company + experience.role} 
             {...experience} 
-            className="h-screen min-h-[600px] relative snap-start"
+            className="min-h-screen relative snap-start"
           />
         ))}
       </div>
