@@ -1,9 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import { LucideIcon, ArrowRight, Laptop, Plane } from 'lucide-react'
+import { LucideIcon, ArrowRight, Laptop, Plane, ChevronRight } from 'lucide-react'
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
+import { Footer } from '@/components/layout/Footer';
+import { SocialLinks } from '@/components/SocialLinks'
 
 export default function Home() {
   // These would come from your CMS or configuration
@@ -61,10 +63,10 @@ export default function Home() {
         backgroundPosition: 'center',
         backgroundAttachment: 'scroll',
       }}></div>
-      <div className="w-fit mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 px-4 sm:px-6 lg:px-8 py-16">
-        <Card className="w-fit h-fit row-span-2">
-          <div className="max-w-md relative">
-            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
+      <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center">
+        <div className="grid grid-cols-2 gap-4 max-w-lg sm:max-w-4xl mx-auto">
+          <Card className="col-span-2 sm:col-span-1 sm:h-auto flex flex-col items-center justify-center text-2xl">
+            <div className="relative w-full aspect-[16/9] md:max-h-[236px] overflow-hidden rounded-t-3xl">
               <Image
                   src="/images/profile.jpg"
                   alt="Andrew Richardson"
@@ -73,43 +75,39 @@ export default function Home() {
                   priority
                 />
             </div>
-
-            <h3 className="text-lg text-zinc-700 dark:text-zinc-300">👋, you've reached the home of</h3>
-            <h1 className="text-4xl font-bold mb-4">Andrew Richardson</h1>
-
-            <p className="text-xl text-zinc-700 dark:text-zinc-200 mb-8">
-              I'm a software engineer and travel addict from Vancouver, Canada, currently based in Seattle.
-              I love to build cool things and see the world.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <NavLink href="/work" icon={Laptop}>Work</NavLink>
-              <NavLink href="/travel" icon={Plane}>Travel</NavLink>
+            <div className="p-4">
+              <h3 className="text-lg text-zinc-700 dark:text-zinc-300">👋, you've reached the home of</h3>
+              <h1 className="text-4xl font-bold mb-4">Andrew Richardson</h1>
+              <p className="text-xl text-zinc-700 dark:text-zinc-200">
+              I’m a software engineer and travel addict from Vancouver 🇨🇦, and currently based out of Seattle 🇺🇸. 
+              I live to explore, try new things, and get out in nature 🏞️. I’ve been lucky to spend 2024 on sabbatical traveling the world 🌎. 
+              When I’m working 👨🏼‍💻, I love to build cool things and specialize in UI for  platforms.
+              </p>
+              <SocialLinks className="mt-4" />
             </div>
+          </Card>
+          <div className="col-span-2 xs sm:col-span-1 grid grid-cols-2 sm:grid-cols-1 gap-4 sm:h-full">
+            <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto">
+                <Image
+                    src="/images/wwdc-talk-zoom.png" alt="Work"
+                    fill className="object-cover rounded-3xl"
+                    style={{ objectPosition: '50% 100%' }}
+                  />
+              <div className="absolute bottom-0 w-full rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-2">
+                <NavLink href="/work" icon={Laptop}>Work</NavLink>
+              </div>
+            </Card>
+            <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto">
+              <Image
+                  src="/images/travel.jpg" alt="Travel"
+                  fill className="object-cover rounded-3xl"
+                  style={{ objectPosition: '50% 100%' }}
+                />
+              <div className="absolute bottom-0 w-full rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-2">
+                <NavLink href="/travel" icon={Plane}>Travel</NavLink>
+              </div>
+            </Card>
           </div>
-        </Card>
-        <div className="grid grid-rows-2 gap-4">
-          <Card className="h-fit max-w-md">
-            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
-              <Image
-                  src="/images/vision-pro-privacy.png"
-                  alt="Work"
-                  fill
-                  className="object-cover"
-                />
-            </div>
-            <NavLink href="/work" icon={Laptop}>Work</NavLink>
-          </Card>
-          <Card className="h-fit max-w-md">
-            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
-              <Image
-                  src="/images/home-background.jpg"
-                  alt="Travel"
-                  fill
-                  className="object-cover"
-                />
-            </div>
-            <NavLink href="/travel" icon={Plane}>Travel</NavLink>
-          </Card>
         </div>
       </div>
     </>
@@ -118,7 +116,7 @@ export default function Home() {
 
 function Card({ className, children }: { className?: string, children: React.ReactNode }) {
   return (
-    <div className={`p-4 rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl ${className}`}>
+    <div className={`rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl ${className}`}>
       {children}
     </div>
   )
@@ -132,10 +130,11 @@ function NavLink({
   return (
     <Link
       href={href}
-      className={`inline-flex items-center justify-center px-6 py-3 text-2xl font-bold rounded-md text-zinc-700 dark:text-zinc-200`}
+      className={`inline-flex items-center justify-center px-2 py-2 text-2xl font-bold rounded-md text-zinc-700 dark:text-zinc-200`}
     >
       <Icon className={`mr-2 h-8 w-8`} />
       {children}
+      <ChevronRight className={`h-8 w-8`} />
     </Link>
   )
 }
