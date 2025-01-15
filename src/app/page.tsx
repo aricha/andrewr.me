@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { LucideIcon, ArrowRight, Laptop, Plane } from 'lucide-react'
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image'
 
 export default function Home() {
   // These would come from your CMS or configuration
@@ -53,18 +54,29 @@ export default function Home() {
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="absolute inset-0 z-0" style={{ 
-        backgroundImage: 'url(/images/home-background.jpg)', backgroundSize: 'cover',
-          backgroundPosition: '60% 50%', 
-        }}></div>
-      <div 
-      style={ getCardPosition() }
-      className='absolute w-fit p-4 rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl'>
-        <div className="max-w-sm relative z-10">
-          <div className='order-2 md:order-1'>
+    <>
+      <div className="fixed inset-0 z-0" style={{ 
+        backgroundImage: 'url(/images/home-background-2.jpg)', 
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundAttachment: 'scroll',
+      }}></div>
+      <div className="w-fit mx-auto grid grid-cols-1 md:grid-cols-2 gap-4 px-4 sm:px-6 lg:px-8 py-16">
+        <Card className="w-fit h-fit row-span-2">
+          <div className="max-w-md relative">
+            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
+              <Image
+                  src="/images/profile.jpg"
+                  alt="Andrew Richardson"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+            </div>
+
             <h3 className="text-lg text-zinc-700 dark:text-zinc-300">👋, you've reached the home of</h3>
             <h1 className="text-4xl font-bold mb-4">Andrew Richardson</h1>
+
             <p className="text-xl text-zinc-700 dark:text-zinc-200 mb-8">
               I'm a software engineer and travel addict from Vancouver, Canada, currently based in Seattle.
               I love to build cool things and see the world.
@@ -74,8 +86,40 @@ export default function Home() {
               <NavLink href="/travel" icon={Plane}>Travel</NavLink>
             </div>
           </div>
+        </Card>
+        <div className="grid grid-rows-2 gap-4">
+          <Card className="h-fit max-w-md">
+            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
+              <Image
+                  src="/images/vision-pro-privacy.png"
+                  alt="Work"
+                  fill
+                  className="object-cover"
+                />
+            </div>
+            <NavLink href="/work" icon={Laptop}>Work</NavLink>
+          </Card>
+          <Card className="h-fit max-w-md">
+            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl mb-4">
+              <Image
+                  src="/images/home-background.jpg"
+                  alt="Travel"
+                  fill
+                  className="object-cover"
+                />
+            </div>
+            <NavLink href="/travel" icon={Plane}>Travel</NavLink>
+          </Card>
         </div>
       </div>
+    </>
+  )
+}
+
+function Card({ className, children }: { className?: string, children: React.ReactNode }) {
+  return (
+    <div className={`p-4 rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl ${className}`}>
+      {children}
     </div>
   )
 }
