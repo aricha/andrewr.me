@@ -80,33 +80,21 @@ export default function Home() {
               <h1 className="text-4xl font-bold mb-4">Andrew Richardson</h1>
               <p className="text-xl text-zinc-700 dark:text-zinc-200">
               I’m a software engineer and travel addict from Vancouver 🇨🇦, and currently based out of Seattle 🇺🇸. 
-              I live to explore, try new things, and get out in nature 🏞️. I’ve been lucky to spend 2024 on sabbatical traveling the world 🌎. 
-              When I’m working 👨🏼‍💻, I love to build cool things and specialize in UI for  platforms.
+              I live to explore, try new things, and get out in nature. I’ve been lucky to spend 2024 on sabbatical traveling the world. 
+              When I’m working, I love to build cool things and specialize in UI for  platforms.
               </p>
               <SocialLinks className="mt-4" />
             </div>
           </Card>
           <div className="col-span-2 xs sm:col-span-1 grid grid-cols-2 sm:grid-cols-1 gap-4 sm:h-full">
-            <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto">
-                <Image
-                    src="/images/wwdc-talk-zoom.png" alt="Work"
-                    fill className="object-cover rounded-3xl"
-                    style={{ objectPosition: '50% 100%' }}
-                  />
-              <div className="absolute bottom-0 w-full rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-2">
-                <NavLink href="/work" icon={Laptop}>Work</NavLink>
-              </div>
-            </Card>
-            <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto">
-              <Image
-                  src="/images/travel.jpg" alt="Travel"
-                  fill className="object-cover rounded-3xl"
-                  style={{ objectPosition: '50% 100%' }}
-                />
-              <div className="absolute bottom-0 w-full rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-2">
-                <NavLink href="/travel" icon={Plane}>Travel</NavLink>
-              </div>
-            </Card>
+            <CardLink
+              href="/work" label="Work" icon={Laptop}
+              imageSrc="/images/wwdc-talk-zoom.png" imageAlt="Work"
+            />
+            <CardLink
+              href="/travel" label="Travel" icon={Plane}
+              imageSrc="/images/travel.jpg" imageAlt="Travel"
+            />
           </div>
         </div>
       </div>
@@ -135,6 +123,35 @@ function NavLink({
       <Icon className={`mr-2 h-8 w-8`} />
       {children}
       <ChevronRight className={`h-8 w-8`} />
+    </Link>
+  )
+}
+
+function CardLink({ 
+  href, icon: Icon, label, imageSrc, imageAlt 
+}: { 
+  href: string
+  icon: LucideIcon
+  label: string
+  imageSrc: string
+  imageAlt: string
+}) {
+  return (
+    <Link href={href}>
+      <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+        <Image
+          src={imageSrc} alt={imageAlt} fill
+          className="object-cover rounded-xl sm:rounded-3xl"
+          style={{ objectPosition: '50% 100%' }}
+        />
+        <div className="absolute bottom-0 w-full rounded-b-xl sm:rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-1 sm:p-2">
+          <div className={`inline-flex items-center justify-center px-2 sm:py-2 text-lg sm:text-2xl font-semibold text-zinc-800 dark:text-zinc-200`}>
+            {/* <Icon className={`mr-2 h-8 w-8`} /> */}
+            {label}
+            <ChevronRight className={`h-8 w-8`} />
+          </div>
+        </div>
+      </Card>
     </Link>
   )
 }
