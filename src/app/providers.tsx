@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation'
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
-  const isDarkPage = pathname === '/work'
+  const isDarkPage = pathname === '/work' || pathname === '/travel'
 
   return (
     <ThemeProvider 

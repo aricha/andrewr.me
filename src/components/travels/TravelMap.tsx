@@ -1,9 +1,7 @@
 'use client'
 import { useState } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { APIProvider, Map, Marker, InfoWindow } from '@vis.gl/react-google-maps';
 import { Location } from '@/types/travels';
-import { LatLngExpression } from 'leaflet';  // Add this import
-import 'leaflet/dist/leaflet.css';
 
 interface TravelMapProps {
   locations: Location[];
@@ -11,34 +9,59 @@ interface TravelMapProps {
 
 export default function TravelMap({ locations }: TravelMapProps) {
   const [activeLocation, setActiveLocation] = useState<Location | null>(null);
+  const [zoomLevel, setZoomLevel] = useState(2);
+  const [center, setCenter] = useState({ lat: 0, lng: 0 });
   
-  // Specify the center as a LatLngExpression
-  const defaultCenter: LatLngExpression = [0, 0];
+  const mapContainerStyle = {
+    width: '100%',
+    height: '70vh',
+  };
 
   return (
-    <div className="h-[600px] w-full">
-      <MapContainer
-        center={defaultCenter}
-        zoom={2}
-        className="h-full w-full"
-        scrollWheelZoom={false}  // Optional: disable zoom on scroll
+    <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
+      <Map
+        style={mapContainerStyle}
+        center={center}
+        onCenterChanged={(event) => {
+          if (event) {
+            setCenter(event.detail.center)
+          }
+        }}
+        zoom={zoomLevel}
+        onZoomChanged={(event) => {
+          if (event) {
+            setZoomLevel(event.detail.zoom)
+          }
+        }}
+        gestureHandling='cooperative'
+        mapTypeId='satellite'
+        colorScheme='DARK'
+        disableDefaultUI={true}
+        scrollwheel={false}
       >
-        <TileLayer
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; OpenStreetMap contributors'
-        />
         {locations.map((location) => (
           <Marker
             key={location.id}
-            position={location.coordinates as LatLngExpression}  // Type assertion here
-            eventHandlers={{
-              click: () => setActiveLocation(location),
+            position={{
+              lat: location.coordinates[0],
+              lng: location.coordinates[1]
             }}
-          >
-            <Popup>{location.name}</Popup>
-          </Marker>
+            onClick={() => setActiveLocation(location)}
+          />
         ))}
-      </MapContainer>
-    </div>
+        
+        {activeLocation && (
+          <InfoWindow
+            position={{
+              lat: activeLocation.coordinates[0],
+              lng: activeLocation.coordinates[1]
+            }}
+            onCloseClick={() => setActiveLocation(null)}
+          >
+            <div>{activeLocation.name}</div>
+          </InfoWindow>
+        )}
+      </Map>
+    </APIProvider>
   );
 }

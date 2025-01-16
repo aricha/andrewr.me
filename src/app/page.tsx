@@ -1,10 +1,9 @@
 'use client'
 
-import Link from 'next/link'
-import { LucideIcon, ArrowRight, Laptop, Plane, ChevronRight } from 'lucide-react'
+import { Laptop, Plane } from 'lucide-react'
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image'
-import { Footer } from '@/components/layout/Footer';
+import { Card, CardLink } from '@/components/Card'
 import { SocialLinks } from '@/components/SocialLinks'
 
 export default function Home() {
@@ -99,59 +98,5 @@ export default function Home() {
         </div>
       </div>
     </>
-  )
-}
-
-function Card({ className, children }: { className?: string, children: React.ReactNode }) {
-  return (
-    <div className={`rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl ${className}`}>
-      {children}
-    </div>
-  )
-}
-
-function NavLink({ 
-  href, icon: Icon, children 
-}: { 
-  href: string, icon: LucideIcon, children: React.ReactNode 
-}) {
-  return (
-    <Link
-      href={href}
-      className={`inline-flex items-center justify-center px-2 py-2 text-2xl font-bold rounded-md text-zinc-700 dark:text-zinc-200`}
-    >
-      <Icon className={`mr-2 h-8 w-8`} />
-      {children}
-      <ChevronRight className={`h-8 w-8`} />
-    </Link>
-  )
-}
-
-function CardLink({ 
-  href, icon: Icon, label, imageSrc, imageAlt 
-}: { 
-  href: string
-  icon: LucideIcon
-  label: string
-  imageSrc: string
-  imageAlt: string
-}) {
-  return (
-    <Link href={href}>
-      <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
-        <Image
-          src={imageSrc} alt={imageAlt} fill
-          className="object-cover rounded-xl sm:rounded-3xl"
-          style={{ objectPosition: '50% 100%' }}
-        />
-        <div className="absolute bottom-0 w-full rounded-b-xl sm:rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-1 sm:p-2">
-          <div className={`inline-flex items-center justify-center px-2 sm:py-2 text-lg sm:text-2xl font-semibold text-zinc-800 dark:text-zinc-200`}>
-            {/* <Icon className={`mr-2 h-8 w-8`} /> */}
-            {label}
-            <ChevronRight className={`h-8 w-8`} />
-          </div>
-        </div>
-      </Card>
-    </Link>
   )
 }

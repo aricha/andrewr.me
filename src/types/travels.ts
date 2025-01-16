@@ -1,7 +1,7 @@
 export interface Location {
   id: string;
   name: string;
-  coordinates: [number, number];
+  coordinates: [lat: number, lng: number];
   dates: {
     start: string;
     end: string;
