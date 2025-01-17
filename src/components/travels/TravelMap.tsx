@@ -51,17 +51,16 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
 
   // Simplify the route to reduce number of points
   const simplifiedRoute = useMemo(() => {
-    return PolarstepsParser.simplifyRoute(parsedTrip.routeCoordinates, 0.01);
+    return PolarstepsParser.simplifyRoute(parsedTrip.routeSegments, 0.01);
   }, [parsedTrip]);
 
   // Convert route coordinates to LatLngLiteral array
   const pathCoordinates = useMemo(() => {
-    return simplifiedRoute.map(([lat, lon]) => ({
+    return simplifiedRoute.map((segment) => segment.coordinates.map(([lat, lon]) => ({
       lat,
       lng: lon
-    }));
+    })));
   }, [simplifiedRoute]);
-  console.log(pathCoordinates);
 
   // Calculate center point of the map
   const initialCenter = useMemo(() => ({
@@ -102,17 +101,30 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
         disableDefaultUI={true}
         scrollwheel={true}
       >
-          {/* Render route line */}
-          {pathCoordinates.length > 0 && (
+          {/* Render route segments */}
+          {simplifiedRoute.map((segment, index) => (
             <Polyline
-              path={pathCoordinates}
-              strokeColor={'#FF0000'}
-              strokeOpacity={0.8}
-              strokeWeight={2}
+              key={index}
+              path={segment.coordinates.map(([lat, lon]) => ({
+                lat,
+                lng: lon
+              }))}
+              strokeColor={segment.isFlight ? '#00FF00' : '#FF0000'}
+              strokeOpacity={segment.isFlight ? 0.5 : 0.8}
+              strokeWeight={segment.isFlight ? 0 : 2}
               geodesic={true}
               zIndex={1}
+              icons={segment.isFlight ? [{
+                icon: {
+                  path: 'M 0,-1 0,1',
+                  strokeOpacity: 1,
+                  scale: 2
+                },
+                offset: '0',
+                repeat: '10px'
+              }] : undefined}
             />
-          )}
+          ))}
 
           {/* Render stop markers */}
           {parsedTrip.stops.map((stop, index) => (
