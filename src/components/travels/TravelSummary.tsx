@@ -1,9 +1,14 @@
+'use client'
+
+import { useState } from 'react';
 import TravelMap from './TravelMap';
 import { Card } from '../Card';
+import { FilterConfig } from './PolarstepsParser';
 
 interface TravelSummaryProps {
   locations: any;
   tripData: any;
+  initialFilterConfig: FilterConfig;
   stats: {
     kilometers: number;
     countries: number;
@@ -17,7 +22,28 @@ interface TravelSummaryProps {
   };
 }
 
-export default function TravelSummary({ locations, tripData, stats }: TravelSummaryProps) {
+export default function TravelSummary({ 
+  locations, 
+  tripData, 
+  stats, 
+  initialFilterConfig 
+}: TravelSummaryProps) {
+  const [filterConfig, setFilterConfig] = useState<FilterConfig>(initialFilterConfig);
+
+  const handleFilterConfigChange = (points: Array<{ time: number; lat: number; lon: number; }>) => {
+    const newConfig: FilterConfig = {
+      excludedPoints: points
+    };
+    setFilterConfig(newConfig);
+    
+    // Store in localStorage as backup
+    localStorage.setItem('travelMapFilterConfig', JSON.stringify(newConfig));
+    
+    // Log the new config in a format easy to copy
+    console.log('New Filter Config:');
+    console.log(JSON.stringify(newConfig, null, 2));
+  };
+
   return (
     <section 
       className="px-4 sm:px-8 snap-start relative w-full min-h-screen content-center"
@@ -38,7 +64,12 @@ export default function TravelSummary({ locations, tripData, stats }: TravelSumm
         <div className="flex flex-col md:flex-row gap-4">
           <div className="md:w-2/3 bg-gray-900 rounded-2xl overflow-hidden flex">
             <div className="flex-1">
-              <TravelMap locationsData={locations} tripData={tripData} />
+              <TravelMap 
+                locationsData={locations} 
+                tripData={tripData} 
+                onFilterConfigChange={handleFilterConfigChange}
+                filterConfig={filterConfig}
+              />
             </div>
           </div>
         

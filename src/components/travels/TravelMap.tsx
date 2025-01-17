@@ -1,13 +1,20 @@
 'use client'
-import { useState, useMemo, useCallback } from 'react';
-import { APIProvider, Map, Marker, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { APIProvider, Map, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
-import { Location } from '@/types/travels';
-import { PolarstepsParser } from './PolarstepsParser';
+import { FilterConfig, PolarstepsParser, RoutePoint } from './PolarstepsParser';
+
+interface SelectedPoint {
+  time: number;
+  lat: number;
+  lon: number;
+}
 
 interface TravelMapProps {
   locationsData: any;
   tripData: any;
+  onFilterConfigChange?: (points: SelectedPoint[]) => void;
+  filterConfig?: FilterConfig;
 }
 
 // Add constant at the top of the file
@@ -40,7 +47,7 @@ const AdvancedMarkerWithRef = (
 // Add new interface for segment debug info
 interface SegmentDebugInfo {
   index: number;
-  coordinates: Array<[number, number]>;
+  points: RoutePoint[];
   isFlight: boolean;
   debugInfo?: {
     startTime: number;
@@ -48,13 +55,29 @@ interface SegmentDebugInfo {
     speedKmH?: number;
     distanceDegrees?: number;
   } | null;
+  pointInfo?: {
+    lat: number;
+    lon: number;
+    time: number;
+  };
 }
 
-export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
+export default function TravelMap({ 
+  locationsData, 
+  tripData, 
+  onFilterConfigChange,
+  filterConfig 
+}: TravelMapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
   const [zoomLevel, setZoomLevel] = useState(2);
   const [selectedSegment, setSelectedSegment] = useState<SegmentDebugInfo | null>(null);
+  const [selectedPoints, setSelectedPoints] = useState<SelectedPoint[]>(
+    () => filterConfig?.excludedPoints || []
+  );
+  const [showDetailedPoints, setShowDetailedPoints] = useState(false);
+  const [googleMapsSymbolsLoaded, setGoogleMapsSymbolsLoaded] = useState(false);
+  const [hoveredPoint, setHoveredPoint] = useState<SegmentDebugInfo | null>(null);
   
   const mapContainerStyle = {
     width: '100%',
@@ -63,21 +86,18 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
 
   // Parse the trip data using the constant
   const parsedTrip = useMemo(() => {
-    return PolarstepsParser.parse(locationsData, tripData, ENABLE_DEBUG_MODE);
-  }, [locationsData, tripData]);
+    return PolarstepsParser.parse(
+      locationsData, 
+      tripData, 
+      ENABLE_DEBUG_MODE,
+      filterConfig
+    );
+  }, [locationsData, tripData, filterConfig]);
 
   // Simplify the route to reduce number of points
   const simplifiedRoute = useMemo(() => {
     return PolarstepsParser.simplifyRoute(parsedTrip.routeSegments, 0.01);
   }, [parsedTrip]);
-
-  // Convert route coordinates to LatLngLiteral array
-  const pathCoordinates = useMemo(() => {
-    return simplifiedRoute.map((segment) => segment.coordinates.map(([lat, lon]) => ({
-      lat,
-      lng: lon
-    })));
-  }, [simplifiedRoute]);
 
   // Calculate center point of the map
   const initialCenter = useMemo(() => ({
@@ -93,6 +113,16 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
 
   // Helper function to format debug info
   const formatDebugInfo = (segment: SegmentDebugInfo) => {
+    if (segment.pointInfo) {
+      const time = new Date(segment.pointInfo.time * 1000).toLocaleString();
+      return `
+        Point Info:
+        Time: ${time}
+        Lat: ${segment.pointInfo.lat.toFixed(6)}
+        Lon: ${segment.pointInfo.lon.toFixed(6)}
+      `;
+    }
+
     if (!segment.debugInfo) return 'Debug info not available';
     
     const startDate = new Date(segment.debugInfo.startTime * 1000).toLocaleString();
@@ -110,9 +140,109 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
     `;
   };
 
+  // Update parent component when points are selected/deselected
+  useEffect(() => {
+    if (onFilterConfigChange && 
+        JSON.stringify(selectedPoints) !== JSON.stringify(filterConfig?.excludedPoints)) {
+      onFilterConfigChange(selectedPoints);
+    }
+  }, [selectedPoints, onFilterConfigChange, filterConfig]);
+
+  // Add function to toggle point selection
+  const togglePointSelection = (point: SelectedPoint) => {
+    setSelectedPoints(prev => {
+      const isSelected = prev.some(p => 
+        p.time === point.time && 
+        p.lat === point.lat && 
+        p.lon === point.lon
+      );
+      
+      if (isSelected) {
+        return prev.filter(p => 
+          !(p.time === point.time && p.lat === point.lat && p.lon === point.lon)
+        );
+      } else {
+        return [...prev, point];
+      }
+    });
+  };
+
+  // Add function to handle exporting the filter config
+  const handleExportConfig = () => {
+    const config = {
+      excludedPoints: selectedPoints
+    };
+    
+    // Create a blob with the JSON data
+    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary link and trigger download
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'filter-config.json';
+    document.body.appendChild(a);
+    a.click();
+    
+    // Cleanup
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  // Add effect to detect when Google Maps symbols are loaded
+  useEffect(() => {
+    const checkGoogleMapsSymbols = () => {
+      if ((window.google?.maps?.SymbolPath?.FORWARD_CLOSED_ARROW as any) !== undefined) {
+        setGoogleMapsSymbolsLoaded(true);
+      } else {
+        // If not loaded yet, check again in 100ms
+        setTimeout(checkGoogleMapsSymbols, 100);
+      }
+    };
+    
+    checkGoogleMapsSymbols();
+    
+    return () => {
+      setGoogleMapsSymbolsLoaded(false);
+    };
+  }, []);
+
+  const forwardArrowPath = useMemo(() => 
+    googleMapsSymbolsLoaded
+      ? window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW 
+      : undefined
+  , [googleMapsSymbolsLoaded]);
+
   return (
     <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
       <div>
+        {/* Add debug controls */}
+        {ENABLE_DEBUG_MODE && (
+          <div className="absolute top-4 left-4 z-10 bg-black/80 p-4 rounded-lg">
+            <button
+              onClick={() => setShowDetailedPoints(!showDetailedPoints)}
+              className="px-4 py-2 bg-blue-500 text-white rounded"
+            >
+              {showDetailedPoints ? 'Hide Points' : 'Show Points'}
+            </button>
+            <button
+              onClick={handleExportConfig}
+              className="px-4 py-2 bg-green-500 text-white rounded mt-2 block w-full"
+            >
+              Export Filter Config
+            </button>
+            <div className="mt-2 text-xs text-gray-300">
+              Selected points: {selectedPoints.length}
+            </div>
+            <button
+              onClick={() => setSelectedPoints([])}
+              className="px-4 py-2 bg-red-500 text-white rounded mt-2"
+            >
+              Clear Selection
+            </button>
+          </div>
+        )}
+
         <Map
           style={mapContainerStyle}
           center={center}
@@ -138,35 +268,76 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
           disableDefaultUI={true}
           scrollwheel={true}
         >
-          {/* Render route segments - now only add click handler if debug info is enabled */}
+          {/* Render route segments */}
           {simplifiedRoute.map((segment, index) => (
             <Polyline
               key={index}
-              path={segment.coordinates.map(([lat, lon]) => ({
-                lat,
-                lng: lon
+              path={segment.points.map(point => ({
+                lat: point.lat,
+                lng: point.lon
               }))}
               strokeColor={segment.isFlight ? '#00FF00' : '#FF0000'}
               strokeOpacity={segment.isFlight ? 0 : 0.8}
               strokeWeight={2}
               geodesic={true}
               zIndex={1}
-              icons={segment.isFlight ? [{
+              icons={forwardArrowPath ? [{
+                icon: {
+                  path: forwardArrowPath,
+                  scale: 3,
+                  strokeColor: segment.isFlight ? '#00FF00' : '#FF0000',
+                  strokeOpacity: 1,
+                },
+                offset: '50%',
+                repeat: '100px'
+              },
+              ...(segment.isFlight ? [{
                 icon: {
                   path: 'M 0,-1 0,1',
                   strokeOpacity: 1,
-                  scale: 2
+                  scale: 2,
+                  strokeColor: '#00FF00'
                 },
                 offset: '0',
                 repeat: '10px'
-              }] : undefined}
-              // Only add click handler if debug info is present
-              onClick={segment.debugInfo ? () => setSelectedSegment({
+              }] : [])] : undefined}
+              onMouseOver={segment.debugInfo ? () => setSelectedSegment({
                 index,
                 ...segment
               }) : undefined}
+              onMouseOut={() => setSelectedSegment(null)}
             />
           ))}
+
+          {/* Add detailed points when enabled */}
+          {ENABLE_DEBUG_MODE && showDetailedPoints && parsedTrip.routeSegments.map((segment, segmentIndex) => 
+            segment.points.map((point, pointIndex) => {
+              const isSelected = selectedPoints.some(p => 
+                p.lat === point.lat && p.lon === point.lon
+              );
+
+              return (
+                <AdvancedMarkerWithRef
+                  key={`${segmentIndex}-${pointIndex}`}
+                  position={{ lat: point.lat, lng: point.lon }}
+                  onMarkerClick={() => togglePointSelection(point)}
+                  onMouseEnter={() => setHoveredPoint({
+                    index: segmentIndex,
+                    points: segment.points,
+                    isFlight: segment.isFlight,
+                    pointInfo: point
+                  })}
+                  onMouseLeave={() => setHoveredPoint(null)}
+                >
+                  <div 
+                    className={`w-3 h-3 rounded-full ${
+                      isSelected ? 'bg-red-500' : 'bg-blue-500'
+                    }`}
+                  />
+                </AdvancedMarkerWithRef>
+              );
+            })
+          )}
 
           {/* Render stop markers */}
           {parsedTrip.stops.map((stop, index) => (
@@ -195,7 +366,7 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
         </Map>
 
         {/* Debug panel - only shown if debug info is present */}
-        {selectedSegment?.debugInfo && (
+        {(selectedSegment?.debugInfo || hoveredPoint) && (
           <div style={{
             position: 'absolute',
             top: '10px',
@@ -207,14 +378,8 @@ export default function TravelMap({ locationsData, tripData }: TravelMapProps) {
             maxWidth: '300px',
             whiteSpace: 'pre-line'
           }}>
-            <div>Segment #{selectedSegment.index}</div>
-            <div>{formatDebugInfo(selectedSegment)}</div>
-            <button 
-              onClick={() => setSelectedSegment(null)}
-              style={{ marginTop: '10px' }}
-            >
-              Close
-            </button>
+            <div>{hoveredPoint ? 'Point Info' : `Segment #${selectedSegment?.index}`}</div>
+            <div>{formatDebugInfo(hoveredPoint || selectedSegment!)}</div>
           </div>
         )}
       </div>

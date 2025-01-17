@@ -18,8 +18,14 @@ interface TripStep {
 }
 
 // Add new types for route segments
+export interface RoutePoint {
+  lat: number;
+  lon: number;
+  time: number;
+}
+
 interface RouteSegment {
-  coordinates: Array<[number, number]>;
+  points: RoutePoint[];
   isFlight: boolean;
   debugInfo?: {
     startTime: number;
@@ -44,6 +50,15 @@ interface ParsedTripData {
   };
 }
 
+// Add new interfaces for filter configuration
+export interface FilterConfig {
+  excludedPoints: Array<{
+    time: number;
+    lat: number;
+    lon: number;
+  }>;
+}
+
 export class PolarstepsParser {
   // Constants for flight detection
   private static FLIGHT_DISTANCE_THRESHOLD = 0.5; // degrees (~55km)
@@ -54,9 +69,31 @@ export class PolarstepsParser {
    * @param locationsJson Raw locations data from Polarsteps
    * @param tripJson Trip metadata and waypoints
    * @param includeDebugInfo Whether to include debug information in the output
+   * @param filterConfig Optional configuration for filtering out problematic points
    * @returns Processed trip data ready for visualization
    */
-  static parse(locationsJson: any, tripJson: any, includeDebugInfo: boolean = false): ParsedTripData {
+  static parse(
+    locationsJson: any, 
+    tripJson: any, 
+    includeDebugInfo: boolean = false,
+    filterConfig?: FilterConfig
+  ): ParsedTripData {
+    // Filter out excluded points if filterConfig is provided
+    let locations: Location[] = [...locationsJson.locations];
+    
+    if (filterConfig?.excludedPoints?.length) {
+      locations = locations.filter(loc => 
+        !filterConfig.excludedPoints.some(excluded => 
+          // Use approximate matching for coordinates and ignore timestamp
+          Math.abs(excluded.lat - loc.lat) < 0.0000001 &&
+          Math.abs(excluded.lon - loc.lon) < 0.0000001
+        )
+      );
+    }
+
+    // Sort locations by timestamp before processing
+    locations.sort((a, b) => a.time - b.time);
+    
     // Extract basic trip info
     const tripData: ParsedTripData = {
       name: tripJson.name,
@@ -73,12 +110,9 @@ export class PolarstepsParser {
       }
     };
 
-    // Sort locations by timestamp before processing
-    const locations: Location[] = [...locationsJson.locations].sort((a, b) => a.time - b.time);
-    
     // Process locations into segments
     let currentSegment: RouteSegment = {
-      coordinates: [],
+      points: [],
       isFlight: false,
       ...(includeDebugInfo && {
         debugInfo: {
@@ -95,7 +129,11 @@ export class PolarstepsParser {
     
     for (let i = 0; i < locations.length; i++) {
       const current = locations[i];
-      currentSegment.coordinates.push([current.lat, current.lon]);
+      currentSegment.points.push({
+        lat: current.lat,
+        lon: current.lon,
+        time: current.time
+      });
       
       // Update debug info for current segment if enabled
       if (includeDebugInfo && currentSegment.debugInfo) {
@@ -119,7 +157,7 @@ export class PolarstepsParser {
 
         // For flight detection, still use point-to-point values
         const pointToPointSpeedKmH = (distance * 111) / (timeGap / 3600);
-        if (distance <= this.FLIGHT_DISTANCE_THRESHOLD && pointToPointSpeedKmH <= this.FLIGHT_SPEED_THRESHOLD) {
+        if (distance <= this.FLIGHT_DISTANCE_THRESHOLD || pointToPointSpeedKmH <= this.FLIGHT_SPEED_THRESHOLD) {
             // Update debug info with cumulative calculations if enabled
             if (includeDebugInfo && currentSegment.debugInfo) {
                 currentSegment.debugInfo.speedKmH = averageSpeedKmH;
@@ -131,7 +169,7 @@ export class PolarstepsParser {
           
           // Create flight segment
           tripData.routeSegments.push({
-            coordinates: [[current.lat, current.lon], [next.lat, next.lon]],
+            points: [current, next],
             isFlight: true,
             ...(includeDebugInfo && {
               debugInfo: {
@@ -145,7 +183,7 @@ export class PolarstepsParser {
 
           // Start new segment
           currentSegment = {
-            coordinates: [],
+            points: [],
             isFlight: false,
             ...(includeDebugInfo && {
               debugInfo: {
@@ -169,7 +207,7 @@ export class PolarstepsParser {
     }
 
     // Add the last segment
-    if (currentSegment.coordinates.length > 0) {
+    if (currentSegment.points.length > 0) {
       tripData.routeSegments.push(currentSegment);
     }
 
@@ -205,23 +243,23 @@ export class PolarstepsParser {
    */
   static simplifyRoute(segments: RouteSegment[], minDistance: number = 0.01): RouteSegment[] {
     return segments.map(segment => ({
-      coordinates: this.simplifyCoordinates(segment.coordinates, minDistance),
+      points: this.simplifyPoints(segment.points, minDistance),
       isFlight: segment.isFlight,
       debugInfo: segment.debugInfo
     }));
   }
 
-  private static simplifyCoordinates(coordinates: Array<[number, number]>, minDistance: number): Array<[number, number]> {
-    if (coordinates.length <= 2) return coordinates;
+  private static simplifyPoints(points: RoutePoint[], minDistance: number): RoutePoint[] {
+    if (points.length <= 2) return points;
 
-    const filtered: Array<[number, number]> = [coordinates[0]];
-    let lastPoint = coordinates[0];
+    const filtered: RoutePoint[] = [points[0]];
+    let lastPoint = points[0];
 
-    for (let i = 1; i < coordinates.length; i++) {
-      const point = coordinates[i];
+    for (let i = 1; i < points.length; i++) {
+      const point = points[i];
       const distance = Math.sqrt(
-        Math.pow(point[0] - lastPoint[0], 2) + 
-        Math.pow(point[1] - lastPoint[1], 2)
+        Math.pow(point.lat - lastPoint.lat, 2) + 
+        Math.pow(point.lon - lastPoint.lon, 2)
       );
 
       if (distance >= minDistance) {
@@ -231,8 +269,8 @@ export class PolarstepsParser {
     }
 
     // Always include the last point
-    if (filtered[filtered.length - 1] !== coordinates[coordinates.length - 1]) {
-      filtered.push(coordinates[coordinates.length - 1]);
+    if (filtered[filtered.length - 1] !== points[points.length - 1]) {
+      filtered.push(points[points.length - 1]);
     }
 
     return filtered;
