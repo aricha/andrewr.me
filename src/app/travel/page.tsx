@@ -1,17 +1,18 @@
 import { getAllTravels } from '@/lib/travels';
-import TravelMap from '@/components/travels/TravelMap';
 import TravelIntro from '@/components/travels/TravelIntro';
 import TravelSummary from '@/components/travels/TravelSummary';
+import { PolarstepsParser } from '@/components/travels/PolarstepsParser';
+import tripData from '@/assets/trip.json';
+import locationsData from '@/assets/locations.json';
 
 export default function Travel() {
-  const travels = getAllTravels();
-  
   return (
     <div style={{ scrollPaddingTop: 'var(--navbar-height)' }} className="flex flex-col min-h-screen">
       <div className="flex-grow h-screen overflow-y-auto snap-y snap-proximity relative">
         <TravelIntro />
         <TravelSummary 
-          locations={travels.locations}
+          locations={locationsData}
+          tripData={tripData}
           stats={{
             kilometers: 13820,
             countries: 13,

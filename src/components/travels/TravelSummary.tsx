@@ -2,7 +2,8 @@ import TravelMap from './TravelMap';
 import { Card } from '../Card';
 
 interface TravelSummaryProps {
-  locations: any; // Update this type based on your locations structure
+  locations: any;
+  tripData: any;
   stats: {
     kilometers: number;
     countries: number;
@@ -16,7 +17,7 @@ interface TravelSummaryProps {
   };
 }
 
-export default function TravelSummary({ locations, stats }: TravelSummaryProps) {
+export default function TravelSummary({ locations, tripData, stats }: TravelSummaryProps) {
   return (
     <section 
       className="px-4 sm:px-8 snap-start relative w-full min-h-screen content-center"
@@ -37,7 +38,7 @@ export default function TravelSummary({ locations, stats }: TravelSummaryProps) 
         <div className="flex flex-col md:flex-row gap-4">
           <div className="md:w-2/3 bg-gray-900 rounded-2xl overflow-hidden flex">
             <div className="flex-1">
-              <TravelMap locations={locations} />
+              <TravelMap locationsData={locations} tripData={tripData} />
             </div>
           </div>
         
