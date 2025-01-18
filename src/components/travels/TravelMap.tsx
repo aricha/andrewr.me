@@ -2,23 +2,15 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { APIProvider, Map, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
-import { 
-  FilterConfig, 
-  PolarstepsParser, 
-  Location,
-  RawLocationsData,
-  RawTripData
-} from './PolarstepsParser';
+import { TravelData, Location } from './TravelDataProvider';
 
 interface TravelMapProps {
-  locationsData: RawLocationsData;
-  tripData: RawTripData;
-  onFilterConfigChange?: (points: Location[]) => void;
-  filterConfig?: FilterConfig;
+  travelData?: TravelData;
   debugMode?: boolean;
   showDetailedPoints?: boolean;
   selectedPoints?: Location[];
   style?: React.CSSProperties;
+  onPointSelectionChange?: (points: Location[]) => void;
 }
 
 const AdvancedMarkerWithRef = (
@@ -76,7 +68,7 @@ interface PointInfoPanelProps {
 
 const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClose, onStartRange }) => {
   const time = new Date(point.time * 1000).toLocaleString();
-  
+
   return (
     <div className="absolute top-10 right-10 bg-black/80 text-white p-4 rounded-lg">
       <div className="mb-2">
@@ -85,19 +77,19 @@ const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClos
         <div>Lon: {point.lon.toFixed(6)}</div>
       </div>
       <div className="flex gap-2">
-        <button 
+        <button
           onClick={onDelete}
           className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
         >
           Delete Point
         </button>
-        <button 
+        <button
           onClick={onStartRange}
           className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
         >
           Start Range
         </button>
-        <button 
+        <button
           onClick={onClose}
           className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600"
         >
@@ -108,15 +100,13 @@ const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClos
   );
 };
 
-export default function TravelMap({ 
-  locationsData, 
-  tripData, 
-  onFilterConfigChange,
-  filterConfig,
+export default function TravelMap({
+  travelData,
   debugMode = false,
   showDetailedPoints = false,
   selectedPoints = [],
-  style = {}
+  style = {},
+  onPointSelectionChange
 }: TravelMapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
@@ -127,33 +117,23 @@ export default function TravelMap({
   const [hoveredPoint, setHoveredPoint] = useState<SegmentDebugInfo | null>(null);
   const [selectedPoint, setSelectedPoint] = useState<Location | null>(null);
   const [selectionMode, setSelectionMode] = useState<PointSelectionMode>({ type: 'single' });
-  
+
   const mapContainerStyle = {
     width: '100%',
     height: '70vh',
     ...style
   };
 
-  // Parse the trip data
-  const parsedTrip = useMemo(() => {
-    return PolarstepsParser.parse(
-      locationsData, 
-      tripData, 
-      debugMode,
-      filterConfig
-    );
-  }, [locationsData, tripData, debugMode, filterConfig]);
-
-  // Simplify the route to reduce number of points
-  const simplifiedRoute = useMemo(() => {
-    return PolarstepsParser.simplifyRoute(parsedTrip.routeSegments, 0.01);
-  }, [parsedTrip]);
-
   // Calculate center point of the map
-  const initialCenter = useMemo(() => ({
-    lat: (parsedTrip.bounds.north + parsedTrip.bounds.south) / 2,
-    lng: (parsedTrip.bounds.east + parsedTrip.bounds.west) / 2
-  }), [parsedTrip.bounds]);
+  const initialCenter = useMemo(() => (
+    travelData && {
+      lat: (travelData.bounds.north + travelData.bounds.south) / 2,
+      lng: (travelData.bounds.east + travelData.bounds.west) / 2
+    } || {
+      lat: 0,
+      lng: 0
+    }
+  ), [travelData?.bounds]);
 
   const handleMarkerClick = useCallback((index: number, marker: google.maps.marker.AdvancedMarkerElement) => {
     setActiveMarker(activeMarker === index ? null : index);
@@ -173,11 +153,11 @@ export default function TravelMap({
     }
 
     if (!segment.debugInfo) return 'Debug info not available';
-    
+
     const startDate = new Date(segment.debugInfo.startTime * 1000).toLocaleString();
     const endDate = new Date(segment.debugInfo.endTime * 1000).toLocaleString();
     const speed = segment.debugInfo.speedKmH?.toFixed(2) || 'N/A';
-    const distance = segment.debugInfo.distanceDegrees ? 
+    const distance = segment.debugInfo.distanceDegrees ?
       (segment.debugInfo.distanceDegrees * 111).toFixed(2) : 'N/A';
 
     return `
@@ -189,17 +169,8 @@ export default function TravelMap({
     `;
   };
 
-  // Update parent component when points are selected/deselected
-  useEffect(() => {
-    if (onFilterConfigChange && 
-        JSON.stringify(selectedPoints) !== JSON.stringify(filterConfig?.excludedPoints)) {
-      onFilterConfigChange(selectedPoints);
-    }
-  }, [selectedPoints, onFilterConfigChange, filterConfig]);
-
-  // Modify the togglePointSelection function
   const togglePointSelection = useCallback((point: Location) => {
-    if (!onFilterConfigChange) return;
+    if (!onPointSelectionChange || !travelData) return;
 
     if (selectionMode.type === 'single') {
       setSelectedPoint(point);
@@ -209,7 +180,7 @@ export default function TravelMap({
       const endTime = Math.max(selectionMode.startPoint.time, point.time);
 
       // Find all points within the time range
-      const pointsInRange = parsedTrip.routeSegments.flatMap(segment =>
+      const pointsInRange = travelData.routeSegments.flatMap(segment =>
         segment.points.filter(p => p.time >= startTime && p.time <= endTime)
       );
 
@@ -223,28 +194,28 @@ export default function TravelMap({
         }))
       ];
 
-      onFilterConfigChange(newPoints);
+      onPointSelectionChange(newPoints);
       setSelectionMode({ type: 'single' });
     }
-  }, [selectedPoints, onFilterConfigChange, selectionMode, parsedTrip.routeSegments]);
+  }, [selectedPoints, onPointSelectionChange, selectionMode, travelData?.routeSegments]);
 
   // Add these new handler functions
   const handleDeletePoint = useCallback(() => {
-    if (!selectedPoint || !onFilterConfigChange) return;
+    if (!selectedPoint || !onPointSelectionChange) return;
 
     const newPoints = [...selectedPoints, {
       time: selectedPoint.time,
       lat: selectedPoint.lat,
       lon: selectedPoint.lon
     }];
-    
-    onFilterConfigChange(newPoints);
+
+    onPointSelectionChange(newPoints);
     setSelectedPoint(null);
-  }, [selectedPoint, selectedPoints, onFilterConfigChange]);
+  }, [selectedPoint, selectedPoints, onPointSelectionChange]);
 
   const handleStartRange = useCallback(() => {
     if (!selectedPoint) return;
-    
+
     setSelectionMode({
       type: 'range',
       startPoint: selectedPoint
@@ -262,19 +233,19 @@ export default function TravelMap({
         setTimeout(checkGoogleMapsSymbols, 100);
       }
     };
-    
+
     checkGoogleMapsSymbols();
-    
+
     return () => {
       setGoogleMapsSymbolsLoaded(false);
     };
   }, []);
 
-  const forwardArrowPath = useMemo(() => 
+  const forwardArrowPath = useMemo(() =>
     googleMapsSymbolsLoaded
-      ? window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW 
+      ? window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW
       : undefined
-  , [googleMapsSymbolsLoaded]);
+    , [googleMapsSymbolsLoaded]);
 
   return (
     <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
@@ -305,7 +276,7 @@ export default function TravelMap({
           scrollwheel={true}
         >
           {/* Render route segments */}
-          {simplifiedRoute.map((segment, index) => (
+          {travelData?.routeSegments.map((segment, index) => (
             <Polyline
               key={index}
               path={segment.points.map(point => ({
@@ -346,12 +317,12 @@ export default function TravelMap({
           ))}
 
           {/* Only render detailed points in debug mode */}
-          {debugMode && showDetailedPoints && parsedTrip.routeSegments.map((segment, segmentIndex) => 
+          {debugMode && showDetailedPoints && travelData?.routeSegments.map((segment, segmentIndex) =>
             segment.points.map((point, pointIndex) => {
-              const isSelected = selectedPoints.some(p => 
+              const isSelected = selectedPoints.some(p =>
                 p.lat === point.lat && p.lon === point.lon
               );
-              const isRangeStart = selectionMode.type === 'range' && 
+              const isRangeStart = selectionMode.type === 'range' &&
                 selectionMode.startPoint?.time === point.time;
 
               return (
@@ -367,12 +338,11 @@ export default function TravelMap({
                   })}
                   onMouseLeave={() => setHoveredPoint(null)}
                 >
-                  <div 
-                    className={`w-3 h-3 rounded-full ${
-                      isSelected ? 'bg-red-500' : 
-                      isRangeStart ? 'bg-yellow-500' :
-                      'bg-blue-500'
-                    }`}
+                  <div
+                    className={`w-3 h-3 rounded-full ${isSelected ? 'bg-red-500' :
+                        isRangeStart ? 'bg-yellow-500' :
+                          'bg-blue-500'
+                      }`}
                   />
                 </AdvancedMarkerWithRef>
               );
@@ -380,7 +350,7 @@ export default function TravelMap({
           )}
 
           {/* Render stop markers */}
-          {parsedTrip.stops.map((stop, index) => (
+          {travelData?.stops.map((stop, index) => (
             <div key={index}>
               <AdvancedMarkerWithRef
                 position={{ lat: stop.location.lat, lng: stop.location.lon }}
@@ -419,7 +389,7 @@ export default function TravelMap({
         {selectionMode.type === 'range' && (
           <div className="absolute top-10 left-10 bg-black/80 text-white p-4 rounded-lg">
             <div>Select end point for range deletion</div>
-            <button 
+            <button
               onClick={() => setSelectionMode({ type: 'single' })}
               className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600 mt-2"
             >

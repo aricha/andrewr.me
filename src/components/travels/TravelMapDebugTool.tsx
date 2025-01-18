@@ -1,27 +1,35 @@
 'use client'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TravelMap from './TravelMap';
-import { FilterConfig, Location, RawLocationsData, RawTripData } from './PolarstepsParser';
+import { TravelData, TravelDataProvider, Location } from './TravelDataProvider';
 import defaultFilterConfig from '@/assets/trip-data/filter-config.json';
 
-interface TravelMapDebugToolProps {
-  locationsData: RawLocationsData;
-  tripData: RawTripData;
-}
-
-export default function TravelMapDebugTool({ locationsData, tripData }: TravelMapDebugToolProps) {
+export default function TravelMapDebugTool() {
   const [showDetailedPoints, setShowDetailedPoints] = useState(false);
   const [selectedPoints, setSelectedPoints] = useState<Location[]>(() => {
-    // Initialize with points from default filter config
     return defaultFilterConfig.excludedPoints || [];
   });
+  const [travelData, setTravelData] = useState<TravelData | undefined>(undefined);
   
-  const handleFilterConfigChange = (points: Location[]) => {
-    setSelectedPoints(points);
-  };
+  const dataProvider = TravelDataProvider.getInstance();
 
-  const filterConfig: FilterConfig = {
-    excludedPoints: selectedPoints
+  useEffect(() => {
+    const loadInitialData = async () => {
+      const data = await dataProvider.loadTravelData({
+        excludedPoints: selectedPoints
+      }, 0.01, true);
+      setTravelData(data);
+    };
+    
+    loadInitialData();
+  }, []);
+
+  const handleFilterConfigChange = async (points: Location[]) => {
+    setSelectedPoints(points);
+    const newData = await dataProvider.updateFilterConfig({
+      excludedPoints: points
+    }, true);
+    setTravelData(newData);
   };
 
   const handleExportConfig = () => {
@@ -61,7 +69,7 @@ export default function TravelMapDebugTool({ locationsData, tripData }: TravelMa
           Selected points: {selectedPoints.length}
         </div>
         <button
-          onClick={() => setSelectedPoints([])}
+          onClick={() => handleFilterConfigChange([])}
           className="px-4 py-2 bg-red-500 text-white rounded mt-2"
         >
           Clear Selection
@@ -69,15 +77,13 @@ export default function TravelMapDebugTool({ locationsData, tripData }: TravelMa
       </div>
 
       <TravelMap
-        locationsData={locationsData}
-        tripData={tripData}
-        onFilterConfigChange={handleFilterConfigChange}
-        filterConfig={filterConfig}
+        travelData={travelData}
+        onPointSelectionChange={handleFilterConfigChange}
         debugMode={true}
         showDetailedPoints={showDetailedPoints}
         selectedPoints={selectedPoints}
         style={{
-            height: '90vh'
+          height: '90vh'
         }}
       />
     </div>

@@ -3,12 +3,10 @@
 import { useState } from 'react';
 import TravelMap from './TravelMap';
 import { Card } from '../Card';
-import { Location, FilterConfig, RawLocationsData, RawTripData } from './PolarstepsParser';
+import { TravelData } from './TravelDataProvider';
 
 interface TravelSummaryProps {
-  locations: RawLocationsData;
-  tripData: RawTripData;
-  filterConfig: FilterConfig;
+  travelData: TravelData;
   stats: {
     kilometers: number;
     countries: number;
@@ -23,10 +21,8 @@ interface TravelSummaryProps {
 }
 
 export default function TravelSummary({ 
-  locations, 
-  tripData, 
-  stats, 
-  filterConfig 
+  travelData,
+  stats
 }: TravelSummaryProps) {
   return (
     <section 
@@ -49,9 +45,7 @@ export default function TravelSummary({
           <div className="md:w-2/3 bg-gray-900 rounded-2xl overflow-hidden flex">
             <div className="flex-1">
               <TravelMap 
-                locationsData={locations} 
-                tripData={tripData} 
-                filterConfig={filterConfig}
+                travelData={travelData} 
               />
             </div>
           </div>
