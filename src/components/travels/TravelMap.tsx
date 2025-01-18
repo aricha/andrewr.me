@@ -2,19 +2,17 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { APIProvider, Map, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
-import { FilterConfig, PolarstepsParser, RoutePoint } from './PolarstepsParser';
-
-interface SelectedPoint {
-  time: number;
-  lat: number;
-  lon: number;
-}
+import { FilterConfig, PolarstepsParser, RoutePoint, SelectedPoint } from './PolarstepsParser';
 
 interface TravelMapProps {
   locationsData: any;
   tripData: any;
   onFilterConfigChange?: (points: SelectedPoint[]) => void;
   filterConfig?: FilterConfig;
+  debugMode?: boolean;
+  showDetailedPoints?: boolean;
+  selectedPoints?: SelectedPoint[];
+  style?: React.CSSProperties;
 }
 
 // Add constant at the top of the file
@@ -66,33 +64,35 @@ export default function TravelMap({
   locationsData, 
   tripData, 
   onFilterConfigChange,
-  filterConfig 
+  filterConfig,
+  debugMode = false,
+  showDetailedPoints = false,
+  selectedPoints = [],
+  style = {}
 }: TravelMapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
   const [zoomLevel, setZoomLevel] = useState(2);
   const [selectedSegment, setSelectedSegment] = useState<SegmentDebugInfo | null>(null);
-  const [selectedPoints, setSelectedPoints] = useState<SelectedPoint[]>(
-    () => filterConfig?.excludedPoints || []
-  );
-  const [showDetailedPoints, setShowDetailedPoints] = useState(false);
+  const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
   const [googleMapsSymbolsLoaded, setGoogleMapsSymbolsLoaded] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState<SegmentDebugInfo | null>(null);
   
   const mapContainerStyle = {
     width: '100%',
     height: '70vh',
+    ...style
   };
 
-  // Parse the trip data using the constant
+  // Parse the trip data
   const parsedTrip = useMemo(() => {
     return PolarstepsParser.parse(
       locationsData, 
       tripData, 
-      ENABLE_DEBUG_MODE,
+      debugMode,
       filterConfig
     );
-  }, [locationsData, tripData, filterConfig]);
+  }, [locationsData, tripData, debugMode, filterConfig]);
 
   // Simplify the route to reduce number of points
   const simplifiedRoute = useMemo(() => {
@@ -104,7 +104,6 @@ export default function TravelMap({
     lat: (parsedTrip.bounds.north + parsedTrip.bounds.south) / 2,
     lng: (parsedTrip.bounds.east + parsedTrip.bounds.west) / 2
   }), [parsedTrip.bounds]);
-  const [center, setCenter] = useState(initialCenter);
 
   const handleMarkerClick = useCallback((index: number, marker: google.maps.marker.AdvancedMarkerElement) => {
     setActiveMarker(activeMarker === index ? null : index);
@@ -149,23 +148,29 @@ export default function TravelMap({
   }, [selectedPoints, onFilterConfigChange, filterConfig]);
 
   // Add function to toggle point selection
-  const togglePointSelection = (point: SelectedPoint) => {
-    setSelectedPoints(prev => {
-      const isSelected = prev.some(p => 
-        p.time === point.time && 
-        p.lat === point.lat && 
-        p.lon === point.lon
-      );
-      
-      if (isSelected) {
-        return prev.filter(p => 
-          !(p.time === point.time && p.lat === point.lat && p.lon === point.lon)
-        );
-      } else {
-        return [...prev, point];
-      }
-    });
-  };
+  const togglePointSelection = useCallback((point: RoutePoint) => {
+    if (!onFilterConfigChange) return;
+    
+    const selectedPoint: SelectedPoint = {
+      time: point.time,
+      lat: point.lat,
+      lon: point.lon
+    };
+
+    const newPoints = selectedPoints.some(p => 
+      p.time === point.time && 
+      p.lat === point.lat && 
+      p.lon === point.lon
+    )
+      ? selectedPoints.filter(p => 
+          !(p.time === point.time && 
+            p.lat === point.lat && 
+            p.lon === point.lon)
+        )
+      : [...selectedPoints, selectedPoint];
+
+    onFilterConfigChange(newPoints);
+  }, [selectedPoints, onFilterConfigChange]);
 
   // Add function to handle exporting the filter config
   const handleExportConfig = () => {
@@ -216,36 +221,9 @@ export default function TravelMap({
   return (
     <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
       <div>
-        {/* Add debug controls */}
-        {ENABLE_DEBUG_MODE && (
-          <div className="absolute top-4 left-4 z-10 bg-black/80 p-4 rounded-lg">
-            <button
-              onClick={() => setShowDetailedPoints(!showDetailedPoints)}
-              className="px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              {showDetailedPoints ? 'Hide Points' : 'Show Points'}
-            </button>
-            <button
-              onClick={handleExportConfig}
-              className="px-4 py-2 bg-green-500 text-white rounded mt-2 block w-full"
-            >
-              Export Filter Config
-            </button>
-            <div className="mt-2 text-xs text-gray-300">
-              Selected points: {selectedPoints.length}
-            </div>
-            <button
-              onClick={() => setSelectedPoints([])}
-              className="px-4 py-2 bg-red-500 text-white rounded mt-2"
-            >
-              Clear Selection
-            </button>
-          </div>
-        )}
-
         <Map
           style={mapContainerStyle}
-          center={center}
+          center={center || initialCenter}
           mapId="8eb6596767bee51b"
           onClick={() => {
             setActiveMarker(null);
@@ -309,8 +287,8 @@ export default function TravelMap({
             />
           ))}
 
-          {/* Add detailed points when enabled */}
-          {ENABLE_DEBUG_MODE && showDetailedPoints && parsedTrip.routeSegments.map((segment, segmentIndex) => 
+          {/* Only render detailed points in debug mode */}
+          {debugMode && showDetailedPoints && parsedTrip.routeSegments.map((segment, segmentIndex) => 
             segment.points.map((point, pointIndex) => {
               const isSelected = selectedPoints.some(p => 
                 p.lat === point.lat && p.lon === point.lon
@@ -365,8 +343,8 @@ export default function TravelMap({
           ))}
         </Map>
 
-        {/* Debug panel - only shown if debug info is present */}
-        {(selectedSegment?.debugInfo || hoveredPoint) && (
+        {/* Only show debug panel in debug mode */}
+        {debugMode && (selectedSegment?.debugInfo || hoveredPoint) && (
           <div style={{
             position: 'absolute',
             top: '10px',

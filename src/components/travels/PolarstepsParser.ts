@@ -59,6 +59,12 @@ export interface FilterConfig {
   }>;
 }
 
+export interface SelectedPoint {
+  time: number;
+  lat: number;
+  lon: number;
+}
+
 export class PolarstepsParser {
   // Constants for flight detection
   private static FLIGHT_DISTANCE_THRESHOLD = 0.5; // degrees (~55km)
