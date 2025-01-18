@@ -1,12 +1,12 @@
 'use client'
 import { useState } from 'react';
 import TravelMap from './TravelMap';
-import { FilterConfig, SelectedPoint } from './PolarstepsParser';
-import defaultFilterConfig from '@/assets/filter-config.json';
+import { FilterConfig, SelectedPoint, RawLocationsData, RawTripData } from './PolarstepsParser';
+import defaultFilterConfig from '@/assets/trip-data/filter-config.json';
 
 interface TravelMapDebugToolProps {
-  locationsData: any;
-  tripData: any;
+  locationsData: RawLocationsData;
+  tripData: RawTripData;
 }
 
 export default function TravelMapDebugTool({ locationsData, tripData }: TravelMapDebugToolProps) {

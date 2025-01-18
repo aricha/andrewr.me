@@ -2,11 +2,18 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import { APIProvider, Map, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
-import { FilterConfig, PolarstepsParser, RoutePoint, SelectedPoint } from './PolarstepsParser';
+import { 
+  FilterConfig, 
+  PolarstepsParser, 
+  RoutePoint, 
+  SelectedPoint,
+  RawLocationsData,
+  RawTripData
+} from './PolarstepsParser';
 
 interface TravelMapProps {
-  locationsData: any;
-  tripData: any;
+  locationsData: RawLocationsData;
+  tripData: RawTripData;
   onFilterConfigChange?: (points: SelectedPoint[]) => void;
   filterConfig?: FilterConfig;
   debugMode?: boolean;

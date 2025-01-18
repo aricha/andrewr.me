@@ -65,6 +65,37 @@ export interface SelectedPoint {
   lon: number;
 }
 
+// Add new interfaces for the raw data
+export interface RawLocation {
+  lat: number;
+  lon: number;
+  time: number;
+}
+
+export interface RawLocationsData {
+  locations: RawLocation[];
+}
+
+export interface RawTripStep {
+  name: string;
+  display_name: string;
+  start_time: number;
+  location: {
+    lat: number;
+    lon: number;
+    name: string;
+    detail: string;
+  };
+}
+
+export interface RawTripData {
+  name: string;
+  start_date: number;
+  end_date: number;
+  total_km: number;
+  all_steps: RawTripStep[];
+}
+
 export class PolarstepsParser {
   // Constants for flight detection
   private static FLIGHT_DISTANCE_THRESHOLD = 0.5; // degrees (~55km)

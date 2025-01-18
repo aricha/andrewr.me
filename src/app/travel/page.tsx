@@ -1,11 +1,9 @@
-import { promises as fs } from 'fs';
-import path from 'path';
 import TravelIntro from '@/components/travels/TravelIntro';
 import TravelSummary from '@/components/travels/TravelSummary';
 import { FilterConfig } from '@/components/travels/PolarstepsParser';
-import tripData from '@/assets/trip.json';
-import locationsData from '@/assets/locations.json';
-import filterConfigData from '@/assets/filter-config.json';
+import tripData from '@/assets/trip-data/trip-europe.json';
+import locationsData from '@/assets/trip-data/locations-europe.json';
+import filterConfigData from '@/assets/trip-data/filter-config.json';
 
 export default async function Travel() {
   const filterConfig: FilterConfig = filterConfigData;
