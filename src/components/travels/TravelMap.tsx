@@ -60,6 +60,55 @@ interface SegmentDebugInfo {
   };
 }
 
+// Add these new interfaces near the top of the file
+interface PointSelectionMode {
+  type: 'single' | 'range';
+  startPoint?: RoutePoint;
+  endPoint?: RoutePoint;
+}
+
+interface PointInfoPanelProps {
+  point: RoutePoint;
+  onDelete: () => void;
+  onClose: () => void;
+  onStartRange: () => void;
+}
+
+// Add this new component
+const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClose, onStartRange }) => {
+  const time = new Date(point.time * 1000).toLocaleString();
+  
+  return (
+    <div className="absolute top-10 right-10 bg-black/80 text-white p-4 rounded-lg">
+      <div className="mb-2">
+        <div>Time: {time}</div>
+        <div>Lat: {point.lat.toFixed(6)}</div>
+        <div>Lon: {point.lon.toFixed(6)}</div>
+      </div>
+      <div className="flex gap-2">
+        <button 
+          onClick={onDelete}
+          className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
+        >
+          Delete Point
+        </button>
+        <button 
+          onClick={onStartRange}
+          className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
+        >
+          Start Range
+        </button>
+        <button 
+          onClick={onClose}
+          className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export default function TravelMap({ 
   locationsData, 
   tripData, 
@@ -77,6 +126,8 @@ export default function TravelMap({
   const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
   const [googleMapsSymbolsLoaded, setGoogleMapsSymbolsLoaded] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState<SegmentDebugInfo | null>(null);
+  const [selectedPoint, setSelectedPoint] = useState<RoutePoint | null>(null);
+  const [selectionMode, setSelectionMode] = useState<PointSelectionMode>({ type: 'single' });
   
   const mapContainerStyle = {
     width: '100%',
@@ -147,30 +198,60 @@ export default function TravelMap({
     }
   }, [selectedPoints, onFilterConfigChange, filterConfig]);
 
-  // Add function to toggle point selection
+  // Modify the togglePointSelection function
   const togglePointSelection = useCallback((point: RoutePoint) => {
     if (!onFilterConfigChange) return;
+
+    if (selectionMode.type === 'single') {
+      setSelectedPoint(point);
+    } else if (selectionMode.type === 'range' && selectionMode.startPoint) {
+      // Handle range selection
+      const startTime = Math.min(selectionMode.startPoint.time, point.time);
+      const endTime = Math.max(selectionMode.startPoint.time, point.time);
+
+      // Find all points within the time range
+      const pointsInRange = parsedTrip.routeSegments.flatMap(segment =>
+        segment.points.filter(p => p.time >= startTime && p.time <= endTime)
+      );
+
+      // Convert to SelectedPoint format
+      const newPoints = [
+        ...selectedPoints,
+        ...pointsInRange.map(p => ({
+          time: p.time,
+          lat: p.lat,
+          lon: p.lon
+        }))
+      ];
+
+      onFilterConfigChange(newPoints);
+      setSelectionMode({ type: 'single' });
+    }
+  }, [selectedPoints, onFilterConfigChange, selectionMode, parsedTrip.routeSegments]);
+
+  // Add these new handler functions
+  const handleDeletePoint = useCallback(() => {
+    if (!selectedPoint || !onFilterConfigChange) return;
+
+    const newPoints = [...selectedPoints, {
+      time: selectedPoint.time,
+      lat: selectedPoint.lat,
+      lon: selectedPoint.lon
+    }];
     
-    const selectedPoint: SelectedPoint = {
-      time: point.time,
-      lat: point.lat,
-      lon: point.lon
-    };
-
-    const newPoints = selectedPoints.some(p => 
-      p.time === point.time && 
-      p.lat === point.lat && 
-      p.lon === point.lon
-    )
-      ? selectedPoints.filter(p => 
-          !(p.time === point.time && 
-            p.lat === point.lat && 
-            p.lon === point.lon)
-        )
-      : [...selectedPoints, selectedPoint];
-
     onFilterConfigChange(newPoints);
-  }, [selectedPoints, onFilterConfigChange]);
+    setSelectedPoint(null);
+  }, [selectedPoint, selectedPoints, onFilterConfigChange]);
+
+  const handleStartRange = useCallback(() => {
+    if (!selectedPoint) return;
+    
+    setSelectionMode({
+      type: 'range',
+      startPoint: selectedPoint
+    });
+    setSelectedPoint(null);
+  }, [selectedPoint]);
 
   // Add function to handle exporting the filter config
   const handleExportConfig = () => {
@@ -293,6 +374,8 @@ export default function TravelMap({
               const isSelected = selectedPoints.some(p => 
                 p.lat === point.lat && p.lon === point.lon
               );
+              const isRangeStart = selectionMode.type === 'range' && 
+                selectionMode.startPoint?.time === point.time;
 
               return (
                 <AdvancedMarkerWithRef
@@ -309,7 +392,9 @@ export default function TravelMap({
                 >
                   <div 
                     className={`w-3 h-3 rounded-full ${
-                      isSelected ? 'bg-red-500' : 'bg-blue-500'
+                      isSelected ? 'bg-red-500' : 
+                      isRangeStart ? 'bg-yellow-500' :
+                      'bg-blue-500'
                     }`}
                   />
                 </AdvancedMarkerWithRef>
@@ -342,6 +427,29 @@ export default function TravelMap({
             </div>
           ))}
         </Map>
+
+        {/* Add the point info panel */}
+        {selectedPoint && (
+          <PointInfoPanel
+            point={selectedPoint}
+            onDelete={handleDeletePoint}
+            onClose={() => setSelectedPoint(null)}
+            onStartRange={handleStartRange}
+          />
+        )}
+
+        {/* Show range selection mode indicator */}
+        {selectionMode.type === 'range' && (
+          <div className="absolute top-10 left-10 bg-black/80 text-white p-4 rounded-lg">
+            <div>Select end point for range deletion</div>
+            <button 
+              onClick={() => setSelectionMode({ type: 'single' })}
+              className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600 mt-2"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
 
         {/* Only show debug panel in debug mode */}
         {debugMode && (selectedSegment?.debugInfo || hoveredPoint) && (
