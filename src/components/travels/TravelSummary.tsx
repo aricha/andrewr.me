@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import TravelMap from './TravelMap';
 import { Card } from '../Card';
-import { FilterConfig } from './PolarstepsParser';
+import { Location, FilterConfig, RawLocationsData, RawTripData } from './PolarstepsParser';
 
 interface TravelSummaryProps {
-  locations: any;
-  tripData: any;
-  initialFilterConfig: FilterConfig;
+  locations: RawLocationsData;
+  tripData: RawTripData;
+  filterConfig: FilterConfig;
   stats: {
     kilometers: number;
     countries: number;
@@ -26,24 +26,8 @@ export default function TravelSummary({
   locations, 
   tripData, 
   stats, 
-  initialFilterConfig 
+  filterConfig 
 }: TravelSummaryProps) {
-  const [filterConfig, setFilterConfig] = useState<FilterConfig>(initialFilterConfig);
-
-  const handleFilterConfigChange = (points: Array<{ time: number; lat: number; lon: number; }>) => {
-    const newConfig: FilterConfig = {
-      excludedPoints: points
-    };
-    setFilterConfig(newConfig);
-    
-    // Store in localStorage as backup
-    localStorage.setItem('travelMapFilterConfig', JSON.stringify(newConfig));
-    
-    // Log the new config in a format easy to copy
-    console.log('New Filter Config:');
-    console.log(JSON.stringify(newConfig, null, 2));
-  };
-
   return (
     <section 
       className="px-4 sm:px-8 snap-start relative w-full min-h-screen content-center"
@@ -67,7 +51,6 @@ export default function TravelSummary({
               <TravelMap 
                 locationsData={locations} 
                 tripData={tripData} 
-                onFilterConfigChange={handleFilterConfigChange}
                 filterConfig={filterConfig}
               />
             </div>

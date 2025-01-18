@@ -1,5 +1,4 @@
-// Types for the parsed data
-interface Location {
+export interface Location {
   lat: number;
   lon: number;
   time: number;
@@ -17,15 +16,8 @@ interface TripStep {
   };
 }
 
-// Add new types for route segments
-export interface RoutePoint {
-  lat: number;
-  lon: number;
-  time: number;
-}
-
 interface RouteSegment {
-  points: RoutePoint[];
+  points: Location[];
   isFlight: boolean;
   debugInfo?: {
     startTime: number;
@@ -50,30 +42,12 @@ interface ParsedTripData {
   };
 }
 
-// Add new interfaces for filter configuration
 export interface FilterConfig {
-  excludedPoints: Array<{
-    time: number;
-    lat: number;
-    lon: number;
-  }>;
-}
-
-export interface SelectedPoint {
-  time: number;
-  lat: number;
-  lon: number;
-}
-
-// Add new interfaces for the raw data
-export interface RawLocation {
-  lat: number;
-  lon: number;
-  time: number;
+  excludedPoints: Location[];
 }
 
 export interface RawLocationsData {
-  locations: RawLocation[];
+  locations: Location[];
 }
 
 export interface RawTripStep {
@@ -286,10 +260,10 @@ export class PolarstepsParser {
     }));
   }
 
-  private static simplifyPoints(points: RoutePoint[], minDistance: number): RoutePoint[] {
+  private static simplifyPoints(points: Location[], minDistance: number): Location[] {
     if (points.length <= 2) return points;
 
-    const filtered: RoutePoint[] = [points[0]];
+    const filtered: Location[] = [points[0]];
     let lastPoint = points[0];
 
     for (let i = 1; i < points.length; i++) {

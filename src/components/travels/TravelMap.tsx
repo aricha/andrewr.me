@@ -5,8 +5,7 @@ import { Polyline } from './Polyline';
 import { 
   FilterConfig, 
   PolarstepsParser, 
-  RoutePoint, 
-  SelectedPoint,
+  Location,
   RawLocationsData,
   RawTripData
 } from './PolarstepsParser';
@@ -14,18 +13,14 @@ import {
 interface TravelMapProps {
   locationsData: RawLocationsData;
   tripData: RawTripData;
-  onFilterConfigChange?: (points: SelectedPoint[]) => void;
+  onFilterConfigChange?: (points: Location[]) => void;
   filterConfig?: FilterConfig;
   debugMode?: boolean;
   showDetailedPoints?: boolean;
-  selectedPoints?: SelectedPoint[];
+  selectedPoints?: Location[];
   style?: React.CSSProperties;
 }
 
-// Add constant at the top of the file
-const ENABLE_DEBUG_MODE = true;  // Set to true when debugging is needed
-
-// First, let's create the AdvancedMarkerWithRef component
 const AdvancedMarkerWithRef = (
   props: AdvancedMarkerProps & {
     onMarkerClick: (marker: google.maps.marker.AdvancedMarkerElement) => void;
@@ -49,10 +44,9 @@ const AdvancedMarkerWithRef = (
   );
 };
 
-// Add new interface for segment debug info
 interface SegmentDebugInfo {
   index: number;
-  points: RoutePoint[];
+  points: Location[];
   isFlight: boolean;
   debugInfo?: {
     startTime: number;
@@ -67,21 +61,19 @@ interface SegmentDebugInfo {
   };
 }
 
-// Add these new interfaces near the top of the file
 interface PointSelectionMode {
   type: 'single' | 'range';
-  startPoint?: RoutePoint;
-  endPoint?: RoutePoint;
+  startPoint?: Location;
+  endPoint?: Location;
 }
 
 interface PointInfoPanelProps {
-  point: RoutePoint;
+  point: Location;
   onDelete: () => void;
   onClose: () => void;
   onStartRange: () => void;
 }
 
-// Add this new component
 const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClose, onStartRange }) => {
   const time = new Date(point.time * 1000).toLocaleString();
   
@@ -133,7 +125,7 @@ export default function TravelMap({
   const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
   const [googleMapsSymbolsLoaded, setGoogleMapsSymbolsLoaded] = useState(false);
   const [hoveredPoint, setHoveredPoint] = useState<SegmentDebugInfo | null>(null);
-  const [selectedPoint, setSelectedPoint] = useState<RoutePoint | null>(null);
+  const [selectedPoint, setSelectedPoint] = useState<Location | null>(null);
   const [selectionMode, setSelectionMode] = useState<PointSelectionMode>({ type: 'single' });
   
   const mapContainerStyle = {
@@ -206,7 +198,7 @@ export default function TravelMap({
   }, [selectedPoints, onFilterConfigChange, filterConfig]);
 
   // Modify the togglePointSelection function
-  const togglePointSelection = useCallback((point: RoutePoint) => {
+  const togglePointSelection = useCallback((point: Location) => {
     if (!onFilterConfigChange) return;
 
     if (selectionMode.type === 'single') {
@@ -259,28 +251,6 @@ export default function TravelMap({
     });
     setSelectedPoint(null);
   }, [selectedPoint]);
-
-  // Add function to handle exporting the filter config
-  const handleExportConfig = () => {
-    const config = {
-      excludedPoints: selectedPoints
-    };
-    
-    // Create a blob with the JSON data
-    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    // Create a temporary link and trigger download
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'filter-config.json';
-    document.body.appendChild(a);
-    a.click();
-    
-    // Cleanup
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
 
   // Add effect to detect when Google Maps symbols are loaded
   useEffect(() => {

@@ -1,7 +1,7 @@
 'use client'
 import { useState } from 'react';
 import TravelMap from './TravelMap';
-import { FilterConfig, SelectedPoint, RawLocationsData, RawTripData } from './PolarstepsParser';
+import { FilterConfig, Location, RawLocationsData, RawTripData } from './PolarstepsParser';
 import defaultFilterConfig from '@/assets/trip-data/filter-config.json';
 
 interface TravelMapDebugToolProps {
@@ -11,12 +11,12 @@ interface TravelMapDebugToolProps {
 
 export default function TravelMapDebugTool({ locationsData, tripData }: TravelMapDebugToolProps) {
   const [showDetailedPoints, setShowDetailedPoints] = useState(false);
-  const [selectedPoints, setSelectedPoints] = useState<SelectedPoint[]>(() => {
+  const [selectedPoints, setSelectedPoints] = useState<Location[]>(() => {
     // Initialize with points from default filter config
     return defaultFilterConfig.excludedPoints || [];
   });
   
-  const handleFilterConfigChange = (points: SelectedPoint[]) => {
+  const handleFilterConfigChange = (points: Location[]) => {
     setSelectedPoints(points);
   };
 
