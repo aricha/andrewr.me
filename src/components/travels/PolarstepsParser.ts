@@ -72,7 +72,7 @@ export interface RawTripData {
 
 export class PolarstepsParser {
   // Constants for flight detection
-  private static FLIGHT_DISTANCE_THRESHOLD = 0.5; // degrees (~55km)
+  private static FLIGHT_DISTANCE_THRESHOLD = 1; // degrees (~110km)
   private static FLIGHT_SPEED_THRESHOLD = 100; // km/h
 
   /**
@@ -168,7 +168,8 @@ export class PolarstepsParser {
 
         // For flight detection, still use point-to-point values
         const pointToPointSpeedKmH = (distance * 111) / (timeGap / 3600);
-        if (distance <= this.FLIGHT_DISTANCE_THRESHOLD || pointToPointSpeedKmH <= this.FLIGHT_SPEED_THRESHOLD) {
+        const isFlight = distance > this.FLIGHT_DISTANCE_THRESHOLD && pointToPointSpeedKmH > this.FLIGHT_SPEED_THRESHOLD;
+        if (isFlight == currentSegment.isFlight) {
             // Update debug info with cumulative calculations if enabled
             if (includeDebugInfo && currentSegment.debugInfo) {
                 currentSegment.debugInfo.speedKmH = averageSpeedKmH;
@@ -176,32 +177,22 @@ export class PolarstepsParser {
           }
         } else {
           // End current segment
+          if (currentSegment.isFlight) {
+            const ps = currentSegment.points;
+            currentSegment.points = ps.length > 1 ? [ps[0], ps[ps.length - 1]] : [ps[0]];
+          }
           tripData.routeSegments.push(currentSegment);
-          
-          // Create flight segment
-          tripData.routeSegments.push({
+
+          // Start new segment
+          currentSegment = {
             points: [current, next],
-            isFlight: true,
+            isFlight: isFlight,
             ...(includeDebugInfo && {
               debugInfo: {
                 startTime: current.time,
                 endTime: next.time,
                 speedKmH: pointToPointSpeedKmH,
                 distanceDegrees: distance
-              }
-            })
-          });
-
-          // Start new segment
-          currentSegment = {
-            points: [],
-            isFlight: false,
-            ...(includeDebugInfo && {
-              debugInfo: {
-                startTime: next.time,
-                endTime: next.time,
-                speedKmH: 0,
-                distanceDegrees: 0
               }
             })
           };

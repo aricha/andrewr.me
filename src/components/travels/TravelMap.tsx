@@ -1,8 +1,10 @@
+/// <reference types="google.maps" preserve="true" />
 'use client'
 import { Fragment, useState, useMemo, useCallback, useEffect } from 'react';
 import { APIProvider, Map, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
-import { TravelData, Location } from './TravelDataProvider';
+import { TravelData, Location, RouteSegment } from './TravelDataProvider';
+import { PLANE_ICON_PATH } from './icons';
 
 interface TravelMapProps {
   travelData?: TravelData;
@@ -97,6 +99,82 @@ const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClos
         </button>
       </div>
     </div>
+  );
+};
+
+interface RouteSegmentPolylineProps {
+  segment: RouteSegment; // Replace with proper type from your TravelData
+  partIndex: number;
+  segmentIndex: number;
+  debugMode: boolean;
+  onSegmentHover: (segment: SegmentDebugInfo | null) => void;
+}
+
+const RouteSegmentPolyline: React.FC<RouteSegmentPolylineProps> = ({
+  segment,
+  partIndex,
+  segmentIndex,
+  debugMode,
+  onSegmentHover
+}) => {
+  const path = segment.points.map(point => ({
+    lat: point.lat,
+    lng: point.lon
+  }));
+
+  const ICONS: { [key: string]: google.maps.IconSequence } = {
+    flight: {
+      icon: {
+        path: PLANE_ICON_PATH,
+        scale: 1,
+        rotation: -50,
+        anchor: new google.maps.Point(10, 0),
+        fillColor: 'white',
+        fillOpacity: 0.9,
+      },
+      offset: '50%',
+      repeat: '0'
+    },
+    default: {
+      icon: {
+        path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+        scale: 1,
+        strokeColor: 'white',
+        strokeOpacity: 0.5,
+      },
+      offset: '50%',
+      repeat: '0'
+    },
+    dashed: {
+      icon: {
+        path: "M 0,-1 0,1",
+        strokeOpacity: 1,
+        scale: 2,
+      },
+      offset: "0",
+      repeat: "10px",
+    }
+  }
+
+  return (
+    <Polyline
+      key={`${partIndex}-${segmentIndex}`}
+      path={path}
+      strokeColor={segment.isFlight ? 'white' : 'white'}
+      strokeOpacity={segment.isFlight ? 0 : 0.8}
+      strokeWeight={2}
+      geodesic={true}
+      zIndex={1}
+      icons={
+        segment.isFlight ? [ICONS.flight, ICONS.dashed] : 
+        debugMode ? [ICONS.default] : []
+      }
+      onMouseOver={segment.debugInfo ? () => onSegmentHover({
+        index: segmentIndex,
+        ...segment
+      }) : undefined}
+      onMouseOut={() => onSegmentHover(null)}
+    />
   );
 };
 
@@ -245,12 +323,6 @@ export default function TravelMap({
     };
   }, []);
 
-  const forwardArrowPath = useMemo(() =>
-    googleMapsSymbolsLoaded
-      ? window.google.maps.SymbolPath.FORWARD_CLOSED_ARROW
-      : undefined
-    , [googleMapsSymbolsLoaded]);
-
   return (
     <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
       <div>
@@ -283,42 +355,13 @@ export default function TravelMap({
           {travelData?.tripParts.map((tripPart, partIndex) => (
             <Fragment key={partIndex}>
               {tripPart.routeSegments.map((segment, segmentIndex) => (
-                <Polyline
+                <RouteSegmentPolyline
                   key={`${partIndex}-${segmentIndex}`}
-                  path={segment.points.map(point => ({
-                    lat: point.lat,
-                    lng: point.lon
-                  }))}
-                  strokeColor={segment.isFlight ? '#00FF00' : '#FF0000'}
-                  strokeOpacity={segment.isFlight ? 0 : 0.8}
-                  strokeWeight={2}
-                  geodesic={true}
-                  zIndex={1}
-                  icons={forwardArrowPath ? [{
-                    icon: {
-                      path: forwardArrowPath,
-                      scale: 3,
-                      strokeColor: segment.isFlight ? '#00FF00' : '#FF0000',
-                      strokeOpacity: 1,
-                    },
-                    offset: '50%',
-                    repeat: '100px'
-                  },
-                  ...(segment.isFlight ? [{
-                    icon: {
-                      path: 'M 0,-1 0,1',
-                      strokeOpacity: 1,
-                      scale: 2,
-                      strokeColor: '#00FF00'
-                    },
-                    offset: '0',
-                    repeat: '10px'
-                  }] : [])] : undefined}
-                  onMouseOver={segment.debugInfo ? () => setSelectedSegment({
-                    index: segmentIndex,
-                    ...segment
-                  }) : undefined}
-                  onMouseOut={() => setSelectedSegment(null)}
+                  segment={segment}
+                  partIndex={partIndex}
+                  segmentIndex={segmentIndex}
+                  debugMode={debugMode}
+                  onSegmentHover={setSelectedSegment}
                 />
               ))}
 
@@ -346,8 +389,8 @@ export default function TravelMap({
                     >
                       <div
                         className={`w-3 h-3 rounded-full ${isSelected ? 'bg-red-500' :
-                            isRangeStart ? 'bg-yellow-500' :
-                              'bg-blue-500'
+                          isRangeStart ? 'bg-yellow-500' :
+                            'bg-blue-500'
                           }`}
                       />
                     </AdvancedMarkerWithRef>
