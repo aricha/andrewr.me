@@ -1,5 +1,5 @@
 'use client'
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { Fragment, useState, useMemo, useCallback, useEffect } from 'react';
 import { APIProvider, Map, InfoWindow, AdvancedMarker, Pin, AdvancedMarkerProps, useAdvancedMarkerRef } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
 import { TravelData, Location } from './TravelDataProvider';
@@ -180,9 +180,11 @@ export default function TravelMap({
       const endTime = Math.max(selectionMode.startPoint.time, point.time);
 
       // Find all points within the time range
-      const pointsInRange = travelData.routeSegments.flatMap(segment =>
-        segment.points.filter(p => p.time >= startTime && p.time <= endTime)
-      );
+      const pointsInRange = travelData?.tripParts.flatMap(tripPart =>
+        tripPart.routeSegments.flatMap(segment =>
+          segment.points.filter(p => p.time >= startTime && p.time <= endTime)
+        )
+      ) || [];
 
       // Convert to SelectedPoint format
       const newPoints = [
@@ -197,9 +199,8 @@ export default function TravelMap({
       onPointSelectionChange(newPoints);
       setSelectionMode({ type: 'single' });
     }
-  }, [selectedPoints, onPointSelectionChange, selectionMode, travelData?.routeSegments]);
+  }, [selectedPoints, onPointSelectionChange, selectionMode, travelData?.tripParts]);
 
-  // Add these new handler functions
   const handleDeletePoint = useCallback(() => {
     if (!selectedPoint || !onPointSelectionChange) return;
 
@@ -223,7 +224,10 @@ export default function TravelMap({
     setSelectedPoint(null);
   }, [selectedPoint]);
 
-  // Add effect to detect when Google Maps symbols are loaded
+  // Add effect to detect when Google Maps symbols are loaded.
+  // For some reason the symbols are not always loaded at 
+  // the same time as the base map API even though the docs
+  // say they should be...
   useEffect(() => {
     const checkGoogleMapsSymbols = () => {
       if ((window.google?.maps?.SymbolPath?.FORWARD_CLOSED_ARROW as any) !== undefined) {
@@ -275,146 +279,150 @@ export default function TravelMap({
           disableDefaultUI={true}
           scrollwheel={true}
         >
-          {/* Render route segments */}
-          {travelData?.routeSegments.map((segment, index) => (
-            <Polyline
-              key={index}
-              path={segment.points.map(point => ({
-                lat: point.lat,
-                lng: point.lon
-              }))}
-              strokeColor={segment.isFlight ? '#00FF00' : '#FF0000'}
-              strokeOpacity={segment.isFlight ? 0 : 0.8}
-              strokeWeight={2}
-              geodesic={true}
-              zIndex={1}
-              icons={forwardArrowPath ? [{
-                icon: {
-                  path: forwardArrowPath,
-                  scale: 3,
-                  strokeColor: segment.isFlight ? '#00FF00' : '#FF0000',
-                  strokeOpacity: 1,
-                },
-                offset: '50%',
-                repeat: '100px'
-              },
-              ...(segment.isFlight ? [{
-                icon: {
-                  path: 'M 0,-1 0,1',
-                  strokeOpacity: 1,
-                  scale: 2,
-                  strokeColor: '#00FF00'
-                },
-                offset: '0',
-                repeat: '10px'
-              }] : [])] : undefined}
-              onMouseOver={segment.debugInfo ? () => setSelectedSegment({
-                index,
-                ...segment
-              }) : undefined}
-              onMouseOut={() => setSelectedSegment(null)}
-            />
+          {/* Render route segments for each trip part */}
+          {travelData?.tripParts.map((tripPart, partIndex) => (
+            <Fragment key={partIndex}>
+              {tripPart.routeSegments.map((segment, segmentIndex) => (
+                <Polyline
+                  key={`${partIndex}-${segmentIndex}`}
+                  path={segment.points.map(point => ({
+                    lat: point.lat,
+                    lng: point.lon
+                  }))}
+                  strokeColor={segment.isFlight ? '#00FF00' : '#FF0000'}
+                  strokeOpacity={segment.isFlight ? 0 : 0.8}
+                  strokeWeight={2}
+                  geodesic={true}
+                  zIndex={1}
+                  icons={forwardArrowPath ? [{
+                    icon: {
+                      path: forwardArrowPath,
+                      scale: 3,
+                      strokeColor: segment.isFlight ? '#00FF00' : '#FF0000',
+                      strokeOpacity: 1,
+                    },
+                    offset: '50%',
+                    repeat: '100px'
+                  },
+                  ...(segment.isFlight ? [{
+                    icon: {
+                      path: 'M 0,-1 0,1',
+                      strokeOpacity: 1,
+                      scale: 2,
+                      strokeColor: '#00FF00'
+                    },
+                    offset: '0',
+                    repeat: '10px'
+                  }] : [])] : undefined}
+                  onMouseOver={segment.debugInfo ? () => setSelectedSegment({
+                    index: segmentIndex,
+                    ...segment
+                  }) : undefined}
+                  onMouseOut={() => setSelectedSegment(null)}
+                />
+              ))}
+
+              {/* Render debug points for each trip part */}
+              {debugMode && showDetailedPoints && tripPart.routeSegments.map((segment, segmentIndex) => (
+                segment.points.map((point, pointIndex) => {
+                  const isSelected = selectedPoints.some(p =>
+                    p.lat === point.lat && p.lon === point.lon
+                  );
+                  const isRangeStart = selectionMode.type === 'range' &&
+                    selectionMode.startPoint?.time === point.time;
+
+                  return (
+                    <AdvancedMarkerWithRef
+                      key={`${partIndex}-${segmentIndex}-${pointIndex}`}
+                      position={{ lat: point.lat, lng: point.lon }}
+                      onMarkerClick={() => togglePointSelection(point)}
+                      onMouseEnter={() => setHoveredPoint({
+                        index: segmentIndex,
+                        points: segment.points,
+                        isFlight: segment.isFlight,
+                        pointInfo: point
+                      })}
+                      onMouseLeave={() => setHoveredPoint(null)}
+                    >
+                      <div
+                        className={`w-3 h-3 rounded-full ${isSelected ? 'bg-red-500' :
+                            isRangeStart ? 'bg-yellow-500' :
+                              'bg-blue-500'
+                          }`}
+                      />
+                    </AdvancedMarkerWithRef>
+                  );
+                })
+              ))}
+
+              {/* Render stops for each trip part */}
+              {tripPart.stops.map((stop, stopIndex) => (
+                <div key={stopIndex}>
+                  <AdvancedMarkerWithRef
+                    position={{ lat: stop.location.lat, lng: stop.location.lon }}
+                    onMarkerClick={(marker) => handleMarkerClick(stopIndex, marker)}
+                  >
+                    <Pin
+                      background={'#DB4437'}
+                      borderColor={'#AA1B0B'}
+                      glyphColor={'#FFFFFF'}
+                    />
+                  </AdvancedMarkerWithRef>
+
+                  {activeMarker === stopIndex && selectedMarker && (
+                    <InfoWindow
+                      anchor={selectedMarker}
+                      onCloseClick={() => setActiveMarker(null)}
+                    >
+                      <div>{stop.displayName}</div>
+                    </InfoWindow>
+                  )}
+                </div>
+              ))}
+            </Fragment>
           ))}
 
-          {/* Only render detailed points in debug mode */}
-          {debugMode && showDetailedPoints && travelData?.routeSegments.map((segment, segmentIndex) =>
-            segment.points.map((point, pointIndex) => {
-              const isSelected = selectedPoints.some(p =>
-                p.lat === point.lat && p.lon === point.lon
-              );
-              const isRangeStart = selectionMode.type === 'range' &&
-                selectionMode.startPoint?.time === point.time;
-
-              return (
-                <AdvancedMarkerWithRef
-                  key={`${segmentIndex}-${pointIndex}`}
-                  position={{ lat: point.lat, lng: point.lon }}
-                  onMarkerClick={() => togglePointSelection(point)}
-                  onMouseEnter={() => setHoveredPoint({
-                    index: segmentIndex,
-                    points: segment.points,
-                    isFlight: segment.isFlight,
-                    pointInfo: point
-                  })}
-                  onMouseLeave={() => setHoveredPoint(null)}
-                >
-                  <div
-                    className={`w-3 h-3 rounded-full ${isSelected ? 'bg-red-500' :
-                        isRangeStart ? 'bg-yellow-500' :
-                          'bg-blue-500'
-                      }`}
-                  />
-                </AdvancedMarkerWithRef>
-              );
-            })
+          {/* Add the point info panel */}
+          {selectedPoint && (
+            <PointInfoPanel
+              point={selectedPoint}
+              onDelete={handleDeletePoint}
+              onClose={() => setSelectedPoint(null)}
+              onStartRange={handleStartRange}
+            />
           )}
 
-          {/* Render stop markers */}
-          {travelData?.stops.map((stop, index) => (
-            <div key={index}>
-              <AdvancedMarkerWithRef
-                position={{ lat: stop.location.lat, lng: stop.location.lon }}
-                onMarkerClick={(marker) => handleMarkerClick(index, marker)}
+          {/* Show range selection mode indicator */}
+          {selectionMode.type === 'range' && (
+            <div className="absolute top-10 left-10 bg-black/80 text-white p-4 rounded-lg">
+              <div>Select end point for range deletion</div>
+              <button
+                onClick={() => setSelectionMode({ type: 'single' })}
+                className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600 mt-2"
               >
-                <Pin
-                  background={'#DB4437'}
-                  borderColor={'#AA1B0B'}
-                  glyphColor={'#FFFFFF'}
-                />
-              </AdvancedMarkerWithRef>
-
-              {activeMarker === index && selectedMarker && (
-                <InfoWindow
-                  anchor={selectedMarker}
-                  onCloseClick={() => setActiveMarker(null)}
-                >
-                  <div>{stop.displayName}</div>
-                </InfoWindow>
-              )}
+                Cancel
+              </button>
             </div>
-          ))}
+          )}
+
+          {/* Only show debug panel in debug mode */}
+          {debugMode && (selectedSegment?.debugInfo || hoveredPoint) && (
+            <div style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              background: 'rgba(0,0,0,0.8)',
+              color: 'white',
+              padding: '10px',
+              borderRadius: '4px',
+              maxWidth: '300px',
+              whiteSpace: 'pre-line'
+            }}>
+              <div>{hoveredPoint ? 'Point Info' : `Segment #${selectedSegment?.index}`}</div>
+              <div>{formatDebugInfo(hoveredPoint || selectedSegment!)}</div>
+            </div>
+          )}
         </Map>
-
-        {/* Add the point info panel */}
-        {selectedPoint && (
-          <PointInfoPanel
-            point={selectedPoint}
-            onDelete={handleDeletePoint}
-            onClose={() => setSelectedPoint(null)}
-            onStartRange={handleStartRange}
-          />
-        )}
-
-        {/* Show range selection mode indicator */}
-        {selectionMode.type === 'range' && (
-          <div className="absolute top-10 left-10 bg-black/80 text-white p-4 rounded-lg">
-            <div>Select end point for range deletion</div>
-            <button
-              onClick={() => setSelectionMode({ type: 'single' })}
-              className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600 mt-2"
-            >
-              Cancel
-            </button>
-          </div>
-        )}
-
-        {/* Only show debug panel in debug mode */}
-        {debugMode && (selectedSegment?.debugInfo || hoveredPoint) && (
-          <div style={{
-            position: 'absolute',
-            top: '10px',
-            right: '10px',
-            background: 'rgba(0,0,0,0.8)',
-            color: 'white',
-            padding: '10px',
-            borderRadius: '4px',
-            maxWidth: '300px',
-            whiteSpace: 'pre-line'
-          }}>
-            <div>{hoveredPoint ? 'Point Info' : `Segment #${selectedSegment?.index}`}</div>
-            <div>{formatDebugInfo(hoveredPoint || selectedSegment!)}</div>
-          </div>
-        )}
       </div>
     </APIProvider>
   );

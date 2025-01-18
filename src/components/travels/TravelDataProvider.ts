@@ -31,13 +31,24 @@ export interface RouteSegment {
   } | null;
 }
 
+export interface TripPart {
+  name: string;
+  routeSegments: RouteSegment[];
+  stops: Stop[];
+  bounds: {
+    north: number;
+    south: number;
+    east: number;
+    west: number;
+  };
+}
+
 export interface TravelData {
   name: string;
   startDate: number;
   endDate: number;
   totalKm: number;
-  routeSegments: RouteSegment[];
-  stops: Stop[];
+  tripParts: TripPart[];
   bounds: {
     north: number;
     south: number;
@@ -50,8 +61,8 @@ export class TravelDataProvider {
   private static instance: TravelDataProvider;
   private cachedData: TravelData | null = null;
   private currentFilterConfig: FilterConfig | undefined;
-  private rawLocationsData: RawLocationsData | null = null;
-  private rawTripData: RawTripData | null = null;
+  private rawLocationsData: RawLocationsData[] | null = null;
+  private rawTripData: RawTripData[] | null = null;
 
   private constructor() {}
 
@@ -62,30 +73,15 @@ export class TravelDataProvider {
     return TravelDataProvider.instance;
   }
 
-  private mergeLocationsData(files: RawLocationsData[]): RawLocationsData {
-    return {
-      locations: files.reduce((acc, file) => [...acc, ...(file.locations || [])], [] as Location[])
-    };
+  private mergeLocationsData(files: RawLocationsData[]): RawLocationsData[] {
+    return files;
   }
 
-  private mergeTripData(files: RawTripData[]): RawTripData {
-    return files.reduce((acc, file) => ({
-      name: acc.name || file.name,
-      start_date: Math.min(acc.start_date || Infinity, file.start_date),
-      end_date: Math.max(acc.end_date || -Infinity, file.end_date),
-      total_km: (acc.total_km || 0) + (file.total_km || 0),
-      all_steps: [...(acc.all_steps || []), ...(file.all_steps || [])]
-    }), {
-      name: '',
-      start_date: 0,
-      end_date: 0,
-      total_km: 0,
-      all_steps: []
-    });
+  private mergeTripData(files: RawTripData[]): RawTripData[] {
+    return files;
   }
 
   async loadRawData(): Promise<void> {
-    // Using require.context for loading JSON files
     const locationsContext = (require as any).context('@/assets/trip-data', false, /locations.*\.json$/);
     const locationsFiles = locationsContext.keys().map(locationsContext) as RawLocationsData[];
     const tripContext = (require as any).context('@/assets/trip-data', false, /trip.*\.json$/);
@@ -100,47 +96,68 @@ export class TravelDataProvider {
     simplificationThreshold: number = 0.01,
     includeDebugInfo: boolean = false
   ): Promise<TravelData> {
-    // Load raw data if not already loaded
     if (!this.rawLocationsData || !this.rawTripData) {
       await this.loadRawData();
     }
 
-    // If filter config hasn't changed and we have cached data, return it
     if (this.cachedData && 
         JSON.stringify(this.currentFilterConfig) === JSON.stringify(filterConfig)) {
       return this.cachedData;
     }
 
-    // Parse the raw data
-    const parsedData = PolarstepsParser.parse(
-      this.rawLocationsData!,
-      this.rawTripData!,
-      includeDebugInfo, // Pass through debug flag
-      filterConfig
-    );
+    const tripParts: TripPart[] = [];
+    let globalBounds = {
+      north: -90,
+      south: 90,
+      east: -180,
+      west: 180
+    };
+    let totalKm = 0;
+    let startDate = Infinity;
+    let endDate = -Infinity;
 
-    // Simplify the route
-    const simplifiedSegments = PolarstepsParser.simplifyRoute(
-      parsedData.routeSegments,
-      simplificationThreshold
-    );
+    for (let i = 0; i < this.rawLocationsData!.length; i++) {
+      const parsedData = PolarstepsParser.parse(
+        this.rawLocationsData![i],
+        this.rawTripData![i],
+        includeDebugInfo,
+        filterConfig
+      );
 
-    // Transform into our cleaner TravelData format, preserving debug info
+      const simplifiedSegments = PolarstepsParser.simplifyRoute(
+        parsedData.routeSegments,
+        simplificationThreshold
+      );
+
+      tripParts.push({
+        name: parsedData.name,
+        routeSegments: simplifiedSegments.map(segment => ({
+          points: segment.points,
+          isFlight: segment.isFlight,
+          debugInfo: includeDebugInfo ? segment.debugInfo : undefined
+        })),
+        stops: parsedData.stops,
+        bounds: parsedData.bounds
+      });
+
+      globalBounds.north = Math.max(globalBounds.north, parsedData.bounds.north);
+      globalBounds.south = Math.min(globalBounds.south, parsedData.bounds.south);
+      globalBounds.east = Math.max(globalBounds.east, parsedData.bounds.east);
+      globalBounds.west = Math.min(globalBounds.west, parsedData.bounds.west);
+      totalKm += parsedData.totalKm;
+      startDate = Math.min(startDate, parsedData.startDate);
+      endDate = Math.max(endDate, parsedData.endDate);
+    }
+
     const travelData: TravelData = {
-      name: parsedData.name,
-      startDate: parsedData.startDate,
-      endDate: parsedData.endDate,
-      totalKm: parsedData.totalKm,
-      routeSegments: simplifiedSegments.map(segment => ({
-        points: segment.points,
-        isFlight: segment.isFlight,
-        debugInfo: includeDebugInfo ? segment.debugInfo : undefined
-      })),
-      stops: parsedData.stops,
-      bounds: parsedData.bounds
+      name: this.rawTripData![0].name,
+      startDate,
+      endDate,
+      totalKm,
+      tripParts,
+      bounds: globalBounds
     };
 
-    // Update cache and current filter config
     this.cachedData = travelData;
     this.currentFilterConfig = filterConfig;
     
@@ -151,7 +168,6 @@ export class TravelDataProvider {
     filterConfig: FilterConfig, 
     includeDebugInfo: boolean = false
   ): Promise<TravelData> {
-    // Clear cache and reload with new filter config
     this.clearCache();
     return this.loadTravelData(filterConfig, 0.01, includeDebugInfo);
   }
