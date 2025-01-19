@@ -84,14 +84,15 @@ const RouteSegmentPolyline: React.FC<RouteSegmentPolylineProps> = ({
   segment,
   partIndex,
   segmentIndex,
-  onSegmentHover
+  onSegmentHover,
+  debugMode
 }) => {
   const path = segment.points.map(point => ({
     lat: point.lat,
     lng: point.lon
   }));
 
-  const style = getTravelModeStyles()[segment.mode || 'ground'];
+  const style = getTravelModeStyles(debugMode)[segment.mode || 'ground'];
 
   return (
     <Polyline
@@ -112,15 +113,15 @@ const RouteSegmentPolyline: React.FC<RouteSegmentPolylineProps> = ({
   );
 };
 
-const getTravelModeStyles = (): Record<TravelMode, {
+const getTravelModeStyles = (debugMode: boolean): Record<TravelMode, {
   color: string;
   opacity: number;
   icons?: google.maps.IconSequence[];
 }> => ({
   ground: {
-    color: 'red',
+    color: debugMode ? '#FF0000' : 'white',
     opacity: 0.8,
-    icons: [
+    icons: debugMode ? [
       {
         icon: {
           path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
@@ -130,10 +131,10 @@ const getTravelModeStyles = (): Record<TravelMode, {
         offset: "0",
         repeat: "100px",
       }
-    ]
+    ] : []
   },
   flight: {
-    color: 'blue',
+    color: debugMode ? '#0000FF' : 'white',
     opacity: 0,
     icons: [
       {
@@ -142,7 +143,7 @@ const getTravelModeStyles = (): Record<TravelMode, {
           scale: 1,
           rotation: -50,
           anchor: new google.maps.Point(10, 0),
-          fillColor: 'blue',
+          fillColor: debugMode ? '#0000FF' : 'white',
           fillOpacity: 0.9,
         },
         offset: '50%',
@@ -160,7 +161,7 @@ const getTravelModeStyles = (): Record<TravelMode, {
     ]
   },
   train: {
-    color: 'green',
+    color: debugMode ? '#00FF00' : 'white',
     opacity: 0,
     icons: [
       {
@@ -169,9 +170,9 @@ const getTravelModeStyles = (): Record<TravelMode, {
           scale: 1,
           rotation: -115,
           anchor: new google.maps.Point(10, 0),
-          fillColor: 'green',
+          fillColor: debugMode ? '#00FF00' : 'white',
           fillOpacity: 0.9,
-          strokeColor: 'green',
+          strokeColor: debugMode ? '#00FF00' : 'white',
           strokeOpacity: 0.9,
         },
         offset: '50%',
@@ -189,7 +190,7 @@ const getTravelModeStyles = (): Record<TravelMode, {
     ]
   },
   boat: {
-    color: '#2196F3',
+    color: debugMode ? '#2196F3' : 'white',
     opacity: 0.8,
     icons: [{
       icon: {

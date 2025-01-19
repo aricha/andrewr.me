@@ -123,7 +123,7 @@ export class PolarstepsParser {
     if (insertedPoints?.length) {
       locations = [...locations, ...insertedPoints];
     }
-
+    
     // Sort locations by timestamp before processing
     locations.sort((a, b) => a.time - b.time);
 

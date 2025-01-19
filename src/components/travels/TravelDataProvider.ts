@@ -88,7 +88,7 @@ export class TravelDataProvider {
         Object.entries(filterConfig.insertedPoints).map(([tripName, points]) => [
           tripName,
           points.map(point => ({
-            time: new Date(point.time).getTime(),
+            time: new Date(point.time).getTime() / 1000,
             lat: point.lat,
             lon: point.lon
           }))
