@@ -1,18 +1,17 @@
 import TravelIntro from '@/components/travels/TravelIntro';
 import TravelSummary from '@/components/travels/TravelSummary';
 import { TravelDataProvider } from '@/components/travels/TravelDataProvider';
-import filterConfigData from '@/assets/trip-data/filter-config.json';
 
 export default async function Travel() {
   const dataProvider = TravelDataProvider.getInstance();
-  const travelData = await dataProvider.loadTravelData(filterConfigData);
+  const { data } = await dataProvider.loadTravelData();
 
   return (
     <div style={{ scrollPaddingTop: 'var(--navbar-height)' }} className="flex flex-col min-h-screen">
       <div className="flex-grow h-screen overflow-y-auto snap-y snap-proximity relative">
         <TravelIntro />
         <TravelSummary 
-          travelData={travelData}
+          travelData={data}
           stats={{
             kilometers: 13820,
             countries: 13,

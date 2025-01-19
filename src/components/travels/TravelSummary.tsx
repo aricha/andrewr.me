@@ -1,6 +1,5 @@
 'use client'
 
-import { useState } from 'react';
 import TravelMap from './TravelMap';
 import { Card } from '../Card';
 import { TravelData } from './TravelDataProvider';

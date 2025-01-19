@@ -53,7 +53,14 @@ interface ParsedTripData {
 export interface FilterConfig {
   excludedPoints: Location[];
   travelModes: TravelModeRange[];
+  insertedPoints: { [tripName: string]: Location[] };
 }
+
+export const emptyFilterConfig: FilterConfig = {
+  excludedPoints: [],
+  travelModes: [],
+  insertedPoints: {}
+};
 
 export interface RawLocationsData {
   locations: Location[];
@@ -95,6 +102,7 @@ export class PolarstepsParser {
   static parse(
     locationsJson: any,
     tripJson: any,
+    tripName: string,
     includeDebugInfo: boolean = false,
     filterConfig?: FilterConfig
   ): ParsedTripData {
@@ -109,6 +117,11 @@ export class PolarstepsParser {
           Math.abs(excluded.lon - loc.lon) < 0.0000001
         )
       );
+    }
+
+    const insertedPoints = filterConfig?.insertedPoints[tripName];
+    if (insertedPoints?.length) {
+      locations = [...locations, ...insertedPoints];
     }
 
     // Sort locations by timestamp before processing
@@ -198,10 +211,6 @@ export class PolarstepsParser {
             'flight' : 'ground'
         );
         const segmentMode = determineSegmentMode(current.time, next.time, implicitMode);
-        console.log(`segment ${tripData.routeSegments.length} has mode ${currentSegment.mode}, 
-          point ${current.time} -> ${next.time} with distance ${distance} and speed ${pointToPointSpeedKmH} 
-          has mode ${segmentMode}
-          `);
 
         if (currentSegment.mode === segmentMode) {
           // Update debug info with cumulative calculations if enabled

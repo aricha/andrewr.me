@@ -2,8 +2,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import TravelMap, { SegmentDebugInfo } from './TravelMap';
 import { TravelData, TravelDataProvider, Location } from './TravelDataProvider';
-import defaultFilterConfig from '@/assets/trip-data/filter-config.json';
-import { FilterConfig, TravelMode, TravelModeRange } from './PolarstepsParser';
+import { emptyFilterConfig, FilterConfig, TravelMode, TravelModeRange } from './PolarstepsParser';
 
 interface TravelModeRangeListProps {
   travelModes: TravelModeRange[];
@@ -37,13 +36,9 @@ const TravelModeRangeList: React.FC<TravelModeRangeListProps> = ({ travelModes, 
 };
 
 export default function TravelMapDebugTool() {
+  const dataProvider = TravelDataProvider.getInstance();
   const [showDetailedPoints, setShowDetailedPoints] = useState(false);
-  const [selectedPoints, setSelectedPoints] = useState<Location[]>(() => {
-    return defaultFilterConfig.excludedPoints || [];
-  });
-  const [travelModes, setTravelModes] = useState<TravelModeRange[]>(() => {
-    return defaultFilterConfig.travelModes as TravelModeRange[] || [];
-  });
+  const [filterConfig, setFilterConfig] = useState<FilterConfig | undefined>(undefined);
   const [selectionMode, setSelectionMode] = useState<SelectionMode>('exclude');
   const [selectedTravelMode, setSelectedTravelMode] = useState<TravelMode>('ground');
   const [travelData, setTravelData] = useState<TravelData | undefined>(undefined);
@@ -51,32 +46,29 @@ export default function TravelMapDebugTool() {
   const [exclusionMode, setExclusionMode] = useState<ExclusionMode>('single');
   const [hoveredPoint, setHoveredPoint] = useState<SegmentDebugInfo | null>(null);
   const [hoveredSegment, setHoveredSegment] = useState<SegmentDebugInfo | null>(null);
-  const dataProvider = TravelDataProvider.getInstance();
 
   useEffect(() => {
     const loadInitialData = async () => {
-      const data = await dataProvider.loadTravelData(defaultFilterConfig as FilterConfig, 0.01, true);
+      const { data, filterConfig } = await dataProvider.loadTravelData(0.01, true);
       setTravelData(data);
+      setFilterConfig(filterConfig);
     };
 
     loadInitialData();
   }, []);
 
-  const handleFilterConfigChange = async (points: Location[], modes: TravelModeRange[]) => {
-    setSelectedPoints(points);
-    setTravelModes(modes);
-    const newData = await dataProvider.updateFilterConfig({
-      excludedPoints: points,
-      travelModes: modes
-    }, true);
+  const handleFilterConfigChange = async (newConfig: FilterConfig) => {
+    setFilterConfig(newConfig);
+    const newData = await dataProvider.updateFilterConfig(newConfig, true);
     setTravelData(newData);
   };
 
   const handleExcludePointSelection = (point: Location) => {
     // Just exclude the single point
     if (exclusionMode === 'single') {
-      const newPoints = [...selectedPoints, point];
-      handleFilterConfigChange(newPoints, travelModes);
+      let newConfig = filterConfig!
+      newConfig.excludedPoints = [...newConfig.excludedPoints, point]
+      handleFilterConfigChange(newConfig);
     } else if (exclusionMode === 'range') {
       if (!rangeStart) {
         setRangeStart(point);
@@ -92,16 +84,12 @@ export default function TravelMapDebugTool() {
           )
         ) || [];
 
-        // Convert to SelectedPoint format
-        const newPoints = [
-          ...selectedPoints,
-          ...pointsInRange.map(p => ({
-            time: p.time,
-            lat: p.lat,
-            lon: p.lon
-          }))
-        ];
-        handleFilterConfigChange(newPoints, travelModes);
+        let newConfig = filterConfig!
+        newConfig.excludedPoints = [
+          ...newConfig.excludedPoints,
+          ...pointsInRange
+        ]
+        handleFilterConfigChange(newConfig);
       }
     }
   }
@@ -115,13 +103,17 @@ export default function TravelMapDebugTool() {
       const startTime = Math.min(rangeStart.time, point.time);
       const endTime = Math.max(rangeStart.time, point.time);
 
-      const newModes = [...travelModes, {
-        startTime,
-        endTime,
-        mode: selectedTravelMode
-      }];
+      let newConfig = filterConfig!
+      newConfig.travelModes = [
+        ...newConfig.travelModes,
+        {
+          startTime,
+          endTime,
+          mode: selectedTravelMode
+        }
+      ]
 
-      handleFilterConfigChange(selectedPoints, newModes);
+      handleFilterConfigChange(newConfig);
       setRangeStart(null);
     }
   }
@@ -149,12 +141,7 @@ export default function TravelMapDebugTool() {
   }, [rangeStart]);
 
   const handleExportConfig = () => {
-    const config = {
-      excludedPoints: selectedPoints,
-      travelModes
-    };
-
-    const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+    const blob = new Blob([JSON.stringify(filterConfig, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
@@ -168,13 +155,13 @@ export default function TravelMapDebugTool() {
   };
 
   const handleRemoveTravelMode = (index: number) => {
-    const newModes = [...travelModes];
-    newModes.splice(index, 1);
-    handleFilterConfigChange(selectedPoints, newModes);
+    let newConfig = filterConfig!
+    newConfig.travelModes = newConfig.travelModes.filter((_, i) => i !== index);
+    handleFilterConfigChange(newConfig);
   };
 
   const handleClearAll = () => {
-    handleFilterConfigChange([], []);
+    handleFilterConfigChange(emptyFilterConfig);
   };
 
   return (
@@ -193,7 +180,7 @@ export default function TravelMapDebugTool() {
           Export Filter Config
         </button>
         <div className="mt-2 text-xs text-gray-300">
-          Selected points: {selectedPoints.length}
+          Selected points: {filterConfig?.excludedPoints.length}
         </div>
         <button
           onClick={handleClearAll}
@@ -238,7 +225,7 @@ export default function TravelMapDebugTool() {
               </select>
 
               <TravelModeRangeList
-                travelModes={travelModes}
+                travelModes={filterConfig?.travelModes || []}
                 onRemove={handleRemoveTravelMode}
               />
             </>
@@ -260,7 +247,7 @@ export default function TravelMapDebugTool() {
         onPointClick={handlePointClick}
         debugMode={true}
         showDetailedPoints={showDetailedPoints}
-        selectedPoints={selectedPoints}
+        selectedPoints={filterConfig?.excludedPoints}
         highlightedPoints={highlightedPoints}
         style={{
           height: '90vh'
@@ -297,45 +284,4 @@ const formatDebugInfo = (segment: SegmentDebugInfo) => {
     Distance: ${distance} km
     Mode: ${segment.mode}
   `;
-};
-
-interface PointInfoPanelProps {
-  point: Location;
-  onDelete: () => void;
-  onClose: () => void;
-  onStartRange: () => void;
-}
-
-const PointInfoPanel: React.FC<PointInfoPanelProps> = ({ point, onDelete, onClose, onStartRange }) => {
-  const time = new Date(point.time * 1000).toLocaleString();
-
-  return (
-    <div className="absolute top-10 right-10 bg-black/80 text-white p-4 rounded-lg">
-      <div className="mb-2">
-        <div>Time: {time}</div>
-        <div>Lat: {point.lat.toFixed(6)}</div>
-        <div>Lon: {point.lon.toFixed(6)}</div>
-      </div>
-      <div className="flex gap-2">
-        <button
-          onClick={onDelete}
-          className="bg-red-500 px-3 py-1 rounded hover:bg-red-600"
-        >
-          Delete Point
-        </button>
-        <button
-          onClick={onStartRange}
-          className="bg-blue-500 px-3 py-1 rounded hover:bg-blue-600"
-        >
-          Start Range
-        </button>
-        <button
-          onClick={onClose}
-          className="bg-gray-500 px-3 py-1 rounded hover:bg-gray-600"
-        >
-          Close
-        </button>
-      </div>
-    </div>
-  );
 };
