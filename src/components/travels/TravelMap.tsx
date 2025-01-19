@@ -4,11 +4,12 @@ import { Fragment, useState, useMemo, useCallback, useEffect } from 'react';
 import {
   APIProvider, Map, InfoWindow, AdvancedMarker, 
   Pin, AdvancedMarkerProps, useAdvancedMarkerRef,
-  useApiIsLoaded
+  useApiIsLoaded,
+  CollisionBehavior
 } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
 import { TravelData, Location, RouteSegment, TravelMode, TravelModeRange } from './TravelDataProvider';
-import { PLANE_ICON_PATH } from './icons';
+import { PLANE_ICON_PATH, TRAIN_ICON_PATH } from './icons';
 
 interface TravelMapProps {
   travelData?: TravelData;
@@ -117,11 +118,22 @@ const getTravelModeStyles = (): Record<TravelMode, {
   icons?: google.maps.IconSequence[];
 }> => ({
   ground: {
-    color: '#FFFFFF',
-    opacity: 0.8
+    color: 'red',
+    opacity: 0.8,
+    icons: [
+      {
+        icon: {
+          path: google.maps.SymbolPath.FORWARD_OPEN_ARROW,
+          strokeOpacity: 1,
+          scale: 2,
+        },
+        offset: "0",
+        repeat: "100px",
+      }
+    ]
   },
   flight: {
-    color: '#FFFFFF',
+    color: 'blue',
     opacity: 0,
     icons: [
       {
@@ -130,7 +142,7 @@ const getTravelModeStyles = (): Record<TravelMode, {
           scale: 1,
           rotation: -50,
           anchor: new google.maps.Point(10, 0),
-          fillColor: 'white',
+          fillColor: 'blue',
           fillOpacity: 0.9,
         },
         offset: '50%',
@@ -148,8 +160,33 @@ const getTravelModeStyles = (): Record<TravelMode, {
     ]
   },
   train: {
-    color: '#4CAF50',
-    opacity: 0.8
+    color: 'green',
+    opacity: 0,
+    icons: [
+      {
+        icon: {
+          path: TRAIN_ICON_PATH,
+          scale: 1,
+          rotation: -115,
+          anchor: new google.maps.Point(10, 0),
+          fillColor: 'green',
+          fillOpacity: 0.9,
+          strokeColor: 'green',
+          strokeOpacity: 0.9,
+        },
+        offset: '50%',
+        repeat: '0'
+      },
+      {
+        icon: {
+          path: "M 0,-1 0,1",
+          strokeOpacity: 1,
+          scale: 2,
+        },
+        offset: "0",
+        repeat: "10px",
+      }
+    ]
   },
   boat: {
     color: '#2196F3',
@@ -231,6 +268,7 @@ export default function TravelMap({
           colorScheme='DARK'
           disableDefaultUI={true}
           scrollwheel={true}
+          renderingType='VECTOR'
         >
           {/* Render route segments for each trip part */}
           {travelData?.tripParts.map((tripPart, partIndex) => (
@@ -265,6 +303,7 @@ export default function TravelMap({
                         index: segmentIndex, ...segment
                       })}
                       onMouseLeave={() => onPointHover?.(null)}
+                      collisionBehavior={CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY}
                     >
                       <div
                         className={`w-3 h-3 rounded-full ${

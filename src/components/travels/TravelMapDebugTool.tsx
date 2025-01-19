@@ -3,7 +3,7 @@ import { useState, useEffect, useMemo } from 'react';
 import TravelMap, { SegmentDebugInfo } from './TravelMap';
 import { TravelData, TravelDataProvider, Location } from './TravelDataProvider';
 import defaultFilterConfig from '@/assets/trip-data/filter-config.json';
-import { TravelMode, TravelModeRange } from './PolarstepsParser';
+import { FilterConfig, TravelMode, TravelModeRange } from './PolarstepsParser';
 
 interface TravelModeRangeListProps {
   travelModes: TravelModeRange[];
@@ -42,7 +42,7 @@ export default function TravelMapDebugTool() {
     return defaultFilterConfig.excludedPoints || [];
   });
   const [travelModes, setTravelModes] = useState<TravelModeRange[]>(() => {
-    return defaultFilterConfig.travelModes || [];
+    return defaultFilterConfig.travelModes as TravelModeRange[] || [];
   });
   const [selectionMode, setSelectionMode] = useState<SelectionMode>('exclude');
   const [selectedTravelMode, setSelectedTravelMode] = useState<TravelMode>('ground');
@@ -55,7 +55,7 @@ export default function TravelMapDebugTool() {
 
   useEffect(() => {
     const loadInitialData = async () => {
-      const data = await dataProvider.loadTravelData(defaultFilterConfig, 0.01, true);
+      const data = await dataProvider.loadTravelData(defaultFilterConfig as FilterConfig, 0.01, true);
       setTravelData(data);
     };
 

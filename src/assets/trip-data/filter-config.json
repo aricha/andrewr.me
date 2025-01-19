@@ -312,6 +312,45 @@
     }
   ],
   "travelModes": [
-    
+    {
+      "startTime": 1729498392.2132108,
+      "endTime": 1729514961.27711,
+      "mode": "train"
+    },
+    {
+      "startTime": 1731162880.769236,
+      "endTime": 1731174292.462671,
+      "mode": "train"
+    },
+    {
+      "startTime": 1731505301.5765471,
+      "endTime": 1731516225.226764,
+      "mode": "train"
+    },
+    {
+      "startTime": 1731156367.016899,
+      "endTime": 1731156367.016899,
+      "mode": "train"
+    },
+    {
+      "startTime": 1729684800,
+      "endTime": 1729693800,
+      "mode": "train"
+    },
+    {
+      "startTime": 1729854900,
+      "endTime": 1729863900,
+      "mode": "train"
+    },
+    {
+      "startTime": 1730560320,
+      "endTime": 1730570700,
+      "mode": "train"
+    },
+    {
+      "startTime": 1731145140,
+      "endTime": 1731174120,
+      "mode": "train"
+    }
   ]
 }
