@@ -3,10 +3,11 @@ import {
   FilterConfig, 
   RawLocationsData, 
   RawTripData,
-  PolarstepsParser
+  PolarstepsParser,
+  TravelMode
 } from './PolarstepsParser';
 
-export type { Location } from './PolarstepsParser';
+export type { Location, TravelMode, TravelModeRange } from './PolarstepsParser';
 
 export interface Stop {
   name: string;
@@ -22,7 +23,7 @@ export interface Stop {
 
 export interface RouteSegment {
   points: Location[];
-  isFlight: boolean;
+  mode: TravelMode;
   debugInfo?: {
     startTime: number;
     endTime: number;
@@ -133,7 +134,7 @@ export class TravelDataProvider {
         name: parsedData.name,
         routeSegments: simplifiedSegments.map(segment => ({
           points: segment.points,
-          isFlight: segment.isFlight,
+          mode: segment.mode,
           debugInfo: includeDebugInfo ? segment.debugInfo : undefined
         })),
         stops: parsedData.stops,

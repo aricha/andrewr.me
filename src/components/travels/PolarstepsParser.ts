@@ -1,3 +1,11 @@
+export type TravelMode = 'ground' | 'flight' | 'train' | 'boat';
+
+export interface TravelModeRange {
+  startTime: number;
+  endTime: number;
+  mode: TravelMode;
+}
+
 export interface Location {
   lat: number;
   lon: number;
@@ -18,7 +26,7 @@ interface TripStep {
 
 interface RouteSegment {
   points: Location[];
-  isFlight: boolean;
+  mode: TravelMode;
   debugInfo?: {
     startTime: number;
     endTime: number;
@@ -44,6 +52,7 @@ interface ParsedTripData {
 
 export interface FilterConfig {
   excludedPoints: Location[];
+  travelModes: TravelModeRange[];
 }
 
 export interface RawLocationsData {
@@ -72,7 +81,7 @@ export interface RawTripData {
 
 export class PolarstepsParser {
   // Constants for flight detection
-  private static FLIGHT_DISTANCE_THRESHOLD = 1; // degrees (~110km)
+  private static FLIGHT_DISTANCE_THRESHOLD = 0.5; // degrees (~110km)
   private static FLIGHT_SPEED_THRESHOLD = 100; // km/h
 
   /**
@@ -84,17 +93,17 @@ export class PolarstepsParser {
    * @returns Processed trip data ready for visualization
    */
   static parse(
-    locationsJson: any, 
-    tripJson: any, 
+    locationsJson: any,
+    tripJson: any,
     includeDebugInfo: boolean = false,
     filterConfig?: FilterConfig
   ): ParsedTripData {
     // Filter out excluded points if filterConfig is provided
     let locations: Location[] = [...locationsJson.locations];
-    
+
     if (filterConfig?.excludedPoints?.length) {
-      locations = locations.filter(loc => 
-        !filterConfig.excludedPoints.some(excluded => 
+      locations = locations.filter(loc =>
+        !filterConfig.excludedPoints.some(excluded =>
           // Use approximate matching for coordinates and ignore timestamp
           Math.abs(excluded.lat - loc.lat) < 0.0000001 &&
           Math.abs(excluded.lon - loc.lon) < 0.0000001
@@ -104,7 +113,7 @@ export class PolarstepsParser {
 
     // Sort locations by timestamp before processing
     locations.sort((a, b) => a.time - b.time);
-    
+
     // Extract basic trip info
     const tripData: ParsedTripData = {
       name: tripJson.name,
@@ -124,7 +133,7 @@ export class PolarstepsParser {
     // Process locations into segments
     let currentSegment: RouteSegment = {
       points: [],
-      isFlight: false,
+      mode: 'ground',
       ...(includeDebugInfo && {
         debugInfo: {
           startTime: locations[0].time,
@@ -134,10 +143,23 @@ export class PolarstepsParser {
         }
       })
     };
-    
+
     let cumulativeDistance = 0;  // Track total distance in current segment
     let startTime = locations[0].time;
-    
+
+    // Apply travel mode overrides before processing segments
+    const determineSegmentMode = (
+      startTime: number, endTime: number, implicitMode: TravelMode
+    ): TravelMode => {
+      if (!filterConfig?.travelModes) return implicitMode;
+
+      const override = filterConfig.travelModes.find(range =>
+        range.startTime <= startTime && range.endTime >= endTime
+      );
+
+      return override?.mode || implicitMode;
+    };
+
     for (let i = 0; i < locations.length; i++) {
       const current = locations[i];
       currentSegment.points.push({
@@ -145,12 +167,12 @@ export class PolarstepsParser {
         lon: current.lon,
         time: current.time
       });
-      
+
       // Update debug info for current segment if enabled
       if (includeDebugInfo && currentSegment.debugInfo) {
         currentSegment.debugInfo.endTime = current.time;
       }
-      
+
       if (i < locations.length - 1) {
         const next = locations[i + 1];
         const distance = this.calculateDistance(
@@ -158,26 +180,38 @@ export class PolarstepsParser {
           next.lat, next.lon
         );
         const timeGap = next.time - current.time;
-        
+
         // Update cumulative distance for current segment
         cumulativeDistance += distance;
-        
+
         // Calculate average speed for entire segment
         const totalTime = (next.time - startTime) / 3600; // hours
         const averageSpeedKmH = (cumulativeDistance * 111) / totalTime;
 
         // For flight detection, still use point-to-point values
         const pointToPointSpeedKmH = (distance * 111) / (timeGap / 3600);
-        const isFlight = distance > this.FLIGHT_DISTANCE_THRESHOLD && pointToPointSpeedKmH > this.FLIGHT_SPEED_THRESHOLD;
-        if (isFlight == currentSegment.isFlight) {
-            // Update debug info with cumulative calculations if enabled
-            if (includeDebugInfo && currentSegment.debugInfo) {
-                currentSegment.debugInfo.speedKmH = averageSpeedKmH;
-                currentSegment.debugInfo.distanceDegrees = cumulativeDistance;
+
+        // First check for manual override
+        const implicitMode = (
+          distance > this.FLIGHT_DISTANCE_THRESHOLD &&
+            pointToPointSpeedKmH > this.FLIGHT_SPEED_THRESHOLD ?
+            'flight' : 'ground'
+        );
+        const segmentMode = determineSegmentMode(current.time, next.time, implicitMode);
+        console.log(`segment ${tripData.routeSegments.length} has mode ${currentSegment.mode}, 
+          point ${current.time} -> ${next.time} with distance ${distance} and speed ${pointToPointSpeedKmH} 
+          has mode ${segmentMode}
+          `);
+
+        if (currentSegment.mode === segmentMode) {
+          // Update debug info with cumulative calculations if enabled
+          if (includeDebugInfo && currentSegment.debugInfo) {
+            currentSegment.debugInfo.speedKmH = averageSpeedKmH;
+            currentSegment.debugInfo.distanceDegrees = cumulativeDistance;
           }
         } else {
           // End current segment
-          if (currentSegment.isFlight) {
+          if (currentSegment.mode === 'flight') {
             const ps = currentSegment.points;
             currentSegment.points = ps.length > 1 ? [ps[0], ps[ps.length - 1]] : [ps[0]];
           }
@@ -186,7 +220,7 @@ export class PolarstepsParser {
           // Start new segment
           currentSegment = {
             points: [current, next],
-            isFlight: isFlight,
+            mode: segmentMode,
             ...(includeDebugInfo && {
               debugInfo: {
                 startTime: current.time,
@@ -232,7 +266,7 @@ export class PolarstepsParser {
   private static calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
     // Simple Euclidean distance in degrees
     return Math.sqrt(
-      Math.pow(lat2 - lat1, 2) + 
+      Math.pow(lat2 - lat1, 2) +
       Math.pow(lon2 - lon1, 2)
     );
   }
@@ -246,7 +280,7 @@ export class PolarstepsParser {
   static simplifyRoute(segments: RouteSegment[], minDistance: number = 0.01): RouteSegment[] {
     return segments.map(segment => ({
       points: this.simplifyPoints(segment.points, minDistance),
-      isFlight: segment.isFlight,
+      mode: segment.mode,
       debugInfo: segment.debugInfo
     }));
   }
@@ -260,7 +294,7 @@ export class PolarstepsParser {
     for (let i = 1; i < points.length; i++) {
       const point = points[i];
       const distance = Math.sqrt(
-        Math.pow(point.lat - lastPoint.lat, 2) + 
+        Math.pow(point.lat - lastPoint.lat, 2) +
         Math.pow(point.lon - lastPoint.lon, 2)
       );
 
