@@ -141,8 +141,8 @@ const getTravelModeStyles = (debugMode: boolean): Record<TravelMode, {
         icon: {
           path: PLANE_ICON_PATH,
           scale: 1,
-          rotation: -50,
-          anchor: new google.maps.Point(10, 0),
+          rotation: -47,
+          anchor: new google.maps.Point(25, 0),
           fillColor: debugMode ? '#0000FF' : 'white',
           fillOpacity: 0.9,
         },
@@ -217,8 +217,6 @@ export default function TravelMap({
 }: TravelMapProps) {
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
-  const [zoomLevel, setZoomLevel] = useState(2);
-  const [center, setCenter] = useState<google.maps.LatLngLiteral | null>(null);
 
   const mapContainerStyle = {
     width: '100%',
@@ -226,14 +224,17 @@ export default function TravelMap({
     ...style
   };
 
-  // Calculate center point of the map
-  const initialCenter = useMemo(() => (
-    travelData && {
-      lat: (travelData.bounds.north + travelData.bounds.south) / 2,
-      lng: (travelData.bounds.east + travelData.bounds.west) / 2
-    } || {
-      lat: 0,
-      lng: 0
+  const mapBounds = useMemo(() => (
+    travelData ? {
+      north: travelData.bounds.north,
+      south: travelData.bounds.south,
+      east: travelData.bounds.west,
+      west: travelData.bounds.east
+    } : {
+      north: 90,
+      south: -90,
+      east: 180,
+      west: -180
     }
   ), [travelData?.bounds]);
 
@@ -247,22 +248,11 @@ export default function TravelMap({
       <div>
         <Map
           style={mapContainerStyle}
-          center={center || initialCenter}
+          defaultBounds={{...mapBounds, padding: 100}}
           mapId="8eb6596767bee51b"
           onClick={() => {
             setActiveMarker(null);
             setSelectedMarker(null);
-          }}
-          onCenterChanged={(event) => {
-            if (event) {
-              setCenter(event.detail.center)
-            }
-          }}
-          zoom={zoomLevel}
-          onZoomChanged={(event) => {
-            if (event) {
-              setZoomLevel(event.detail.zoom)
-            }
           }}
           gestureHandling='cooperative'
           mapTypeId='hybrid'
@@ -324,6 +314,7 @@ export default function TravelMap({
                   <AdvancedMarkerWithRef
                     position={{ lat: stop.location.lat, lng: stop.location.lon }}
                     onMarkerClick={(marker) => handleMarkerClick(stopIndex, marker)}
+                    // collisionBehavior={CollisionBehavior.OPTIONAL_AND_HIDES_LOWER_PRIORITY}
                   >
                     <Pin
                       background={'#DB4437'}
