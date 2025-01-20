@@ -9,13 +9,13 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const isDarkPage = pathname === '/work' || pathname === '/travel'
 
   return (
-    <ThemeProvider 
-      attribute="class" 
-      defaultTheme="system" 
-      enableSystem 
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="system"
+      enableSystem
       forcedTheme={isDarkPage ? 'dark' : undefined}
     >
-      <Layout>{children}</Layout>
+      {children}
     </ThemeProvider>
   )
 }

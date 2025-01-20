@@ -1,10 +1,15 @@
+'use client'
 import { Smartphone, Wrench } from 'lucide-react'
 import { WorkExperience } from '@/components/work/WorkExperience'
 import AppleVisionIcon from '../../assets/vision-pro-icon.svg'
 import HomeKitIcon from '../../assets/homekit-icon.svg'
 import { VisionWorkExperience } from '@/components/work/VisionWorkExperience'
+import { useRef } from 'react'
+import { Layout } from '@/components/layout/Layout'
 
 export default function Work() {
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  
   const experiences = [
     {
       company: 'Apple',
@@ -114,16 +119,24 @@ export default function Work() {
   ]
 
   return (
-    <div style={{ scrollPaddingTop: 'var(--navbar-height)' }} className="flex flex-col min-h-screen">
-      <div className="flex-grow h-screen overflow-y-auto snap-y">
-        {experiences.map((experience) => (
-          <WorkExperience
-            key={experience.company + experience.role}
-            {...experience}
-            className="min-h-screen relative snap-start"
-          />
-        ))}
+    <Layout scrollContainer={scrollContainerRef}>
+      <div 
+        style={{ scrollPaddingTop: 'var(--navbar-height)' }} 
+        className="flex flex-col min-h-screen"
+      >
+        <div 
+          ref={scrollContainerRef}
+          className="flex-grow h-screen overflow-y-auto snap-y"
+        >
+          {experiences.map((experience) => (
+            <WorkExperience
+              key={experience.company + experience.role}
+              {...experience}
+              className="min-h-screen relative snap-start"
+            />
+          ))}
+        </div>
       </div>
-    </div>
+    </Layout>
   )
 }

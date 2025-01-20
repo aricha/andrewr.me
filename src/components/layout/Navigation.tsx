@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation'
 import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
 
 export interface NavigationProps {
-  scrollContainer?: React.RefObject<HTMLElement>
+  scrollContainer?: React.RefObject<HTMLDivElement | null>
 }
 
 export function Navigation({ scrollContainer }: NavigationProps) {
@@ -15,12 +15,14 @@ export function Navigation({ scrollContainer }: NavigationProps) {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
   const pathname = usePathname()
-  const { scrollY } = useScroll({ container: scrollContainer })
+  const { scrollY } = useScroll({
+    container: scrollContainer, layoutEffect: false
+  })
   const [hasScrolled, setHasScrolled] = useState(false)
 
   useEffect(() => {
     setMounted(true)
-  })
+  }, [])
 
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setHasScrolled(latest > 10)
