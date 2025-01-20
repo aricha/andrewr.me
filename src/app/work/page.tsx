@@ -2,18 +2,21 @@ import { Smartphone, Wrench } from 'lucide-react'
 import { WorkExperience } from '@/components/work/WorkExperience'
 import AppleVisionIcon from '../../assets/vision-pro-icon.svg'
 import HomeKitIcon from '../../assets/homekit-icon.svg'
+import { VisionWorkExperience } from '@/components/work/VisionWorkExperience'
 
 export default function Work() {
   const experiences = [
     {
-      company: 'Apple Inc.',
+      company: 'Apple',
       role: 'visionOS UI Frameworks',
       period: '2019 - 2024',
       description: `
-        As a lead engineer, I helped augment SwiftUI to a fully 3D UI framework,
-        design privacy-preserving visual feedback just by looking at UI elements,
-        and architect the tight-knit integration between SwiftUI and rich 3D content
-        from RealityKit and Unity.
+        I had the opportunity to help build visionOS from the early days of Apple Vision Pro, 
+        working with some amazing people to figure out how people should build apps in a 3D spatial environment. 
+        I got to work on a lot of fun and very challenging projects, like figuring out how SwiftUI should become 
+        a fully 3D-capable UI framework. It was a thrill to get to see the Vision Pro, one of Apple's most 
+        innovative and ambitious new products in years, through to shipping!
+        Below are some of the projects I worked on.
       `,
       Icon: AppleVisionIcon,
       projects: [
@@ -41,47 +44,15 @@ export default function Work() {
       ],
       backgroundImage: '/images/living-room-background-2.jpg',
       customContent: (
-        <div className='mx-auto flex flex-col md:flex-row py-8 gap-8 justify-center'>
-          <div style={{  perspective: '500px', perspectiveOrigin: 'left' }} className="flex-grow">
-            <div style={{ transformOrigin: 'right', transform: 'rotateY(8deg)' }}>
-              <div className=''>
-                <div className="my-4 p-3 bg-black/30 backdrop-blur-xl rounded-lg">
-                  {/* <div className="w-60 h-60 bg-blue-700 rounded-lg"></div> */}
-                  {/* <h3 className="text-sm font-medium mb-2">Hover effects</h3> */}
-                  <iframe
-                  className="w-full aspect-video rounded-lg"
-                  src="https://www.youtube.com/embed/GYkq9Rgoj8E?si=yC5JPZIv1mZ3VgfF&clip=Ugkxi91CdonqnXXC93VcFUzw-if7WMM5vZ7_&clipt=EJOntQMYlIS4Aw&autoplay=1&controls=0&loop=1&mute=1&playsinline=1&rel=0&showinfo=0"
-                  title="Privacy-preserving hover effects"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen />
-                </div>
-                <div className='w-fit mx-auto flex flex-row gap-2'>
-                  <div style={{ scale: '1.4' }} className="w-1 h-1 bg-white/30 backdrop-blur-md rounded-full"></div>
-                  <div className="w-14 h-1 bg-white/30 backdrop-blur-md rounded-full"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className='my-4'>
-            <h3 className="text-2xl font-semibold mb-2">Privacy-preserving hover effects</h3>
-            <p className="text-zinc-200 max-w-lg">
-              I designed the privacy-preserving system to provide visual feedback
-              when looking at UI elements.
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. 
-              Soluta rerum similique blanditiis repellat, eum necessitatibus a atque, vero ex debitis ducimus 
-              voluptate temporibus, molestias nisi alias ab at voluptatum? Fuga.
-            </p>
-          </div>
-        </div>
+        <VisionWorkExperience />
       ),
     },
     {
-      company: 'Apple Inc.',
+      company: 'Apple',
       role: 'Home app',
       period: '2015 - 2019',
       description: `
-      I helped build the Apple Home app from its 1.0 release up to features like
-      HomeKit Secure Video and multi-user presence automations.
+      I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory controls, home cameras, and automations.
       `,
       Icon: HomeKitIcon,
       projects: [
@@ -104,7 +75,7 @@ export default function Work() {
       backgroundImage: '/images/living-room-background-2.jpg'
     },
     {
-      company: 'Apple Inc.',
+      company: 'Apple',
       role: 'iOS Apps & Frameworks Intern',
       period: '2013 - 2014',
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -146,9 +117,9 @@ export default function Work() {
     <div style={{ scrollPaddingTop: 'var(--navbar-height)' }} className="flex flex-col min-h-screen">
       <div className="flex-grow h-screen overflow-y-auto snap-y">
         {experiences.map((experience) => (
-          <WorkExperience 
-            key={experience.company + experience.role} 
-            {...experience} 
+          <WorkExperience
+            key={experience.company + experience.role}
+            {...experience}
             className="min-h-screen relative snap-start"
           />
         ))}
