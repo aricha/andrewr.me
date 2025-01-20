@@ -9,7 +9,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   const pathname = usePathname()
-  const hideNavBar = pathname === '/' || pathname === '/travel'
+  const hideNavBar = pathname === '/'
 
   return (
     <div className={`flex flex-col min-h-screen`}>

@@ -3,16 +3,28 @@ import Link from 'next/link'
 import { useTheme } from 'next-themes'
 import { Sun, Moon, Menu, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
+import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
 
-export function Navigation() {
+export interface NavigationProps {
+  scrollContainer?: React.RefObject<HTMLElement>
+}
+
+export function Navigation({ scrollContainer }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
+  const pathname = usePathname()
+  const { scrollY } = useScroll({ container: scrollContainer })
+  const [hasScrolled, setHasScrolled] = useState(false)
 
-  // Add useEffect to handle mounting state
   useEffect(() => {
     setMounted(true)
-  }, [])
+  })
+
+  useMotionValueEvent(scrollY, 'change', (latest: number) => {
+    setHasScrolled(latest > 10)
+  })
 
   // Don't render theme toggle until mounted
   const renderThemeChanger = () => {
@@ -29,7 +41,11 @@ export function Navigation() {
   }
 
   return (
-    <nav className="fixed top-0 w-full bg-zinc-50/40 dark:bg-zinc-950/40 backdrop-blur-md z-50">
+    <motion.nav
+      className={`fixed top-0 w-full transition-colors duration-300 ease-in-out ${
+        hasScrolled ? 'bg-white/40 dark:bg-zinc-950/40 backdrop-blur-md' : 'bg-transparent'
+      } z-50`}
+    >
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -40,10 +56,20 @@ export function Navigation() {
 
           {/* Desktop navigation */}
           <div className="hidden sm:flex sm:items-center sm:space-x-8">
-            <Link href="/work" className="text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white">
+            <Link
+              href="/work"
+              className={`text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white ${
+                pathname === '/work' ? 'font-bold' : ''
+              }`}
+            >
               Work
             </Link>
-            <Link href="/travel" className="text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white">
+            <Link
+              href="/travel"
+              className={`text-zinc-700 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-white ${
+                pathname === '/travel' ? 'font-bold' : ''
+              }`}
+            >
               Travel
             </Link>
             {renderThemeChanger()}
@@ -67,19 +93,23 @@ export function Navigation() {
           <div className="px-2 pt-2 pb-3 space-y-1">
             <Link
               href="/work"
-              className="block px-3 py-2 rounded-md text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className={`block px-3 py-2 rounded-md text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 ${
+                pathname === '/work' ? 'font-bold' : ''
+              }`}
             >
               Work
             </Link>
             <Link
               href="/travel"
-              className="block px-3 py-2 rounded-md text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+              className={`block px-3 py-2 rounded-md text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 ${
+                pathname === '/travel' ? 'font-bold' : ''
+              }`}
             >
               Travel
             </Link>
           </div>
         </div>
       )}
-    </nav>
+    </motion.nav>
   )
 }
