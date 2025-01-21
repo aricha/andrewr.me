@@ -1,14 +1,21 @@
 'use client'
 import { Smartphone, Wrench } from 'lucide-react'
 import { WorkExperience } from '@/components/work/WorkExperience'
-import AppleVisionIcon from '../../assets/vision-pro-icon.svg'
-import HomeKitIcon from '../../assets/homekit-icon.svg'
 import { VisionWorkExperience } from '@/components/work/VisionWorkExperience'
 import { useRef } from 'react'
 import { Layout } from '@/components/layout/Layout'
 import { ProjectEntry } from '@/components/work/ProjectEntry'
-import Image from 'next/image'
 import { HomeWorkExperience } from '@/components/work/HomeWorkExperience'
+import { PhonePocketImage } from '@/components/work/PhonePocketImage'
+
+import AppleVisionIcon from '@/assets/vision-pro-icon.svg'
+import HomeKitIcon from '@/assets/homekit-icon.svg'
+import settingsSearch from '@/assets/settings-search.png'
+import calculatorPhone from '@/assets/calculator.png'
+import abstergoImage from '@/assets/abstergo.png'
+import mergeImage from '@/assets/merge.png'
+import jukeboxImage from '@/assets/jukebox.png'
+
 export default function Work() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   
@@ -53,7 +60,27 @@ export default function Work() {
       description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
       Icon: Smartphone,
       projects: [],
-      backgroundImage: '/images/living-room-background.jpg'
+      backgroundImage: '/images/living-room-background.jpg',
+      customContent: (
+        <>
+        <ProjectEntry
+          title="Search in Settings"
+          description="
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          ">
+            <PhonePocketImage src={settingsSearch} alt="Settings" />
+          </ProjectEntry>
+          <ProjectEntry
+            title="Interactive Calculator"
+            description="
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            "
+            orientation="right"
+            >
+            <PhonePocketImage src={calculatorPhone} alt="Calculator" className="sm:-mb-9" />
+          </ProjectEntry>
+        </>
+      ),
     },
     {
       company: '',
@@ -64,23 +91,30 @@ export default function Work() {
       for jailbroken iOS devices, including features that were later adopted by Apple.
       `,
       Icon: Wrench,
-      projects: [
-        {
-          title: 'Abstergo',
-          description: 'A tweak for iOS 6 that made it easy to manage notifications.',
-          imageSrc: '/images/abstergo.jpg',
-        },
-        {
-          title: 'Merge',
-          description: 'A tweak for iOS 5-6 that merged conversations from different numbers for the same contact.',
-          imageSrc: '/images/merge.png',
-        },
-        {
-          title: 'Jukebox',
-          description: 'A beautiful widget for easily controlling your music.',
-          imageSrc: '/images/jukebox.jpg',
-        }
-      ],
+      projects: [],
+      customContent: (
+        <>
+          <ProjectEntry
+            title="Abstergo"
+            description="A tweak for iOS 6 that made it easy to manage notifications."
+          >
+            <PhonePocketImage src={abstergoImage} alt="Abstergo" />
+          </ProjectEntry>
+          <ProjectEntry
+            title="Merge"
+            description="A tweak for iOS 5-6 that merged conversations from different numbers for the same contact."
+            orientation="right"
+          >
+            <PhonePocketImage src={mergeImage} alt="Merge" />
+          </ProjectEntry>
+          <ProjectEntry
+            title="Jukebox"
+            description="A beautiful widget for easily controlling your music."
+          >
+            <PhonePocketImage src={jukeboxImage} alt="Jukebox" />
+          </ProjectEntry>
+        </>
+      ),
       backgroundImage: '/images/living-room-background-2.jpg',
     },
   ]
