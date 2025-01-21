@@ -3,6 +3,8 @@
 import TravelMap from './TravelMap';
 import { Card } from '../Card';
 import { TravelData } from './TravelDataProvider';
+import { Animations } from '@/lib/animations';
+import { motion } from 'framer-motion';
 
 interface TravelSummaryProps {
   travelData: TravelData;
@@ -19,12 +21,12 @@ interface TravelSummaryProps {
   };
 }
 
-export default function TravelSummary({ 
+export default function TravelSummary({
   travelData,
   stats
 }: TravelSummaryProps) {
   return (
-    <section 
+    <section
       className="px-4 sm:px-8 snap-start relative w-full min-h-screen content-center"
       style={{
         backgroundImage: `url(/images/travel/summary-bg.jpg)`,
@@ -33,22 +35,28 @@ export default function TravelSummary({
         backgroundAttachment: 'fixed'
       }}
     >
-      <div className='max-w-7xl mx-auto my-auto py-16'>
-        <h1 
-        className="text-4xl font-bold text-white mb-8"
-        style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-200px" }}
+        variants={Animations.appearVariants}
+        transition={Animations.appearVariants.transition}
+        className='max-w-7xl mx-auto my-auto py-16'>
+        <h1
+          className="text-4xl font-bold text-white mb-8"
+          style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}>
           In a Nutshell
         </h1>
-        
+
         <div className="flex flex-col md:flex-row gap-4">
           <div className="md:w-2/3 bg-gray-900 rounded-2xl overflow-hidden flex">
             <div className="flex-1">
-              <TravelMap 
-                travelData={travelData} 
+              <TravelMap
+                travelData={travelData}
               />
             </div>
           </div>
-        
+
           <Card className="md:w-1/3 rounded-2xl p-6">
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
               <Stat value={stats.kilometers.toLocaleString()} label="Kilometers" />
@@ -63,7 +71,7 @@ export default function TravelSummary({
             </div>
           </Card>
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }

@@ -2,6 +2,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import React from 'react';
 import { PlayIcon } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Animations } from '@/lib/animations';
 
 export function VisionWorkExperience() {
   return (
@@ -65,7 +67,14 @@ const VisionProjectEntry: React.FC<VisionProjectEntryProps> = ({
   heroContent,
 }) => {
   return (
-    <div className={`mx-auto flex flex-col sm:flex-row py-2 sm:py-4 sm:gap-8 justify-center items-center ${orientation === 'right' ? 'sm:flex-row-reverse' : ''}`}>
+    <motion.div 
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      variants={Animations.appearVariants}
+      transition={Animations.appearVariants.transition}
+      className={`mx-auto flex flex-col sm:flex-row py-2 sm:py-4 sm:gap-8 justify-center items-center ${orientation === 'right' ? 'sm:flex-row-reverse' : ''}`}
+    >
       <div style={{ perspective: '500px', perspectiveOrigin: orientation }} className="flex-grow w-full max-w-md">
         <div className={`${orientation == 'left' ? 'sm:[transform:rotateY(8deg)]' : 'sm:[transform:rotateY(-8deg)]'} orientation-${orientation}`}>
             <div className="my-4 p-3 bg-black/30 backdrop-blur-xl rounded-lg">
@@ -83,6 +92,6 @@ const VisionProjectEntry: React.FC<VisionProjectEntryProps> = ({
           {description}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }; 
