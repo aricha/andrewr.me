@@ -6,7 +6,9 @@ import HomeKitIcon from '../../assets/homekit-icon.svg'
 import { VisionWorkExperience } from '@/components/work/VisionWorkExperience'
 import { useRef } from 'react'
 import { Layout } from '@/components/layout/Layout'
-
+import { ProjectEntry } from '@/components/work/ProjectEntry'
+import Image from 'next/image'
+import { HomeWorkExperience } from '@/components/work/HomeWorkExperience'
 export default function Work() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
   
@@ -24,29 +26,7 @@ export default function Work() {
         Below are some of the projects I worked on.
       `,
       Icon: AppleVisionIcon,
-      projects: [
-        // {
-        //   title: 'WWDC23 Talk',
-        //   description: `
-        //   I presented the headline talk introducing SwiftUI for visionOS, 
-        //   "Meet SwiftUI for spatial computing", at WWDC23.
-        //   `,
-        //   imageSrc: '/images/wwdc-talk.jpg'
-        // },
-        // {
-        //   title: 'Privacy-Preserving Hover Effects',
-        //   description: `
-        //   I designed the privacy-preserving system to provide visual feedback
-        //   when looking at UI elements.
-        //   `,
-        //   imageSrc: '/images/vision-pro-privacy.png'
-        // },
-        // {
-        //   title: 'Patents',
-        //   description: 'Built a real-time collaboration system...',
-        //   imageSrc: '/images/wwdc-talk.jpg'
-        // }
-      ],
+      projects: [],
       backgroundImage: '/images/living-room-background-2.jpg',
       customContent: (
         <VisionWorkExperience />
@@ -57,27 +37,14 @@ export default function Work() {
       role: 'Home app',
       period: '2015 - 2019',
       description: `
-      I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory controls, home cameras, and automations.
+      I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory controls, home cameras, automations, and HomePod support. Here are some of the key projects I contributed to:
       `,
       Icon: HomeKitIcon,
-      projects: [
-        {
-          title: 'HomeKit Secure Video',
-          description: `
-          Lead early work on the UI for recording secure video with HomeKit cameras.
-          `,
-          imageSrc: '/images/homekit_secure_video.jpg',
-        },
-        {
-          title: 'Multi-User Presence Automations',
-          description: `
-          Designed and built the UI for automations that trigger when 
-          people leave or arrive home.
-          `,
-          imageSrc: '/images/homekit-location-automation.png',
-        }
-      ],
-      backgroundImage: '/images/living-room-background-2.jpg'
+      projects: [],
+      backgroundImage: '/images/living-room-background-2.jpg',
+      customContent: (
+        <HomeWorkExperience />
+      ),
     },
     {
       company: 'Apple',
