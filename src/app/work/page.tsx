@@ -57,7 +57,9 @@ export default function Work() {
       company: 'Apple',
       role: 'iOS Apps & Frameworks Intern',
       period: '2013 - 2014',
-      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      description: `
+      I first joined Apple as an intern in 2013 on the iOS Apps & Frameworks team, where I was able to help fix a variety of bugs for the release of iOS 7. Across my two internships in 2013 and 2014, I was able to work on a number of different projects and prototypes and demo them to senior leadership. Here are two of them that wound up shipping:
+      `,
       Icon: Smartphone,
       projects: [],
       backgroundImage: '/images/living-room-background.jpg',
@@ -66,14 +68,14 @@ export default function Work() {
         <ProjectEntry
           title="Search in Settings"
           description="
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          I built the first version of the search feature in the Settings app on iOS, which later shipped in iOS 9. This meant building both the UI and the search index across all settings, which required building new APIs and sprawling adoption across hundreds of settings pages.
           ">
             <PhonePocketImage src={settingsSearch} alt="Settings" />
           </ProjectEntry>
           <ProjectEntry
             title="Interactive Calculator"
             description="
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            I rewrote large parts of the Calculator app in Swift, making it one of the first Apple apps using the language in iOS 9. I also built a new design that supported visualizing and editing expressions, and viewing a calculation history. While these did not ship in iOS 9, they did eventually get resurrected with the Calculator redesign in iOS 18!
             "
             orientation="right"
             >
@@ -87,8 +89,7 @@ export default function Work() {
       role: 'iOS Jailbreak Developer',
       period: '2011 - 2013',
       description: `
-      I spent years reverse engineering the internals of iOS to build innovative tweaks
-      for jailbroken iOS devices, including features that were later adopted by Apple.
+      I got my start in iOS development while in university by getting involved in the iOS jailbreak community. I worked on building “tweaks”, or extensions that modified the OS itself, for jailbroken devices. I learned how to reverse engineer the internals of the OS, hook into the right functions, and use it to build cool tweaks. Some of these were eventually added as native iOS features by Apple!
       `,
       Icon: Wrench,
       projects: [],
@@ -96,22 +97,28 @@ export default function Work() {
         <>
           <ProjectEntry
             title="Abstergo"
-            description="A tweak for iOS 6 that made it easy to manage notifications."
+            description="
+            Meaning “to clean away” in Latin, Abstergo provided tools for easily managing notifications for iOS 5-6. It added the ability to clear a single notification or all notifications with a swipe (before these existed natively), and a reminder system to postpone notifications until later.
+            "
           >
             <PhonePocketImage src={abstergoImage} alt="Abstergo" />
           </ProjectEntry>
           <ProjectEntry
             title="Merge"
-            description="A tweak for iOS 5-6 that merged conversations from different numbers for the same contact."
+            description="
+            Messages on iOS had a longstanding annoying behavior in iOS 5-6: conversations with different numbers or emails for the same contact were kept separate. This was especially bad when iMessage had a habit of changing which address you were messaging, causing conversations to fork off and get very confusing. Merge fixed that problem, automatically merging these conversations together in the UI, and providing an easy way to select which address your message would be sent to.
+            "
             orientation="right"
           >
             <PhonePocketImage src={mergeImage} alt="Merge" />
           </ProjectEntry>
           <ProjectEntry
             title="Jukebox"
-            description="A beautiful widget for easily controlling your music."
+            description="
+            Jukebox provided a beautiful music widget with rich controls built into Notification Center on iOS 5-6 (before widgets existed natively). It even integrated with other tweaks to support being used directly on the Home Screen.
+            "
           >
-            <PhonePocketImage src={jukeboxImage} alt="Jukebox" />
+            <PhonePocketImage src={jukeboxImage} alt="Jukebox" className="sm:-mb-9" />
           </ProjectEntry>
         </>
       ),
