@@ -1,4 +1,4 @@
-import { Github, Instagram, Linkedin, LucideIcon, Mail } from 'lucide-react'
+import { Github, Instagram, Linkedin, LucideIcon, Mail, GraduationCap } from 'lucide-react'
 
 interface SocialLink {
   href: string
@@ -10,6 +10,7 @@ const socialLinks: SocialLink[] = [
   { href: 'https://linkedin.com/in/aricha', icon: Linkedin },
   { href: 'https://instagram.com/andrewgoesto', icon: Instagram },
   { href: 'mailto:hello@andrewr.me', icon: Mail },
+  { href: 'http://scholar.google.com/citations?user=h_MTlrAAAAAJ&hl=en', icon: GraduationCap },
 ]
 
 export function SocialLinks({ className }: { className?: string }) {

@@ -62,7 +62,7 @@ export default function Home() {
         backgroundPosition: 'center',
         backgroundAttachment: 'scroll',
       }}></div>
-      <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center">
+      <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center dark">
         <div className="grid grid-cols-2 gap-4 max-w-lg sm:max-w-4xl mx-auto">
           <Card className="col-span-2 sm:col-span-1 sm:h-auto flex flex-col items-center justify-center text-2xl">
             <div className="relative w-full aspect-[16/9] md:max-h-[236px] overflow-hidden rounded-t-3xl">
@@ -76,7 +76,7 @@ export default function Home() {
             </div>
             <div className="p-4">
               <h3 className="text-lg text-zinc-700 dark:text-zinc-300">👋, you've reached the home of</h3>
-              <h1 className="text-4xl font-bold mb-4">Andrew Richardson</h1>
+              <h1 className="text-4xl font-bold mb-4 text-zinc-950 dark:text-zinc-100">Andrew Richardson</h1>
               <p className="text-xl text-zinc-700 dark:text-zinc-200">
               I’m a software engineer and travel addict from Vancouver 🇨🇦, and currently based out of Seattle 🇺🇸. 
               I live to explore, try new things, and get out in nature. I’ve been lucky to spend 2024 on sabbatical traveling the world. 
