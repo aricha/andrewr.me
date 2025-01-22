@@ -12,8 +12,7 @@ interface WorkExperienceProps {
   description: string
   Icon: LucideIcon
   backgroundImage: StaticImageData
-  className?: string
-  customContent?: ReactNode
+  children?: ReactNode
 }
 
 export function WorkExperience({
@@ -23,11 +22,10 @@ export function WorkExperience({
   description,
   Icon,
   backgroundImage,
-  className,
-  customContent,
+  children,
 }: WorkExperienceProps) {
   return (
-    <div className={`text-zinc-100 ${className} overflow-hidden`}>
+    <div className={`text-zinc-100 min-h-screen relative snap-start overflow-hidden`}>
       {/* Background image with blur */}
       <div
         className="absolute inset-0 z-0 transition-opacity duration-500"
@@ -55,7 +53,7 @@ export function WorkExperience({
             </div>
           </div>
           <div className='pt-4 sm:pt-8 pb-4'>
-            {customContent}
+            {children}
           </div>
         </div>
       </div>

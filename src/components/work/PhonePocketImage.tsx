@@ -1,4 +1,5 @@
 import Image, { StaticImageData } from "next/image";
+
 interface PhonePocketImageProps {
   src: StaticImageData;
   alt: string;
@@ -17,7 +18,6 @@ export function PhonePocketImage({ src, alt, className, imageClassName }: PhoneP
       <Image
         src={src}
         alt={alt}
-        layout="responsive"
         className={`max-w-72 w-full sm:px-0 mx-auto ${imageClassName}`}
       />
     </div>

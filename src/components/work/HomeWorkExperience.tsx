@@ -1,13 +1,25 @@
 import { ProjectEntry } from "./ProjectEntry";
-import Image from "next/image";
 import automationImage from "@/assets/homekit-location-automation.png";
 import cameraImage from "@/assets/home-cameras-iphone-2.png";
 import Link from "next/link";
 import { PhonePocketImage } from "./PhonePocketImage";
+import { WorkExperience } from "./WorkExperience";
 
-export function HomeWorkExperience() {
+import HomeKitIcon from '@/assets/homekit-icon.svg'
+import HomeBackgroundImage from "@/assets/home-green-wallpaper.png";
+
+export default function HomeWorkExperience() {
   return (
-    <>
+    <WorkExperience
+      company="Apple"
+      role="Home app"
+      period="2015 - 2019"
+      description="
+      I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory 
+      "
+      Icon={HomeKitIcon}
+      backgroundImage={HomeBackgroundImage}
+    >
       <ProjectEntry
         title="HomeKit Secure Video"
         description="
@@ -34,6 +46,6 @@ export function HomeWorkExperience() {
           className="sm:-mb-9"
         />
       </ProjectEntry>
-    </>
+    </WorkExperience>
   )
 }

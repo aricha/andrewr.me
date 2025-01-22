@@ -3,10 +3,27 @@ import Image from 'next/image';
 import React from 'react';
 import { PlayIcon } from 'lucide-react';
 import { ProjectEntry } from './ProjectEntry';
+import { WorkExperience } from './WorkExperience';
 
-export function VisionWorkExperience() {
+import AppleVisionIcon from '@/assets/vision-pro-icon.svg'
+import VisionBackgroundImage from '@/assets/living-room-background-2.jpg'
+
+export default function VisionWorkExperience() {
   return (
-    <>
+    <WorkExperience
+      company="Apple"
+      role="visionOS UI Frameworks"
+      period="2019 - 2024"
+      Icon={AppleVisionIcon}
+      backgroundImage={VisionBackgroundImage}
+      description="
+        I had the opportunity to help build visionOS from the early days of Apple Vision Pro, 
+        working with some amazing people to figure out how people should build apps in a 3D spatial environment. 
+        I got to work on a lot of fun and very challenging projects, like figuring out how SwiftUI should become 
+        a fully 3D-capable UI framework. It was a thrill to get to see the Vision Pro, one of Apple's most 
+        innovative and ambitious new products in years, through to shipping!
+        Below are some of the projects I worked on.
+      ">
       <ProjectEntry
         title="WWDC23: Meet SwiftUI for spatial computing"
         description="
@@ -47,7 +64,7 @@ export function VisionWorkExperience() {
           />
         </VisionWindow>
       </ProjectEntry>
-    </>
+    </WorkExperience>
   )
 }
 
