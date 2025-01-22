@@ -1,5 +1,9 @@
+'use client'
+
 import { LucideIcon } from 'lucide-react'
+import { StaticImageData } from 'next/image'
 import { ReactNode } from 'react'
+import Image from 'next/image'
 
 interface WorkExperienceProps {
   company: string
@@ -7,7 +11,7 @@ interface WorkExperienceProps {
   period: string
   description: string
   Icon: LucideIcon
-  backgroundImage: string
+  backgroundImage: StaticImageData
   className?: string
   customContent?: ReactNode
 }
@@ -27,15 +31,9 @@ export function WorkExperience({
       {/* Background image with blur */}
       <div
         className="absolute inset-0 z-0 transition-opacity duration-500"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-          filter: 'brightness(0.8)',
-        }}
       >
-        <div className="absolute inset-0 backdrop-blur-lg bg-neutral-500/30" />
+        <Image src={backgroundImage} alt="Background" fill className='inset-0' style={{ filter: 'brightness(0.8)' }} />
+        <div className="absolute inset-0 backdrop-blur-md bg-neutral-500/30" />
       </div>
 
       {/* Content */}
