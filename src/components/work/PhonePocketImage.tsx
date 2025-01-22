@@ -3,9 +3,10 @@ interface PhonePocketImageProps {
   src: StaticImageData;
   alt: string;
   className?: string;
+  imageClassName?: string;
 }
 
-export function PhonePocketImage({ src, alt, className }: PhonePocketImageProps) {
+export function PhonePocketImage({ src, alt, className, imageClassName }: PhonePocketImageProps) {
   return (
     <div
       className={`relative max-h-72 mx-auto w-4/5 sm:w-full flex-shrink-0 basis-1/3 overflow-clip border-b-2 border-solid ${className}`}
@@ -17,7 +18,7 @@ export function PhonePocketImage({ src, alt, className }: PhonePocketImageProps)
         src={src}
         alt={alt}
         layout="responsive"
-        className="max-w-72 w-full sm:px-0 mx-auto"
+        className={`max-w-72 w-full sm:px-0 mx-auto ${imageClassName}`}
       />
     </div>
   );
