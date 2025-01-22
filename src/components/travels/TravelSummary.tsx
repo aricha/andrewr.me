@@ -27,7 +27,7 @@ export default function TravelSummary({
 }: TravelSummaryProps) {
   return (
     <section
-      className="px-4 sm:px-8 snap-start relative w-full min-h-screen content-center"
+      className="snap-start relative w-full min-h-screen content-center"
       style={{
         backgroundImage: `url(/images/travel/summary-bg.jpg)`,
         backgroundSize: 'cover',
@@ -41,7 +41,7 @@ export default function TravelSummary({
         viewport={{ once: true, margin: "-200px" }}
         variants={Animations.appearVariants}
         transition={Animations.appearVariants.transition}
-        className='max-w-7xl mx-auto my-auto py-16'>
+        className='page-max-width-wide my-auto py-16'>
         <h1
           className="text-4xl font-bold text-white mb-8"
           style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}>

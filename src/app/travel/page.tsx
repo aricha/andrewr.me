@@ -20,7 +20,7 @@ export default function Travel() {
   }, []);
 
   return (
-    <Layout scrollContainer={scrollContainerRef}>
+    <Layout scrollContainer={scrollContainerRef} navBarMaxWidth="wide">
       <div
         style={{ scrollPaddingTop: 'var(--navbar-height)' }}
         className="flex flex-col min-h-screen"

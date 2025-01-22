@@ -221,6 +221,7 @@ export default function TravelMap({
   const mapContainerStyle = {
     width: '100%',
     height: '70vh',
+    maxHeight: '750px',
     ...style
   };
 

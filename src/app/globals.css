@@ -15,3 +15,13 @@
     --navbar-height: 4rem;
   }
 }
+
+@layer components {
+  .page-max-width-wide {
+    @apply max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-0 lg:mx-[max(32px,calc((100vw-1280px)/2))];
+  }
+
+  .page-max-width-regular {
+    @apply max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-0 lg:mx-[max(32px,calc((100vw-1024px)/2))];
+  }
+}

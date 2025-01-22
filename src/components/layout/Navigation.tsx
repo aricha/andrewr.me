@@ -6,11 +6,14 @@ import { usePathname } from 'next/navigation'
 import { useScroll, motion, useMotionValueEvent } from 'framer-motion'
 import { SocialLinks } from '../SocialLinks'
 
+export type NavBarMaxWidth = 'regular' | 'wide'
+
 export interface NavigationProps {
+  navBarMaxWidth?: NavBarMaxWidth
   scrollContainer?: React.RefObject<HTMLDivElement | null>
 }
 
-export function Navigation({ scrollContainer }: NavigationProps) {
+export function Navigation({ navBarMaxWidth = 'regular', scrollContainer }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const pathname = usePathname()
   const { scrollY } = useScroll({
@@ -21,13 +24,14 @@ export function Navigation({ scrollContainer }: NavigationProps) {
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
     setHasScrolled(latest > 10)
   })
+  const wide = navBarMaxWidth === 'wide'
 
   return (
     <motion.nav
       className={`fixed top-0 w-full transition-colors duration-300 ease-in-out z-50 ${hasScrolled || isMenuOpen ? 'bg-white/40 dark:bg-zinc-950/40 backdrop-blur-md' : 'bg-transparent'
         }`}
     >
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className={`page-max-width-${wide ? 'wide' : 'regular'}`}>
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link href="/" className="flex items-center">
@@ -58,7 +62,7 @@ export function Navigation({ scrollContainer }: NavigationProps) {
             <div className="flex items-center sm:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 rounded-md text-zinc-700 dark:text-zinc-200"
+                className="rounded-md text-zinc-700 dark:text-zinc-200"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>

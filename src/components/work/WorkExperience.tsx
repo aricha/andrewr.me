@@ -35,7 +35,7 @@ export function WorkExperience({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 min-h-screen flex items-center">
+      <div className="relative z-10 page-max-width-regular min-h-screen flex items-center">
         <div className="pt-8 w-full mt-[var(--navbar-height)]">
           <div className="">
             <div className="w-fit mx-auto">
