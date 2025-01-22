@@ -16,10 +16,10 @@ import abstergoImage from '@/assets/abstergo.png'
 import mergeImage from '@/assets/merge.png'
 import jukeboxImage from '@/assets/jukebox.png'
 
-import LivingRoomBackground from '@/assets/living-room-background.jpg'
-import LivingRoomBackground2 from '@/assets/living-room-background-2.jpg'
-import iOS9Background from '@/assets/ios9-wallpaper.jpg'
-import iOS7Background from '@/assets/ios7-wallpaper.png'
+import VisionBackgroundImage from '@/assets/living-room-background-2.jpg'
+import HomeBackgroundImage from '@/assets/home-green-wallpaper.png'
+import iOSInternBackgroundImage from '@/assets/ios7-wallpaper.png'
+import JailbreakBackgroundImage from '@/assets/og-iphone-wallpaper.jpg'
 
 export default function Work() {
   const scrollContainerRef = useRef<HTMLDivElement>(null)
@@ -39,7 +39,7 @@ export default function Work() {
       `,
       Icon: AppleVisionIcon,
       projects: [],
-      backgroundImage: LivingRoomBackground,
+      backgroundImage: VisionBackgroundImage,
       customContent: (
         <VisionWorkExperience />
       ),
@@ -53,7 +53,7 @@ export default function Work() {
       `,
       Icon: HomeKitIcon,
       projects: [],
-      backgroundImage: LivingRoomBackground2,
+      backgroundImage: HomeBackgroundImage,
       customContent: (
         <HomeWorkExperience />
       ),
@@ -67,7 +67,7 @@ export default function Work() {
       `,
       Icon: Smartphone,
       projects: [],
-      backgroundImage: iOS9Background,
+      backgroundImage: iOSInternBackgroundImage,
       customContent: (
         <>
         <ProjectEntry
@@ -98,7 +98,7 @@ export default function Work() {
       `,
       Icon: Wrench,
       projects: [],
-      backgroundImage: iOS7Background,
+      backgroundImage: JailbreakBackgroundImage,
       customContent: (
         <>
           <ProjectEntry
