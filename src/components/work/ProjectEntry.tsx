@@ -20,7 +20,6 @@ export function ProjectEntry({
       whileInView="visible"
       viewport={{ once: true, margin: "-100px" }}
       variants={Animations.appearVariants}
-      transition={Animations.appearVariants.transition}
       className={`flex flex-col sm:flex-row py-2 sm:py-4 sm:gap-8 justify-${orientation} items-center ${orientation === 'right' ? 'sm:flex-row-reverse' : ''}`}
     >
       <div className="flex-shrink-0 w-full sm:basis-2/5">
