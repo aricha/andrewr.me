@@ -1,6 +1,7 @@
 'use client'
 import TravelIntro from '@/components/travels/TravelIntro';
 import TravelSummary from '@/components/travels/TravelSummary';
+import TravelStories from '@/components/travels/TravelStories';
 import { TravelDataProvider } from '@/components/travels/TravelDataProvider';
 import { Layout } from '@/components/layout/Layout';
 import { useRef, useEffect, useState } from 'react';
@@ -45,6 +46,7 @@ export default function Travel() {
               }}
             />
           )}
+          <TravelStories />
         </div>
       </div>
     </Layout>
