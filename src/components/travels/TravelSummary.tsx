@@ -37,9 +37,8 @@ export default function TravelSummary({
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-200px" }}
+        viewport={{ once: true, margin: "-100px" }}
         variants={Animations.appearVariants}
-        transition={Animations.appearVariants.transition}
         className='page-max-width-wide pb-8 relative z-10 pt-[calc(var(--navbar-height)+1rem)]'
       >
         <h1

@@ -218,13 +218,6 @@ export default function TravelMap({
   const [activeMarker, setActiveMarker] = useState<number | null>(null);
   const [selectedMarker, setSelectedMarker] = useState<google.maps.marker.AdvancedMarkerElement | null>(null);
 
-  const mapContainerStyle = {
-    width: '100%',
-    height: '70vh',
-    maxHeight: '750px',
-    ...style
-  };
-
   const mapBounds = useMemo(() => (
     travelData ? {
       north: travelData.bounds.north,
@@ -248,7 +241,8 @@ export default function TravelMap({
     <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
       <div>
         <Map
-          style={mapContainerStyle}
+          style={style}
+          className='w-full sm:h-[70vh] sm:max-h-[750px] aspect-square sm:aspect-auto'
           defaultBounds={{...mapBounds, padding: 100}}
           mapId="8eb6596767bee51b"
           onClick={() => {
