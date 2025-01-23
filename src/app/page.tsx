@@ -1,73 +1,25 @@
-'use client'
-
 import { Laptop, Plane } from 'lucide-react'
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Image from 'next/image'
 import { Card, CardLink } from '@/components/Card'
 import { SocialLinks } from '@/components/SocialLinks'
+import { StickyBackground } from '@/components/layout/StickyBackground'
+
+import WorkImage from '@/assets/home/wwdc-talk-zoom.png'
+import TravelImage from '@/assets/home/travel.jpg'
+import ProfileImage from '@/assets/home/profile.jpg'
+import BackgroundImage from '@/assets/home/home-background-2.jpg'
 
 export default function Home() {
-  // These would come from your CMS or configuration
-  const imageConfig = {
-    src: "/api/placeholder/1600/900",
-    alt: "Travel photo",
-    // Normalized coordinates (0-1) of where you appear in the image
-    focusPoint: { x: 0.5, y: 0.7 }
-  };
-
-  const [windowSize, setWindowSize] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 0,
-    height: typeof window !== 'undefined' ? window.innerHeight : 0
-  });
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowSize({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  // Determine layout mode based on screen width
-  const isMobile = windowSize.width < 768;
-
-  // Calculate card position based on focus point and screen size
-  const getCardPosition = () => {
-    if (isMobile) {
-      return {
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)'
-      };
-    }
-
-    // On desktop, position card on the opposite side of the focus point
-    const isSubjectOnLeft = imageConfig.focusPoint.x <= 0.5;
-    return {
-      top: '50%',
-      left: isSubjectOnLeft ? '20%' : '80%',
-      transform: 'translate(-50%, -50%)'
-    };
-  };
-
   return (
     <>
-      <div className="fixed inset-0 z-0" style={{ 
-        backgroundImage: 'url(/images/home-background-2.jpg)', 
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'scroll',
-      }}></div>
+      <StickyBackground image={BackgroundImage}/>
       <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center dark">
         <div className="grid grid-cols-2 gap-4 max-w-lg sm:max-w-4xl mx-auto">
           <Card className="col-span-2 sm:col-span-1 sm:h-auto flex flex-col items-center justify-center text-2xl">
             <div className="relative w-full aspect-[16/9] md:max-h-[236px] overflow-hidden rounded-t-3xl">
               <Image
-                  src="/images/profile.jpg"
+                  src={ProfileImage}
                   alt="Andrew Richardson"
                   fill
                   className="object-cover"
@@ -88,11 +40,11 @@ export default function Home() {
           <div className="col-span-2 xs sm:col-span-1 grid grid-cols-2 sm:grid-cols-1 gap-4 sm:h-full">
             <CardLink
               href="/work" label="Work" icon={Laptop}
-              imageSrc="/images/wwdc-talk-zoom.png" imageAlt="Work"
+              imageSrc={WorkImage} imageAlt="Work"
             />
             <CardLink
               href="/travel" label="Travel" icon={Plane}
-              imageSrc="/images/travel.jpg" imageAlt="Travel"
+              imageSrc={TravelImage} imageAlt="Travel"
             />
           </div>
         </div>

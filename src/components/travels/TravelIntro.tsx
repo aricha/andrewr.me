@@ -1,17 +1,14 @@
 import React from "react"
 import { Card } from "../Card"
-
+import { StickyBackground } from "../layout/StickyBackground"
+import BackgroundImage from '@/assets/travel/intro-hero.jpg';
 export default function TravelIntro() {
   return (
-    <section
-      className="snap-start relative w-full min-h-screen"
-      style={{
-        backgroundImage: `url(/images/travel/intro-hero.jpg)`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+    <div className="snap-start relative w-full min-h-screen">
+      <StickyBackground
+        image={BackgroundImage}
+        hasBlur={false}
+      />
 
       {/* Content */}
       <div className="page-max-width-wide">
@@ -33,6 +30,6 @@ export default function TravelIntro() {
           </div>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

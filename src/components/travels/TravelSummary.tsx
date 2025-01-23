@@ -5,6 +5,8 @@ import { Card } from '../Card';
 import { TravelData } from './TravelDataProvider';
 import { Animations } from '@/lib/animations';
 import { motion } from 'framer-motion';
+import { StickyBackground } from '../layout/StickyBackground';
+import BackgroundImage from '@/assets/travel/summary-bg.jpg';
 
 interface TravelSummaryProps {
   travelData: TravelData;
@@ -26,25 +28,24 @@ export default function TravelSummary({
   stats
 }: TravelSummaryProps) {
   return (
-    <section
-      className="snap-start relative w-full min-h-screen content-center"
-      style={{
-        backgroundImage: `url(/images/travel/summary-bg.jpg)`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed'
-      }}
-    >
+    <section className="snap-start relative w-full min-h-screen content-center">
+      <StickyBackground 
+        image={BackgroundImage} 
+        hasBlur={false}
+      />
+      
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-200px" }}
         variants={Animations.appearVariants}
         transition={Animations.appearVariants.transition}
-        className='page-max-width-wide my-auto py-16'>
+        className='page-max-width-wide pb-8 relative z-10 pt-[calc(var(--navbar-height)+1rem)]'
+      >
         <h1
           className="text-4xl font-bold text-white mb-8"
-          style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}>
+          style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}
+        >
           In a Nutshell
         </h1>
 

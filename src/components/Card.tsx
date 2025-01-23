@@ -1,6 +1,6 @@
 import { LucideIcon, ChevronRight } from "lucide-react"
 import Link from "next/link"
-import Image from 'next/image'
+import Image, { StaticImageData } from 'next/image'
 
 export function Card({ className, children }: { className?: string, children: React.ReactNode }) {
   return (
@@ -16,7 +16,7 @@ export function CardLink({
     href: string
     icon: LucideIcon
     label: string
-    imageSrc: string
+    imageSrc: StaticImageData
     imageAlt: string
   }) {
     return (

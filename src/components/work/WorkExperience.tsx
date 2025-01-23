@@ -4,6 +4,7 @@ import { LucideIcon } from 'lucide-react'
 import { StaticImageData } from 'next/image'
 import { ReactNode } from 'react'
 import Image from 'next/image'
+import { StickyBackground } from '../layout/StickyBackground'
 
 interface WorkExperienceProps {
   company: string
@@ -25,14 +26,12 @@ export function WorkExperience({
   children,
 }: WorkExperienceProps) {
   return (
-    <div className={`text-zinc-100 min-h-screen relative snap-start overflow-hidden`}>
-      {/* Background image with blur */}
-      <div
-        className="absolute inset-0 z-0 transition-opacity duration-500"
-      >
-        <Image src={backgroundImage} alt="Background" fill className='inset-0' style={{ filter: 'brightness(0.8)' }} />
-        <div className="absolute inset-0 backdrop-blur-md bg-neutral-500/30" />
-      </div>
+    <div className={`text-zinc-100 min-h-screen relative snap-start`}>
+      <StickyBackground 
+        image={backgroundImage} 
+        hasBlur={true}
+        imageStyle={{ filter: 'brightness(0.8)' }} 
+      />
 
       {/* Content */}
       <div className="relative z-10 page-max-width-regular min-h-screen flex items-center">

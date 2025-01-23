@@ -33,7 +33,7 @@ export default function InternshipWorkExperience() {
         "
         orientation="right"
       >
-        <PhonePocketImage src={CalculatorPhoneImage} alt="Calculator" className="sm:-mb-9" />
+        <PhonePocketImage src={CalculatorPhoneImage} alt="Calculator" className="sm:-mb-8 sm:border-hidden" />
       </ProjectEntry>
     </WorkExperience>
   )

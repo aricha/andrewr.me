@@ -42,7 +42,7 @@ export default function JailbreakWorkExperience() {
             Jukebox provided a beautiful music widget with rich controls built into Notification Center on iOS 5-6 (before widgets existed natively). It even integrated with other tweaks to support being used directly on the Home Screen.
             "
       >
-        <PhonePocketImage src={JukeboxImage} alt="Jukebox" className="sm:-mb-9" imageClassName="max-w-[260px]" />
+        <PhonePocketImage src={JukeboxImage} alt="Jukebox" className="sm:-mb-8 sm:border-hidden" imageClassName="max-w-[260px]" />
       </ProjectEntry>
     </WorkExperience>
   )

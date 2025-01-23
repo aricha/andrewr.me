@@ -43,7 +43,7 @@ export default function HomeWorkExperience() {
         <PhonePocketImage
           src={automationImage}
           alt="Home Presence Automations"
-          className="sm:-mb-9"
+          className="sm:-mb-8 sm:border-hidden"
         />
       </ProjectEntry>
     </WorkExperience>

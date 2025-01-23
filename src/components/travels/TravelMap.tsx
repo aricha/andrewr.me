@@ -259,7 +259,7 @@ export default function TravelMap({
           mapTypeId='hybrid'
           colorScheme='DARK'
           disableDefaultUI={true}
-          scrollwheel={true}
+          scrollwheel={debugMode}
           renderingType='VECTOR'
         >
           {/* Render route segments for each trip part */}
