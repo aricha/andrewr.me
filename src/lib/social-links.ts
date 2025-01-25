@@ -18,6 +18,6 @@ export function getSocialLinkName(href: string): string {
   if (href.includes('linkedin')) return 'LinkedIn';
   if (href.includes('instagram')) return 'Instagram';
   if (href.includes('mailto')) return 'Email';
-  if (href.includes('scholar.google')) return 'Google Scholar';
+  if (href.includes('scholar.google')) return 'Patents';
   return 'Link';
 } 
