@@ -76,18 +76,22 @@ function StatsCard({ stats, countries }: {
   }, []);
 
   return (
-    <Card className="md:w-1/3 rounded-2xl p-6">
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
-        {Object.entries(stats).map(([key, value]) => (
-          <Stat key={key} value={value} label={key} />
-        ))}
-      </div>
-
-      <div className="pt-6 grid grid-cols-[repeat(auto-fit,minmax(3.5rem,1fr))] gap-2 [&>svg]:w-[3.5rem]">
-        {Object.entries(countries).map(([code, name]) => {
-          const Flag = flags[code];
-          return Flag ? <Flag key={code} aria-label={name} /> : null;
-        })}
+    <Card className="md:w-1/3 min-w-[22rem] rounded-2xl p-6">
+      <div className="max-w-[34rem] mx-auto items-center">
+        <div className="grid grid-cols-3 gap-4">
+          {Object.entries(stats).map(([key, value]) => (
+            <Stat key={key} value={value} label={key} />
+          ))}
+        </div>
+        <div className="pt-6">
+          <h2 className="text-xl font-semibold text-zinc-50 mb-2">Countries Visited</h2>
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(3.5rem,1fr))] gap-2 [&>*]:w-[3.5rem]">
+            {Object.entries(countries).map(([code, name]) => {
+              const Flag = flags[code];
+              return Flag ? <Flag key={code} aria-label={name} /> : null;
+            })}
+          </div>
+        </div>
       </div>
     </Card>
   );

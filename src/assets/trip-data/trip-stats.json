@@ -8,7 +8,7 @@
     "Photos": 32247,
     "Cheapest Meal": "$0.36",
     "Languages": 7,
-    "Things": 68
+    "Motorbike Accidents": 0
   },
   "countries": {
     "th": "Thailand",
@@ -23,8 +23,6 @@
     "gb-sct": "Scotland",
     "pt": "Portugal",
     "es": "Spain",
-    "gi": "Gibraltar",
-    "us": "United States",
-    "ca": "Canada"
+    "gi": "Gibraltar"
   }
 }
