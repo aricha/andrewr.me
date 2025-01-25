@@ -5,7 +5,7 @@ import React from 'react';
 import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Card, CardLink } from '@/components/Card'
-import { SocialLinks } from '@/components/SocialLinks'
+import { InlineSocialLinks } from '@/components/InlineSocialLinks'
 import { StickyBackground } from '@/components/layout/StickyBackground'
 import { Animations } from '@/lib/animations'
 
@@ -58,7 +58,7 @@ export default function Home() {
                 I live to explore, try new things, and get out in nature. I've been lucky to spend 2024 on sabbatical traveling the world. 
                 When I'm working, I love to build cool things and specialize in UI for  platforms.
                 </p>
-                <SocialLinks className="mt-4" />
+                <InlineSocialLinks className="mt-4" />
               </div>
             </Card>
           </motion.div>
