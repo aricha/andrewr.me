@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react';
 import TravelMap from './TravelMap';
 import { Card } from '../Card';
 import { TravelData } from './TravelDataProvider';
@@ -7,33 +8,23 @@ import { Animations } from '@/lib/animations';
 import { motion } from 'framer-motion';
 import { StickyBackground } from '../layout/StickyBackground';
 import BackgroundImage from '@/assets/travel/summary-bg.jpg';
+import { loadFlag } from '@/lib/flags';
+import type { SVGProps } from 'react';
 
 interface TravelSummaryProps {
   travelData: TravelData;
-  stats: {
-    kilometers: number;
-    countries: number;
-    photos: number;
-    days: number;
-    cheapestMeal: number;
-    continents: number;
-    languages: number;
-    things: number;
-    steps: number;
-  };
 }
 
 export default function TravelSummary({
   travelData,
-  stats
 }: TravelSummaryProps) {
   return (
     <section className="snap-start relative w-full min-h-screen content-center">
-      <StickyBackground 
-        image={BackgroundImage} 
+      <StickyBackground
+        image={BackgroundImage}
         hasBlur={false}
       />
-      
+
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -57,29 +48,64 @@ export default function TravelSummary({
             </div>
           </div>
 
-          <Card className="md:w-1/3 rounded-2xl p-6">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
-              <Stat value={stats.kilometers.toLocaleString()} label="Kilometers" />
-              <Stat value={stats.countries} label="Countries" />
-              <Stat value={stats.photos.toLocaleString()} label="Photos" />
-              <Stat value={stats.days} label="Days" />
-              <Stat value={`$${stats.cheapestMeal}`} label="Cheapest Meal" />
-              <Stat value={stats.continents} label="Continents" />
-              <Stat value={stats.languages} label="Languages" />
-              <Stat value={stats.things} label="Things" />
-              <Stat value={`${stats.steps}m`} label="Steps" />
-            </div>
-          </Card>
+          <StatsCard stats={travelData.stats} countries={travelData.countries} />
         </div>
       </motion.div>
     </section>
   );
 }
 
-function Stat({ value, label }: { value: string | number, label: string }) {
+function StatsCard({ stats, countries }: { 
+  stats: { [key: string]: number | string }, 
+  countries: { [code: string]: string }
+ }) {
+  type FlagComponent = React.ComponentType<SVGProps<SVGSVGElement>>;
+  const [flags, setFlags] = useState<Record<string, FlagComponent>>({});
+
+  useEffect(() => {
+    const loadFlags = async () => {
+      const loadedFlags: Record<string, FlagComponent> = {};
+      await Promise.all(
+        Object.keys(countries).map(async (code) => {
+          loadedFlags[code] = await loadFlag(code);
+        })
+      );
+      setFlags(loadedFlags);
+    };
+    loadFlags();
+  }, []);
+
+  return (
+    <Card className="md:w-1/3 rounded-2xl p-6">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-4 mx-auto">
+        {Object.entries(stats).map(([key, value]) => (
+          <Stat key={key} value={value} label={key} />
+        ))}
+      </div>
+
+      <div className="pt-6 grid grid-cols-[repeat(auto-fit,minmax(3.5rem,1fr))] gap-2 [&>svg]:w-[3.5rem]">
+        {Object.entries(countries).map(([code, name]) => {
+          const Flag = flags[code];
+          return Flag ? <Flag key={code} aria-label={name} /> : null;
+        })}
+      </div>
+    </Card>
+  );
+}
+
+function formatNumber(num: number): string {
+  if (num >= 1000000) {
+    return (Math.round(num / 10000) / 100).toFixed(1) + 'm';
+  } else if (num >= 100000) {
+    return (Math.round(num / 100) / 10).toFixed(1) + 'k';
+  }
+  return Math.round(num).toLocaleString();
+}
+
+function Stat({ value, label }: { value: number | string, label: string }) {
   return (
     <div className="text-center">
-      <div className="text-3xl font-bold text-white">{value}</div>
+      <div className="text-3xl font-bold text-white">{typeof value === 'number' ? formatNumber(value) : value}</div>
       <div className="text-md text-zinc-300">{label}</div>
     </div>
   );

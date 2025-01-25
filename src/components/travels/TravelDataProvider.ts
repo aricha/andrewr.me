@@ -11,6 +11,12 @@ export type {
   Location, TravelMode, TravelModeRange, FilterConfig 
 } from './PolarstepsParser';
 
+import TripStatsData from '@/assets/trip-data/trip-stats.json';
+
+export interface TripStats {
+  [key: string]: number | string;
+}
+
 export interface Stop {
   name: string;
   displayName: string;
@@ -57,6 +63,8 @@ export interface TravelData {
     east: number;
     west: number;
   };
+  stats: { [key: string]: number | string };
+  countries: { [code: string]: string };
 }
 
 export class TravelDataProvider {
@@ -177,12 +185,17 @@ export class TravelDataProvider {
       endDate = Math.max(endDate, parsedData.endDate);
     }
 
+    let stats = TripStatsData.stats;
+    stats.Kilometers = totalKm;
+
     const travelData: TravelData = {
       startDate,
       endDate,
       totalKm,
       tripParts,
-      bounds: globalBounds
+      bounds: globalBounds,
+      stats: stats,
+      countries: TripStatsData.countries
     };
 
     this.cachedData = travelData;

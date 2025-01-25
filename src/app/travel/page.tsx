@@ -31,20 +31,7 @@ export default function Travel() {
         >
           <TravelIntro />
           {travelData && (
-            <TravelSummary
-              travelData={travelData}
-              stats={{
-                kilometers: 13820,
-                countries: 13,
-                photos: 37028,
-                days: 312,
-                cheapestMeal: 0.32,
-                continents: 4,
-                languages: 7,
-                things: 68,
-                steps: 14.2,
-              }}
-            />
+            <TravelSummary travelData={travelData}/>
           )}
           <TravelStories />
         </div>
