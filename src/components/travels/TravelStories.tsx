@@ -27,20 +27,19 @@ const stories: Story[] = [
       '/travel/stories/vietnam/motorbike.jpg'
     ],
     prominent: true,
-    description: 'An absolutely wild adventure touring 5,600km all over the country, from south to north, over 10 weeks',
+    description: 'An incredible adventure touring 5,600km all over the country, from south to north, over 10 weeks',
     fullDescription:
-      `Over 10 incredible weeks, I embarked on a 5,600km journey through Vietnam on a trusty Honda Win motorbike. Starting from Ho Chi Minh City in the south, I made my way north to Hanoi, exploring everything in between.
+      `By the time I arrived in Vietnam in early April, I had long been dreaming of traveling the country with the ultimate freedom: by buying my own motorbike. I found a trusty Honda Wave to call my own in the city of Can Tho in the Mekong Delta, and proceeded to spend the next 10 weeks driving over 5,600km all through the country. I wandered my way through the huge variety of scenery Vietnam has to offer, from lush jungles to beautiful coastline to towering karst mountains. And I somehow survived driving through the organized chaos of cities like Ho Chi Minh City and through places that definitely do not qualify as roads in the countryside, without more than a scratch. (I still wore protective gear just in case.)
 
-      The journey took me through bustling cities, remote mountain passes, and stunning coastal roads. I navigated through the organized chaos of Vietnamese traffic, experienced the warmth of local hospitality in small villages, and discovered hidden gems off the tourist trail.
+      Some of the highlights include:
 
-      Some highlights included:
-      • Riding the legendary Hai Van Pass
-      • Exploring the terraced rice fields of Sapa
-      • Getting lost in the maze-like streets of Hanoi's Old Quarter
-      • Cruising through the limestone karsts of Ha Giang
-      • Sharing meals with locals in tiny roadside phở shops
+      * Driving the Ho Chi Minh Road, a pristine and near-deserted winding road through the countryside from Khe Sanh to Phong Nha
+      * Staying in a homestay in the jungle near the small town of Ben Tre, where we lived a day in the life of a traditional farmer: we learned how to climb coconut trees to harvest coconuts, fish in the Mekong Delta, and assemble our own freshly harvested meal
+      * Exploring the far north of Vietnam – in my opinion the most beautiful part of the country – where I really got off the beaten path. In addition to driving the famous Ha Giang Loop with its jaw-dropping scenery, I explored lesser-known but equally beautiful places in the northwest around Sapa, in the northeast around Cao Bang, and closer to Hanoi in Ba Be Lake. I got within a stone’s throw of the Chinese border and visited fascinating places like the cave in which Ho Chi Minh hid for many years leading up to the war.
+      * Experiencing the wonderful warmth and hospitality of so many Vietnamese, especially in the smaller towns off the tourist trail.
+      * The food! Oh my god, the food. From the famous pho and banh mi to lesser-known dishes that I adored like banh xeo and bun cha, I absolutely adored the food I ate in Vietnam. It also remains the cheapest place I’ve ever eaten – I had hearty banh mis for as little as 9,000 VND, about $0.32 USD!
 
-      This adventure wasn't just about the destinations - it was about the journey itself, the people met along the way, and the countless unexpected moments that made it unforgettable.`
+      Without a doubt these 10 weeks were the craziest, most thrilling times of my year of traveling. It was everything I dreamed it would be and more.`
   },
   {
     title: 'Camping in a Cave ⛺',

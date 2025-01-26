@@ -49,9 +49,9 @@ export default function Home() {
                 <h3 className="text-lg text-zinc-700 dark:text-zinc-300">👋, you've reached the home of</h3>
                 <h1 className="text-4xl font-bold mb-4 text-zinc-950 dark:text-zinc-100">Andrew Richardson</h1>
                 <p className="text-xl text-zinc-700 dark:text-zinc-200">
-                I'm a software engineer and travel addict from Vancouver 🇨🇦, and currently based out of Seattle 🇺🇸. 
+                I'm a software engineer and travel addict from Vancouver 🇨🇦, and (soon to be) based out of Seattle 🇺🇸. 
                 I live to explore, try new things, and get out in nature. I've been lucky to spend 2024 on sabbatical traveling the world. 
-                When I'm working, I love to build cool things and specialize in UI for  platforms.
+                When I'm working, I love to build cool things and specialize in UI for  platforms.
                 </p>
                 <InlineSocialLinks className="mt-4" />
               </div>
