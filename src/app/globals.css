@@ -24,6 +24,10 @@
   .page-max-width-regular {
     @apply max-w-screen-lg mx-auto px-4 sm:px-6 lg:px-0 lg:mx-[max(32px,calc((100vw-1024px)/2))];
   }
+
+  .rounded-button {
+    @apply rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors backdrop-blur-md p-2;
+  }
 }
 
 .dark [data-dark-hover]:hover {

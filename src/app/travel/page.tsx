@@ -1,41 +1,15 @@
-'use client'
-import TravelIntro from '@/components/travels/TravelIntro';
-import TravelSummary from '@/components/travels/TravelSummary';
-import TravelStories from '@/components/travels/TravelStories';
+import { getTravelStories } from '@/lib/mdx';
+import { TravelClient } from './TravelClient';
 import { TravelDataProvider } from '@/components/travels/TravelDataProvider';
-import { Layout } from '@/components/layout/Layout';
-import { useRef, useEffect, useState } from 'react';
-import type { TravelData } from '@/components/travels/TravelDataProvider';
 
-export default function Travel() {
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const [travelData, setTravelData] = useState<TravelData | null>(null);
+// This ensures the page is statically generated at build time
+export const dynamic = 'force-static';
+export const revalidate = false;
+
+export default async function TravelPage() {
+  const stories = await getTravelStories();
   const dataProvider = TravelDataProvider.getInstance();
+  const { data: travelData } = await dataProvider.loadTravelData();
 
-  useEffect(() => {
-    const loadData = async () => {
-      const { data } = await dataProvider.loadTravelData();
-      setTravelData(data);
-    };
-    loadData();
-  }, []);
-
-  return (
-    <Layout scrollContainer={scrollContainerRef} navBarMaxWidth="wide">
-      <div
-        className="flex flex-col min-h-screen"
-      >
-        <div
-          ref={scrollContainerRef}
-          className="flex-grow h-screen overflow-y-auto snap-y"
-        >
-          <TravelIntro />
-          {travelData && (
-            <TravelSummary travelData={travelData}/>
-          )}
-          <TravelStories />
-        </div>
-      </div>
-    </Layout>
-  );
+  return <TravelClient stories={stories} travelData={travelData} />;
 }
