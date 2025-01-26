@@ -3,14 +3,13 @@ import { Card } from "../Card"
 import { StickyBackground } from "../layout/StickyBackground"
 import { motion } from "framer-motion";
 import { Animations } from "@/lib/animations";
-
-import BackgroundImage from '@/assets/travel/intro-hero.jpg';
+import { CircleAlertIcon } from "lucide-react";
 
 export default function TravelIntro() {
   return (
     <div className="snap-start relative w-full min-h-screen">
       <StickyBackground
-        image={BackgroundImage}
+        image="/travel/intro-hero.jpg"
         hasBlur={false}
         imageStyle={{ objectPosition: '80% 50%' }}
       />
@@ -23,7 +22,7 @@ export default function TravelIntro() {
             <div className="flex flex-col gap-8 text-zinc-50 mb-8">
               <div className="flex flex-col gap-1 ml-4">
                 <h1 className="text-7xl font-bold" style={{ textShadow: '1px 2px 2px rgba(0, 0, 0, 0.5)' }}>2024</h1>
-                <h2 className="text-3xl font-medium" style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}>A Gap Year to Remember</h2>
+                <h2 className="text-3xl font-medium" style={{ textShadow: '0px 1px 2px rgba(0, 0, 0, 0.5)' }}>A Year of Travel</h2>
               </div>
             </div>
             
@@ -36,7 +35,13 @@ export default function TravelIntro() {
                   encountered bumps on the road, it was without a doubt the greatest adventure of my life. It's hard to sum up
                   living a year of seeing incredible nature, getting to know new cultures and people, and all kinds of
                   new experiences – but I've put together this page to try.
+                  <br />
+                  <br />
                 </p>
+                <div className="flex items-center gap-4">
+                  <CircleAlertIcon className="w-8 h-8 text-yellow-300" />
+                  <b>This page is a work in progress, so please check back soon!</b>
+                </div>
               </Card>
             </motion.div>
           </div>

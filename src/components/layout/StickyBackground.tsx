@@ -1,8 +1,9 @@
+import { CldImage } from 'next-cloudinary'
 import Image, { StaticImageData } from 'next/image'
 import { CSSProperties } from 'react'
 
 interface StickyBackgroundProps {
-  image: StaticImageData
+  image: string
   hasBlur?: boolean
   imageStyle?: CSSProperties
   blurClassName?: string
@@ -17,7 +18,7 @@ export function StickyBackground({
   return (
     <div className='absolute top-0 -z-10 h-full w-full'>
       <div className="sticky top-0 w-full h-screen">
-        <Image 
+        <CldImage 
           src={image} 
           alt="Background" 
           fill 

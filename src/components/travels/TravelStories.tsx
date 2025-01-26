@@ -3,24 +3,15 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Animations } from '@/lib/animations';
 import { StickyBackground } from '../layout/StickyBackground';
-import Image, { StaticImageData } from 'next/image';
-import BackgroundImage from '@/assets/travel/stories/stories-background.jpg';
+import Image from 'next/image';
 import StoryModal from './StoryModal';
 import { useState } from 'react';
-
-// Vietnam Photos
-import VietnamMotorbike from '@/assets/travel/stories/vietnam/motorbike.jpg';
-
-// Other Story Photos
-import CaveCamping from '@/assets/travel/stories/cave-camping.jpg';
-import Acatenango from '@/assets/travel/stories/acatenango.jpg';
-import SailingColombia from '@/assets/travel/stories/sailing-colombia.jpg';
-import Camino from '@/assets/travel/stories/camino.jpg';
+import { CldImage } from 'next-cloudinary';
 
 export interface Story {
   title: string;
-  image: StaticImageData;
-  photos?: StaticImageData[];
+  image: string;
+  photos?: string[];
   description?: string;
   fullDescription?: string;
   prominent?: boolean;
@@ -29,8 +20,12 @@ export interface Story {
 const stories: Story[] = [
   {
     title: 'Motorbiking Vietnam 🏍️',
-    image: VietnamMotorbike,
-    photos: [VietnamMotorbike, VietnamMotorbike, VietnamMotorbike],
+    image: '/travel/stories/vietnam/motorbike.jpg',
+    photos: [
+      '/travel/stories/vietnam/motorbike.jpg',
+      '/travel/stories/vietnam/motorbike.jpg',
+      '/travel/stories/vietnam/motorbike.jpg'
+    ],
     prominent: true,
     description: 'An absolutely wild adventure touring 5,600km all over the country, from south to north, over 10 weeks',
     fullDescription:
@@ -49,19 +44,19 @@ const stories: Story[] = [
   },
   {
     title: 'Camping in a Cave ⛺',
-    image: CaveCamping
+    image: '/travel/stories/cave-camping.jpg'
   },
   {
     title: 'Summitting Acatenango 🏔️',
-    image: Acatenango
+    image: '/travel/stories/acatenango.jpg'
   },
   {
     title: 'Sailing to Colombia ⛰️',
-    image: SailingColombia
+    image: '/travel/stories/sailing-colombia.jpg'
   },
   {
     title: 'Hiking the Camino 🥾',
-    image: Camino
+    image: '/travel/stories/camino.jpg'
   }
 ];
 
@@ -71,7 +66,7 @@ export default function TravelStories() {
   return (
     <section className="snap-start relative w-full min-h-screen content-center">
       <StickyBackground
-        image={BackgroundImage}
+        image="/travel/stories/stories-background.jpg"
         hasBlur={false}
       />
 
@@ -103,7 +98,7 @@ export default function TravelStories() {
               layoutId={`story-${story.title}`}
             >
               <div className="relative h-full rounded-2xl overflow-hidden">
-                <Image
+                <CldImage
                   src={story.image}
                   alt={story.title}
                   fill

@@ -1,12 +1,10 @@
-import { ProjectEntry } from "./ProjectEntry";
-import automationImage from "@/assets/homekit-location-automation.png";
-import cameraImage from "@/assets/home-cameras-iphone-2.png";
-import Link from "next/link";
-import { PhonePocketImage } from "./PhonePocketImage";
-import { WorkExperience } from "./WorkExperience";
+import React from 'react';
+import { ProjectEntry } from './ProjectEntry';
+import { WorkExperience } from './WorkExperience';
 
-import HomeKitIcon from '@/assets/homekit-icon.svg'
-import HomeBackgroundImage from "@/assets/home-green-wallpaper.png";
+import HomeKitIcon from '@/assets/work/homekit-icon.svg'
+import { PhonePocketImage } from './PhonePocketImage';
+import Link from 'next/link';
 
 export default function HomeWorkExperience() {
   return (
@@ -18,7 +16,7 @@ export default function HomeWorkExperience() {
       I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory 
       "
       Icon={HomeKitIcon}
-      backgroundImage={HomeBackgroundImage}
+      backgroundImage="work/home-green-wallpaper.jpg"
     >
       <ProjectEntry
         title="HomeKit Secure Video"
@@ -27,7 +25,7 @@ export default function HomeWorkExperience() {
         "
       >
         <PhonePocketImage
-          src={cameraImage}
+          src="work/home-cameras-iphone-2"
           alt="HomeKit Secure Video"
         />
       </ProjectEntry>
@@ -41,7 +39,7 @@ export default function HomeWorkExperience() {
         orientation="right"
       >
         <PhonePocketImage
-          src={automationImage}
+          src="work/homekit-location-automation"
           alt="Home Presence Automations"
           className="sm:-mb-8 sm:border-hidden"
         />

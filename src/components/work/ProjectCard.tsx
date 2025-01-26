@@ -1,3 +1,4 @@
+import { CldImage } from 'next-cloudinary'
 import Image from 'next/image'
 
 const SHOW_TAGS = false
@@ -22,7 +23,7 @@ export function ProjectCard({ title, description, imageSrc, tags }: ProjectCardP
   return (
     <div className="bg-zinc-950/40 backdrop-blur-md rounded-lg shadow-md overflow-hidden w-full h-full flex flex-col">
       <div className="relative h-32 flex-shrink-0">
-        <Image
+        <CldImage
           src={imageSrc}
           alt={title}
           fill

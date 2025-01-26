@@ -6,18 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "upload-images": "tsx scripts/cloudinary/cli.ts"
   },
   "dependencies": {
+    "@cloudinary-util/url-loader": "^6.0.0",
     "@react-google-maps/api": "^2.20.5",
     "@types/google.maps": "^3.58.1",
     "@vis.gl/react-google-maps": "^1.5.0",
+    "cloudinary": "^2.5.1",
     "flag-icons": "^7.3.2",
     "framer-motion": "^12.0.0",
     "leaflet": "^1.9.4",
     "lodash": "^4.17.21",
     "lucide-react": "^0.471.0",
     "next": "15.1.0",
+    "next-cloudinary": "^6.16.0",
     "next-themes": "^0.4.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -34,10 +38,12 @@
     "@types/react-dom": "^19",
     "@types/react-leaflet": "^2.8.3",
     "autoprefixer": "^10.4.20",
+    "dotenv": "^16.4.7",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
     "typescript": "^5"
   }
 }

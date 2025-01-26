@@ -8,12 +8,7 @@ import { Card, CardLink } from '@/components/Card'
 import { InlineSocialLinks } from '@/components/InlineSocialLinks'
 import { StickyBackground } from '@/components/layout/StickyBackground'
 import { Animations } from '@/lib/animations'
-
-import WorkImage from '@/assets/home/wwdc-talk-zoom.png'
-import TravelImage from '@/assets/home/travel.jpg'
-import ProfileImage from '@/assets/home/profile.jpg'
-import BackgroundImage from '@/assets/home/home-background-2.jpg'
-
+import { CldImage } from 'next-cloudinary'
 const container = {
   hidden: { opacity: 0 },
   visible: {
@@ -28,7 +23,7 @@ const container = {
 export default function Home() {
   return (
     <>
-      <StickyBackground image={BackgroundImage}/>
+      <StickyBackground image="/home/home-background-2.jpg"/>
       <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center dark">
         <motion.div 
           variants={container}
@@ -42,8 +37,8 @@ export default function Home() {
           >
             <Card className="flex flex-col items-center justify-center text-2xl">
               <div className="relative w-full aspect-[16/9] md:max-h-[236px] overflow-hidden rounded-t-3xl">
-                <Image
-                  src={ProfileImage}
+                <CldImage
+                  src='/home/profile.jpg'
                   alt="Andrew Richardson"
                   fill
                   className="object-cover"
@@ -66,13 +61,13 @@ export default function Home() {
             <motion.div variants={Animations.appearVariants}>
               <CardLink
                 href="/work" label="Work" icon={Laptop}
-                imageSrc={WorkImage} imageAlt="Work"
+                imageSrc='/home/wwdc-talk-zoom.png' imageAlt="Work"
               />
             </motion.div>
             <motion.div variants={Animations.appearVariants}>
               <CardLink
                 href="/travel" label="Travel" icon={Plane}
-                imageSrc={TravelImage} imageAlt="Travel"
+                imageSrc='/home/travel.jpg' imageAlt="Travel"
               />
             </motion.div>
           </div>

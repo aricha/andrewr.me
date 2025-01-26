@@ -1,6 +1,7 @@
 import { LucideIcon, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import Image, { StaticImageData } from 'next/image'
+import { CldImage } from "next-cloudinary"
 
 export function Card({ className, children }: { className?: string, children: React.ReactNode }) {
   return (
@@ -16,13 +17,13 @@ export function CardLink({
     href: string
     icon: LucideIcon
     label: string
-    imageSrc: StaticImageData
+    imageSrc: string
     imageAlt: string
   }) {
     return (
       <Link href={href}>
         <Card className="w-full h-full text-2xl aspect-[5/4] sm:aspect-auto hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
-          <Image
+          <CldImage
             src={imageSrc} alt={imageAlt} fill
             className="object-cover rounded-xl sm:rounded-3xl"
             style={{ objectPosition: '50% 100%' }}

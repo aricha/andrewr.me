@@ -16,5 +16,12 @@ const nextConfig: NextConfig = {
     return config
   }
 }
+// next.config.js
+// module.exports = {
+//   images: {
+//     loader: 'custom',
+//     loaderFile: './src/utils/cloudinary-loader.ts',
+//   }
+// }
 
 export default nextConfig

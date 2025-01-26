@@ -5,8 +5,8 @@ import { PlayIcon } from 'lucide-react';
 import { ProjectEntry } from './ProjectEntry';
 import { WorkExperience } from './WorkExperience';
 
-import AppleVisionIcon from '@/assets/vision-pro-icon.svg'
-import VisionBackgroundImage from '@/assets/living-room-background-2.jpg'
+import AppleVisionIcon from '@/assets/work/vision-pro-icon.svg'
+import { CldImage } from 'next-cloudinary';
 
 export default function VisionWorkExperience() {
   return (
@@ -15,7 +15,7 @@ export default function VisionWorkExperience() {
       role="visionOS UI Frameworks"
       period="2019 - 2024"
       Icon={AppleVisionIcon}
-      backgroundImage={VisionBackgroundImage}
+      backgroundImage="/work/living-room-background-2.jpg"
       description="
         I had the opportunity to help build visionOS from the early days of Apple Vision Pro, 
         working with some amazing people to figure out how people should build apps in a 3D spatial environment. 
@@ -32,8 +32,8 @@ export default function VisionWorkExperience() {
         <VisionWindow>
           <Link href="https://developer.apple.com/wwdc23/10149/" target="_blank" rel="noopener noreferrer">
             <div className="relative w-full aspect-video">
-              <Image
-                src="/images/wwdc-talk.png"
+              <CldImage
+                src="/work/wwdc-talk.png"
                 alt="WWDC23 Talk"
                 fill
                 priority

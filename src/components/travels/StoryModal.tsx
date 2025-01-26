@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { Story } from './TravelStories';
 import { ArrowRightIcon, XIcon } from 'lucide-react';
 import { ArrowLeftIcon } from 'lucide-react';
+import { CldImage } from 'next-cloudinary';
 
 interface StoryModalProps {
   story: Story;
@@ -50,7 +51,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
               transition={{ duration: 0.3 }}
               className="absolute inset-0"
             >
-              <Image
+              <CldImage
                 src={photos[currentPhotoIndex]}
                 alt={`${story.title} photo ${currentPhotoIndex + 1}`}
                 fill

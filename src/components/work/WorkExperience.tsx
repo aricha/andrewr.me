@@ -1,18 +1,17 @@
 'use client'
 
-import { LucideIcon } from 'lucide-react'
 import { StaticImageData } from 'next/image'
 import { ReactNode } from 'react'
-import Image from 'next/image'
 import { StickyBackground } from '../layout/StickyBackground'
-
+import { LucideIcon } from 'lucide-react'
+import Image from 'next/image'
 interface WorkExperienceProps {
   company: string
   role: string
   period: string
   description: string
   Icon: LucideIcon
-  backgroundImage: StaticImageData
+  backgroundImage: string
   children?: ReactNode
 }
 
@@ -25,6 +24,7 @@ export function WorkExperience({
   backgroundImage,
   children,
 }: WorkExperienceProps) {
+  console.log(Icon)
   return (
     <div className={`text-zinc-100 min-h-screen relative snap-start`}>
       <StickyBackground 

@@ -1,7 +1,8 @@
-import Image, { StaticImageData } from "next/image";
+import { CldImage } from "next-cloudinary";
+import { ImageAssetKey, getImageAsset } from "@/types/image-asset";
 
 interface PhonePocketImageProps {
-  src: StaticImageData;
+  src: ImageAssetKey;
   alt: string;
   className?: string;
   imageClassName?: string;
@@ -15,11 +16,13 @@ export function PhonePocketImage({ src, alt, className, imageClassName }: PhoneP
         borderImage: 'linear-gradient(to right, transparent 15%, rgba(80,80,80,0.7) 30%, rgba(255,255,255,0.7) 60%, rgba(80,80,80,0.7) 80%, transparent 85%) 4',
       }}
     >
-      <Image
+      <CldImage
         src={src}
         alt={alt}
+        height={getImageAsset(src)?.height}
+        width={getImageAsset(src)?.width}
         className={`max-w-72 w-full sm:px-0 mx-auto ${imageClassName}`}
       />
     </div>
   );
-} 
+}
