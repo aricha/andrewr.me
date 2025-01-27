@@ -30,7 +30,7 @@ export default function VisionWorkExperience() {
         I had the honor of presenting a headline talk for visionOS at WWDC23, “Meet SwiftUI for spatial computing”, that introduced the core design concepts for SwiftUI on visionOS and some of its new capabilities. Presenting a WWDC talk was a dream come true for me!
         ">
         <VisionWindow>
-          <Link href="https://developer.apple.com/wwdc23/10149/" target="_blank" rel="noopener noreferrer">
+          <Link href="https://developer.apple.com/videos/play/wwdc2023/10109/" target="_blank" rel="noopener noreferrer">
             <div className="relative w-full aspect-video">
               <CldImage
                 src="/work/wwdc-talk.png"

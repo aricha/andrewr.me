@@ -26,7 +26,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
       <motion.div
         layoutId={layoutId}
         transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-        className="relative w-fit h-full max-w-[900px] max-h-[900px] bg-zinc-900/60 backdrop-blur-lg rounded-2xl overflow-y-auto flex flex-col"
+        className="relative min-w-[400px] w-fit h-fit max-h-[100%] max-w-[900px] bg-zinc-900/60 backdrop-blur-lg rounded-2xl overflow-y-auto flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -37,7 +37,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
         </button>
 
         <div className="overflow-y-auto">
-          <div className="relative h-[60vh] min-h-96 flex-none">
+          <div className="relative h-[60vh] min-h-96 max-h-[600px] flex-none">
             <CldImage
               src={story.image}
               alt={story.title}
