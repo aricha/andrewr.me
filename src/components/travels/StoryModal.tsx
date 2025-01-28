@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { X } from 'lucide-react';
 import { CldImage } from 'next-cloudinary';
 import { TravelStory } from '@/types/travel';
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
+import { storyImports } from '@/content/travel/config';
 
 interface StoryModalProps {
   story: TravelStory;
@@ -12,7 +15,10 @@ interface StoryModalProps {
 }
 
 export default function StoryModal({ story, onClose, layoutId }: StoryModalProps) {
-  const StoryContent = require(`@/content/travel/${story.slug}.mdx`).default;
+  const StoryContent = dynamic(storyImports[story.slug], {
+    loading: () => <LoadingContent />,
+    ssr: false
+  });
 
   return (
     <motion.div
@@ -26,7 +32,10 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
       <motion.div
         layoutId={layoutId}
         transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-        className="relative min-w-[400px] w-fit h-fit max-h-[100%] max-w-[900px] bg-zinc-900/60 backdrop-blur-lg rounded-2xl overflow-y-auto flex flex-col"
+        className="relative min-w-[400px] w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950/70 backdrop-blur-xl rounded-2xl overflow-y-auto flex flex-col"
+        style={{
+          minHeight: 'calc(min(100vh, 1000px))',
+        }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -58,10 +67,20 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
             </div>
           </div>
           <div className="p-6 prose prose-invert prose-stone max-w-none flex-1">
-            <StoryContent />
+            <Suspense fallback={<LoadingContent />}>
+              <StoryContent />
+            </Suspense>
           </div>
         </div>
       </motion.div>
     </motion.div>
   );
 } 
+
+const LoadingContent = () => (
+  <div className="animate-pulse space-y-4">
+    <div className="h-4 bg-zinc-800 rounded w-2/3"></div>
+    <div className="h-4 bg-zinc-800 rounded w-full"></div>
+    <div className="h-4 bg-zinc-800 rounded w-4/5"></div>
+  </div>
+);

@@ -24,7 +24,6 @@ export function WorkExperience({
   backgroundImage,
   children,
 }: WorkExperienceProps) {
-  console.log(Icon)
   return (
     <div className={`text-zinc-100 min-h-screen relative snap-start`}>
       <StickyBackground 

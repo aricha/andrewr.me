@@ -238,5 +238,13 @@
     "format": "png",
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854422/work/settings-search.png",
     "relativePath": "work/settings-search.png"
+  },
+  "work/wwdc-talk": {
+    "publicId": "work/wwdc-talk",
+    "width": 3840,
+    "height": 2160,
+    "format": "png",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738032523/work/wwdc-talk.png",
+    "relativePath": "work/wwdc-talk.png"
   }
 }

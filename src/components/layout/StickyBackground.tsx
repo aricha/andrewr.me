@@ -1,5 +1,4 @@
 import { CldImage } from 'next-cloudinary'
-import Image, { StaticImageData } from 'next/image'
 import { CSSProperties } from 'react'
 
 interface StickyBackgroundProps {
@@ -25,6 +24,7 @@ export function StickyBackground({
           sizes='100vw' 
           className='object-cover'
           style={imageStyle}
+          loading='lazy'
         />
         {hasBlur && <div className={`absolute inset-0 ${blurClassName}`} />}
       </div>

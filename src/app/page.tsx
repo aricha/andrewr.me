@@ -2,7 +2,6 @@
 
 import { Laptop, Plane } from 'lucide-react'
 import React from 'react';
-import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { Card, CardLink } from '@/components/Card'
 import { InlineSocialLinks } from '@/components/InlineSocialLinks'

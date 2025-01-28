@@ -54,6 +54,7 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
                   src={story.image}
                   alt={story.title}
                   fill
+                  loading='lazy'
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes={
                     story.prominent 
