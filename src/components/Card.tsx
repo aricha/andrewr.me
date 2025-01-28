@@ -29,10 +29,10 @@ export function CardLink({
             sizes="(max-width: 768px) 100vw, (max-width: 896px) 50vw, 420px"
           />
           <div className="absolute bottom-0 w-full rounded-b-xl sm:rounded-b-3xl bg-zinc-50/50 dark:bg-zinc-950/20 backdrop-blur-xl p-1 sm:p-2">
-            <div className={`inline-flex items-center justify-center px-2 sm:py-2 text-lg sm:text-2xl font-semibold text-zinc-800 dark:text-zinc-200`}>
-              <Icon className={`mr-2 h-8 w-8`} />
+            <div className={`inline-flex items-center px-2 sm:py-2 text-lg sm:text-2xl font-semibold text-zinc-800 dark:text-zinc-200`}>
+              <Icon className="mr-2 h-4 sm:h-8 w-4 sm:w-8" />
               {label}
-              <ChevronRight className={`h-8 w-8`} />
+              <ChevronRight className="h-5 sm:h-8 w-5 sm:w-8" />
             </div>
           </div>
         </Card>

@@ -5,7 +5,7 @@ import React from 'react';
 import { motion } from 'framer-motion'
 import { Card, CardLink } from '@/components/Card'
 import { InlineSocialLinks } from '@/components/InlineSocialLinks'
-import { StickyBackground } from '@/components/layout/StickyBackground'
+import { PageBackground } from '@/components/layout/PageBackground'
 import { Animations } from '@/lib/animations'
 import { CldImage } from 'next-cloudinary'
 
@@ -23,7 +23,7 @@ const container = {
 export default function Home() {
   return (
     <>
-      <StickyBackground image="home/home-background"/>
+      <PageBackground image="home/home-background" sticky={false}/>
       <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center dark">
         <motion.div 
           variants={container}

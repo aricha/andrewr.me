@@ -1,7 +1,7 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { StickyBackground } from '../layout/StickyBackground'
+import { PageBackground } from '../layout/PageBackground'
 import { LucideIcon } from 'lucide-react'
 import { ImageAssetKey } from '@/types/image-asset'
 
@@ -28,7 +28,7 @@ export function WorkExperience({
 }: WorkExperienceProps) {
   return (
     <div className={`text-zinc-100 min-h-screen relative snap-start`}>
-      <StickyBackground 
+      <PageBackground 
         image={backgroundImage} 
         hasBlur={true}
         imageStyle={{ filter: 'brightness(0.8)' }} 

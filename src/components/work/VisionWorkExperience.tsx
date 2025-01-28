@@ -39,7 +39,7 @@ export default function VisionWorkExperience() {
                 priority
                 className="rounded-lg object-cover"
               />
-              <div className='absolute z-1 inset-0 bg-black/20'>
+              <div className='absolute z-1 inset-0 bg-black/20 rounded-lg'>
                 <div className='absolute w-16 h-16 inset-0 bg-black/30 backdrop-blur-xl rounded-full flex justify-center items-center mx-auto my-auto'>
                   <PlayIcon fill='white' className='w-full h-full m-4' />
                 </div>
@@ -78,9 +78,9 @@ function VisionWindow({
   children,
 }: VisionWindowProps) {
   return (
-    <div style={{ perspective: '500px', perspectiveOrigin: orientation }} className="flex-grow w-full max-w-md">
+    <div style={{ perspective: '500px', perspectiveOrigin: orientation }} className="flex-grow w-full max-w-md mx-auto sm:mx-0">
       <div className={`${orientation == 'left' ? 'sm:[transform:rotateY(8deg)]' : 'sm:[transform:rotateY(-8deg)]'} orientation-${orientation}`}>
-        <div className="my-4 p-3 bg-black/30 backdrop-blur-xl rounded-lg">
+        <div className="my-4 p-[2.5%] bg-black/30 backdrop-blur-xl rounded-lg">
           {children}
         </div>
         <div className='w-fit mx-auto flex flex-row gap-2'>

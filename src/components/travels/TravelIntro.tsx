@@ -1,6 +1,6 @@
 import React from "react"
 import { Card } from "../Card"
-import { StickyBackground } from "../layout/StickyBackground"
+import { PageBackground } from "../layout/PageBackground"
 import { motion } from "framer-motion";
 import { Animations } from "@/lib/animations";
 import { CircleAlertIcon } from "lucide-react";
@@ -8,7 +8,7 @@ import { CircleAlertIcon } from "lucide-react";
 export default function TravelIntro() {
   return (
     <div className="snap-start relative w-full min-h-screen">
-      <StickyBackground
+      <PageBackground
         image="travel/intro-hero"
         hasBlur={false}
         imageStyle={{ objectPosition: '80% 50%' }}

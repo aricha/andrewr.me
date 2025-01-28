@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { Animations } from '@/lib/animations';
-import { StickyBackground } from '../layout/StickyBackground';
+import { PageBackground } from '../layout/PageBackground';
 import StoryModal from './StoryModal';
 import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
@@ -17,7 +17,7 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
 
   return (
     <section className="snap-start relative w-full min-h-screen content-center">
-      <StickyBackground
+      <PageBackground
         image="travel/stories-background"
         hasBlur={false}
         lazy={true}

@@ -6,7 +6,7 @@ import { Card } from '../Card';
 import { TravelData } from './TravelDataProvider';
 import { Animations } from '@/lib/animations';
 import { motion } from 'framer-motion';
-import { StickyBackground } from '../layout/StickyBackground';
+import { PageBackground } from '../layout/PageBackground';
 import { loadFlag } from '@/lib/flags';
 import type { SVGProps } from 'react';
 
@@ -19,7 +19,7 @@ export default function TravelSummary({
 }: TravelSummaryProps) {
   return (
     <section className="snap-start relative w-full min-h-screen content-center">
-      <StickyBackground
+      <PageBackground
         image="travel/summary-bg"
         hasBlur={false}
         lazy={true}
