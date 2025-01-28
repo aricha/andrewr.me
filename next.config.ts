@@ -7,6 +7,14 @@ const nextConfig: NextConfig = {
   output: 'export',
   basePath: '/andrewr.me',
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  // Exclude debug pages from production builds
+  ...(process.env.NODE_ENV === 'production' ? {
+    // In production, exclude debug pages
+    experimental: {
+      // @ts-expect-error - excludePages is a valid experimental config option
+      excludePages: ['/debug/**/*']
+    }
+  } : {}),
   images: {
     unoptimized: true,
     remotePatterns: [
