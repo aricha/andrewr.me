@@ -4,8 +4,11 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 
 const nextConfig: NextConfig = {
+  output: 'export',
+  basePath: '/andrewr.me',
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
