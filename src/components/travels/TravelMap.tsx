@@ -9,6 +9,7 @@ import {
 import { Polyline } from './Polyline';
 import { TravelData, Location, RouteSegment, TravelMode } from './TravelDataProvider';
 import { PLANE_ICON_PATH, TRAIN_ICON_PATH } from './icons';
+import { env } from '@/config/env';
 
 interface TravelMapProps {
   travelData?: TravelData;
@@ -231,7 +232,7 @@ export default function TravelMap({
   }, [activeMarker]);
 
   return (
-    <APIProvider apiKey='AIzaSyAZ12pcBvlCZP6eH3nYQ12j-9yiwqmIE6U'>
+    <APIProvider apiKey={env.GOOGLE_MAPS_API_KEY}>
       <div>
         <Map
           style={style}
