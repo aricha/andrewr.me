@@ -1,0 +1,16 @@
+{
+    "locations": [
+      {
+        "id": "japan-2024",
+        "name": "Japan Trip",
+        "coordinates": [35.6762, 139.6503],
+        "dates": {
+          "start": "2024-01",
+          "end": "2024-02"
+        },
+        "photos": ["tokyo-1.jpg", "kyoto-1.jpg"],
+        "highlights": ["Mount Fuji", "Tokyo Tower"],
+        "description": "My journey through Japan"
+      }
+    ]
+  }
