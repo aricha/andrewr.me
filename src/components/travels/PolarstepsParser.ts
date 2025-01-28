@@ -100,8 +100,8 @@ export class PolarstepsParser {
    * @returns Processed trip data ready for visualization
    */
   static parse(
-    locationsJson: any,
-    tripJson: any,
+    locationsJson: RawLocationsData,
+    tripJson: RawTripData,
     tripName: string,
     includeDebugInfo: boolean = false,
     filterConfig?: FilterConfig
@@ -257,7 +257,7 @@ export class PolarstepsParser {
     }
 
     // Process stops/waypoints
-    tripData.stops = tripJson.all_steps.map((step: any) => ({
+    tripData.stops = tripJson.all_steps.map((step: RawTripStep) => ({
       name: step.name || step.display_name,
       displayName: step.display_name || step.name,
       startTime: step.start_time,

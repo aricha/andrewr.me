@@ -1,5 +1,5 @@
-export namespace Animations {
-  export const appearVariants = {
+export const Animations = {
+  appearVariants: {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, y: 0,

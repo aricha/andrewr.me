@@ -11,7 +11,40 @@ export type {
   Location, TravelMode, TravelModeRange, FilterConfig 
 } from './PolarstepsParser';
 
+/**
+ * Trip data is split into multiple JSON files.
+ * Each trip has two files:
+ * - locations-*.json: Contains raw GPS coordinates and timestamps
+ * - trip-*.json: Contains metadata, waypoints, and trip details
+ */
 import TripStatsData from '@/assets/trip-data/trip-stats.json';
+import LocationsSEA from '@/assets/trip-data/locations-sea.json';
+import LocationsEurope from '@/assets/trip-data/locations-europe.json';
+import LocationsCentralAmerica from '@/assets/trip-data/locations-central-america.json';
+import TripSEA from '@/assets/trip-data/trip-sea.json';
+import TripEurope from '@/assets/trip-data/trip-europe.json';
+import TripCentralAmerica from '@/assets/trip-data/trip-central-america.json';
+
+// Type assertion functions to ensure imported JSON matches expected types
+const asLocations = (json: unknown): RawLocationsData => json as RawLocationsData;
+const asTrip = (json: unknown): RawTripData => json as RawTripData;
+
+const TRIP_DATA = {
+  'sea': {
+    locations: asLocations(LocationsSEA),
+    trip: asTrip(TripSEA)
+  },
+  'europe': {
+    locations: asLocations(LocationsEurope),
+    trip: asTrip(TripEurope)
+  },
+  'central-america': {
+    locations: asLocations(LocationsCentralAmerica),
+    trip: asTrip(TripCentralAmerica)
+  }
+} as const;
+
+type TripName = keyof typeof TRIP_DATA;
 
 export interface TripStats {
   [key: string]: number | string;
@@ -71,8 +104,6 @@ export class TravelDataProvider {
   private static instance: TravelDataProvider;
   private cachedData: TravelData | null = null;
   private currentFilterConfig: FilterConfig | undefined;
-  private rawLocationsData: { [tripName: string]: RawLocationsData } | null = null;
-  private rawTripData: { [tripName: string]: RawTripData } | null = null;
 
   private constructor() {}
 
@@ -105,33 +136,10 @@ export class TravelDataProvider {
     };
   }
 
-  async loadRawData(): Promise<void> {
-    const locationsContext = (require as any).context('@/assets/trip-data', false, /locations.*\.json$/);
-    const locationsFiles = Object.fromEntries(
-      locationsContext.keys().map((key: string) => [
-        key.replace(/^\.\/locations-(.*)\.json$/, '$1'),
-        locationsContext(key)
-      ])
-    ) as { [key: string]: RawLocationsData };
-    const tripContext = (require as any).context('@/assets/trip-data', false, /trip.*\.json$/);
-    const tripFiles = Object.fromEntries(
-      tripContext.keys().map((key: string) => [
-        key.replace(/^\.\/trip-(.*)\.json$/, '$1'), 
-        tripContext(key)
-      ])
-    ) as { [key: string]: RawTripData };
-
-    this.rawLocationsData = locationsFiles;
-    this.rawTripData = tripFiles;
-  }
-
   async loadTravelData(
     simplificationThreshold: number = 0.01,
     includeDebugInfo: boolean = false
   ): Promise<{ data: TravelData, filterConfig: FilterConfig }> {
-    if (!this.rawLocationsData || !this.rawTripData) {
-      await this.loadRawData();
-    }
     if (!this.currentFilterConfig) {
       this.currentFilterConfig = await this.loadFilterConfig();
     }
@@ -141,7 +149,7 @@ export class TravelDataProvider {
     }
 
     const tripParts: TripPart[] = [];
-    let globalBounds = {
+    const globalBounds = {
       north: -90,
       south: 90,
       east: -180,
@@ -151,10 +159,10 @@ export class TravelDataProvider {
     let startDate = Infinity;
     let endDate = -Infinity;
 
-    for (const tripName in this.rawLocationsData) {
+    for (const [tripName, data] of Object.entries(TRIP_DATA) as [TripName, typeof TRIP_DATA[TripName]][]) {
       const parsedData = PolarstepsParser.parse(
-        this.rawLocationsData[tripName],
-        this.rawTripData![tripName],
+        data.locations,
+        data.trip,
         tripName,
         includeDebugInfo,
         this.currentFilterConfig
@@ -185,7 +193,7 @@ export class TravelDataProvider {
       endDate = Math.max(endDate, parsedData.endDate);
     }
 
-    let stats = TripStatsData.stats;
+    const stats = TripStatsData.stats;
     stats.Kilometers = totalKm;
 
     const travelData: TravelData = {
@@ -219,9 +227,6 @@ export class TravelDataProvider {
   }
 
   getRawData() {
-    return {
-      locationsData: this.rawLocationsData,
-      tripData: this.rawTripData
-    };
+    return TRIP_DATA;
   }
 } 

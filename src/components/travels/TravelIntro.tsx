@@ -32,9 +32,9 @@ export default function TravelIntro() {
                 <p className="text-md">
                   At the start of 2024, I quit my job, gave up my apartment in San Francisco and hit the road, with the goal of
                   backpacking through Southeast Asia and South America for an entire year. Although plans changed and I
-                  encountered bumps on the road, it was without a doubt the greatest adventure of my life. It's hard to sum up
+                  encountered bumps on the road, it was without a doubt the greatest adventure of my life. It&apos;s hard to sum up
                   living a year of seeing incredible nature, getting to know new cultures and people, and all kinds of
-                  new experiences – but I've put together this page to try.
+                  new experiences – but I&apos;ve put together this page to try.
                   <br />
                   <br />
                 </p>

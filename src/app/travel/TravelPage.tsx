@@ -24,7 +24,7 @@ export default function TravelPage({ initialStories }: TravelPageProps) {
       setTravelData(data);
     };
     loadData();
-  }, []);
+  }, [dataProvider]);
 
   return (
     <Layout scrollContainer={scrollContainerRef} navBarMaxWidth="wide">

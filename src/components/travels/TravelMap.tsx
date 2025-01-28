@@ -1,14 +1,13 @@
 /// <reference types="google.maps" preserve="true" />
 'use client'
-import { Fragment, useState, useMemo, useCallback, useEffect } from 'react';
+import { Fragment, useState, useMemo, useCallback } from 'react';
 import {
   APIProvider, Map, InfoWindow, AdvancedMarker, 
   Pin, AdvancedMarkerProps, useAdvancedMarkerRef,
-  useApiIsLoaded,
   CollisionBehavior
 } from '@vis.gl/react-google-maps';
 import { Polyline } from './Polyline';
-import { TravelData, Location, RouteSegment, TravelMode, TravelModeRange } from './TravelDataProvider';
+import { TravelData, Location, RouteSegment, TravelMode } from './TravelDataProvider';
 import { PLANE_ICON_PATH, TRAIN_ICON_PATH } from './icons';
 
 interface TravelMapProps {
@@ -66,14 +65,8 @@ export interface SegmentDebugInfo {
   };
 }
 
-interface PointSelectionMode {
-  type: 'single' | 'range';
-  startPoint?: Location;
-  endPoint?: Location;
-}
-
 interface RouteSegmentPolylineProps {
-  segment: RouteSegment; // Replace with proper type from your TravelData
+  segment: RouteSegment;
   partIndex: number;
   segmentIndex: number;
   debugMode: boolean;
@@ -230,7 +223,7 @@ export default function TravelMap({
       east: 180,
       west: -180
     }
-  ), [travelData?.bounds]);
+  ), [travelData]);
 
   const handleMarkerClick = useCallback((index: number, marker: google.maps.marker.AdvancedMarkerElement) => {
     setActiveMarker(activeMarker === index ? null : index);

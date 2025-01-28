@@ -1,5 +1,4 @@
 // Adapted from https://github.com/visgl/react-google-maps/blob/main/src/components/polyline.tsx
-/* eslint-disable complexity */
 import {
   forwardRef,
   useContext,
@@ -90,7 +89,7 @@ function usePolyline(props: PolylineProps) {
     return () => {
       polyline.setMap(null);
     };
-  }, [map]);
+  }, [map, polyline]);
 
   // attach and re-attach event-handlers when any of the properties change
   useEffect(() => {
@@ -115,7 +114,7 @@ function usePolyline(props: PolylineProps) {
     return () => {
       gme.clearInstanceListeners(polyline);
     };
-  }, [polyline]);
+  }, [map, polyline]);
 
   return polyline;
 }
@@ -126,7 +125,9 @@ function usePolyline(props: PolylineProps) {
 export const Polyline = forwardRef((props: PolylineProps, ref: PolylineRef) => {
   const polyline = usePolyline(props);
 
-  useImperativeHandle(ref, () => polyline, []);
+  useImperativeHandle(ref, () => polyline, [polyline]);
 
   return null;
 });
+
+Polyline.displayName = 'Polyline';

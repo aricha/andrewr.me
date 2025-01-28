@@ -1,10 +1,9 @@
 'use client'
 
-import { StaticImageData } from 'next/image'
 import { ReactNode } from 'react'
 import { StickyBackground } from '../layout/StickyBackground'
 import { LucideIcon } from 'lucide-react'
-import Image from 'next/image'
+
 interface WorkExperienceProps {
   company: string
   role: string

@@ -72,7 +72,7 @@ function StatsCard({ stats, countries }: {
       setFlags(loadedFlags);
     };
     loadFlags();
-  }, []);
+  }, [countries]);
 
   return (
     <Card className="md:w-1/3 min-w-[22rem] rounded-2xl p-6">

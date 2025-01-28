@@ -1,5 +1,4 @@
 import { CldImage } from 'next-cloudinary'
-import Image from 'next/image'
 
 const SHOW_TAGS = false
 

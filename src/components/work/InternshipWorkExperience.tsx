@@ -1,8 +1,7 @@
 import React from 'react';
-import Image from 'next/image';
 import { WorkExperience } from "@/components/work/WorkExperience";
 import { ProjectEntry } from "@/components/work/ProjectEntry";
-import { CodeIcon, Smartphone } from "lucide-react";
+import { Smartphone } from "lucide-react";
 import { PhonePocketImage } from './PhonePocketImage';
 
 export default function InternshipWorkExperience() {

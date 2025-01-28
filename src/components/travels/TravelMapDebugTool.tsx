@@ -55,7 +55,7 @@ export default function TravelMapDebugTool() {
     };
 
     loadInitialData();
-  }, []);
+  }, [dataProvider]);
 
   const handleFilterConfigChange = async (newConfig: FilterConfig) => {
     setFilterConfig(newConfig);
@@ -66,8 +66,8 @@ export default function TravelMapDebugTool() {
   const handleExcludePointSelection = (point: Location) => {
     // Just exclude the single point
     if (exclusionMode === 'single') {
-      let newConfig = filterConfig!
-      newConfig.excludedPoints = [...newConfig.excludedPoints, point]
+      const newConfig = {...filterConfig!};
+      newConfig.excludedPoints = [...newConfig.excludedPoints, point];
       handleFilterConfigChange(newConfig);
     } else if (exclusionMode === 'range') {
       if (!rangeStart) {
@@ -84,15 +84,15 @@ export default function TravelMapDebugTool() {
           )
         ) || [];
 
-        let newConfig = filterConfig!
+        const newConfig = {...filterConfig!};
         newConfig.excludedPoints = [
           ...newConfig.excludedPoints,
           ...pointsInRange
-        ]
+        ];
         handleFilterConfigChange(newConfig);
       }
     }
-  }
+  };
 
   const handleTravelModeSelection = (point: Location) => {
     // Handle travel mode range selection
@@ -103,7 +103,7 @@ export default function TravelMapDebugTool() {
       const startTime = Math.min(rangeStart.time, point.time);
       const endTime = Math.max(rangeStart.time, point.time);
 
-      let newConfig = filterConfig!
+      const newConfig = {...filterConfig!};
       newConfig.travelModes = [
         ...newConfig.travelModes,
         {
@@ -111,12 +111,12 @@ export default function TravelMapDebugTool() {
           endTime,
           mode: selectedTravelMode
         }
-      ]
+      ];
 
       handleFilterConfigChange(newConfig);
       setRangeStart(null);
     }
-  }
+  };
 
   const handlePointHover = (segment: SegmentDebugInfo | null) => {
     setHoveredPoint(segment);
@@ -155,7 +155,7 @@ export default function TravelMapDebugTool() {
   };
 
   const handleRemoveTravelMode = (index: number) => {
-    let newConfig = filterConfig!
+    const newConfig = {...filterConfig!};
     newConfig.travelModes = newConfig.travelModes.filter((_, i) => i !== index);
     handleFilterConfigChange(newConfig);
   };

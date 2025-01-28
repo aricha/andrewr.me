@@ -32,9 +32,7 @@ export default function HomeWorkExperience() {
       <ProjectEntry
         title="Home Presence Automations"
         description={
-          <>
-            Home presence automations allow actions to be run automatically when people in the home arrive or leave, using a secure "check-in" system with a home hub (e.g., a HomePod) to determine who's home. I was able to help design, plan, and build the feature, from the core architecture to the entire UI flow. We also received <Link className="underline" href="https://patents.google.com/patent/US10962942B2/en" target="_blank" rel="noopener noreferrer">a patent</Link> for the design!
-          </>
+          `Home presence automations allow actions to be run automatically when people in the home arrive or leave, using a secure "check-in" system with a home hub (e.g., a HomePod) to determine who's home. I was able to help design, plan, and build the feature, from the core architecture to the entire UI flow. We also received ${<Link className="underline" href="https://patents.google.com/patent/US10962942B2/en" target="_blank" rel="noopener noreferrer">a patent</Link>} for the design!`
         }
         orientation="right"
       >
