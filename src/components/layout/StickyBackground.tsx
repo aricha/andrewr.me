@@ -24,7 +24,7 @@ export function StickyBackground({
           fill 
           sizes='100vw' 
           className='object-cover'
-          style={imageStyle} 
+          style={imageStyle}
         />
         {hasBlur && <div className={`absolute inset-0 ${blurClassName}`} />}
       </div>

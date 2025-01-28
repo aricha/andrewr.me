@@ -33,7 +33,7 @@ export default function VisionWorkExperience() {
           <Link href="https://developer.apple.com/videos/play/wwdc2023/10109/" target="_blank" rel="noopener noreferrer">
             <div className="relative w-full aspect-video">
               <CldImage
-                src="/work/wwdc-talk.png"
+                src="work/wwdc-talk"
                 alt="WWDC23 Talk"
                 fill
                 priority

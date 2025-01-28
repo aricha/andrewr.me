@@ -55,6 +55,11 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
                   alt={story.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  sizes={
+                    story.prominent 
+                    ? "(max-width: 768px) 100vw, (max-width: 1024px) 66vw, (max-width: 1280px) 50vw, 640px"
+                    : "(max-width: 768px) 50vw, (max-width: 1024px) 33vw, (max-width: 1280px) 25vw, 320px"
+                  }
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 p-4">

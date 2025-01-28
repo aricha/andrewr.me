@@ -43,6 +43,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
               alt={story.title}
               fill
               className="object-cover"
+              sizes="(max-width: 900px) 100vw, 900px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 px-8 pb-6">
