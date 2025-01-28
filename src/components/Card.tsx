@@ -2,9 +2,15 @@ import { LucideIcon, ChevronRight } from "lucide-react"
 import Link from "next/link"
 import { CldImage } from "next-cloudinary"
 
-export function Card({ className, children }: { className?: string, children: React.ReactNode }) {
+interface CardProps {
+  className?: string
+  style?: React.CSSProperties
+  children: React.ReactNode
+}
+
+export function Card({ className, style, children }: CardProps) {
   return (
-    <div className={`rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl ${className}`}>
+    <div className={`rounded-3xl bg-zinc-50/50 dark:bg-zinc-950/40 backdrop-blur-xl ${className}`} style={style}>
       {children}
     </div>
   )

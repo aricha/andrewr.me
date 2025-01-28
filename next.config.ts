@@ -4,17 +4,9 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 
 const nextConfig: NextConfig = {
-  output: 'export',
-  basePath: '/andrewr.me',
+  output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
+  basePath: process.env.NODE_ENV === 'production' ? '/andrewr.me' : '',
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
-  // Exclude debug pages from production builds
-  ...(process.env.NODE_ENV === 'production' ? {
-    // In production, exclude debug pages
-    experimental: {
-      // @ts-expect-error - excludePages is a valid experimental config option
-      excludePages: ['/debug/**/*']
-    }
-  } : {}),
   images: {
     unoptimized: true,
     remotePatterns: [

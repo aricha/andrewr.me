@@ -76,7 +76,7 @@ function StatsCard({ stats, countries }: {
   }, [countries]);
 
   return (
-    <Card className="md:w-1/3 min-w-[22rem] rounded-2xl p-6">
+    <Card className="md:w-1/3 rounded-2xl p-4 sm:p-6" style={{ minWidth: 'calc(min(22rem, 100vw - 2rem))' }}>
       <div className="max-w-[34rem] mx-auto items-center">
         <div className="grid grid-cols-3 gap-4">
           {Object.entries(stats).map(([key, value]) => (
@@ -108,7 +108,7 @@ function formatNumber(num: number): string {
 
 function Stat({ value, label }: { value: number | string, label: string }) {
   return (
-    <div className="text-center">
+    <div className="flex flex-col text-center items-center">
       <div className="text-3xl font-bold text-white">{typeof value === 'number' ? formatNumber(value) : value}</div>
       <div className="text-md text-zinc-300">{label}</div>
     </div>
