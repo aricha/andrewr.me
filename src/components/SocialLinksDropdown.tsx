@@ -1,5 +1,6 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { socialLinks, getSocialLinkName } from '@/lib/social-links';
+import Link from 'next/link';
 
 interface SocialLinksDropdownProps {
   isOpen: boolean;
@@ -43,7 +44,7 @@ export function SocialLinksDropdown({ isOpen, onClose, anchor }: SocialLinksDrop
           >
             <div className="py-1">
               {socialLinks.map(({ href, icon: Icon }) => (
-                <a
+                <Link
                   key={href}
                   href={href}
                   target="_blank"
@@ -52,7 +53,7 @@ export function SocialLinksDropdown({ isOpen, onClose, anchor }: SocialLinksDrop
                 >
                   <Icon size={20} />
                   <span>{getSocialLinkName(href)}</span>
-                </a>
+                </Link>
               ))}
             </div>
           </motion.div>
