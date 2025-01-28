@@ -18,8 +18,9 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
   return (
     <section className="snap-start relative w-full min-h-screen content-center">
       <StickyBackground
-        image="/travel/stories/stories-background.jpg"
+        image="travel/stories-background"
         hasBlur={false}
+        lazy={true}
       />
 
       <motion.div

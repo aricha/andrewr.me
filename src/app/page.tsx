@@ -8,6 +8,7 @@ import { InlineSocialLinks } from '@/components/InlineSocialLinks'
 import { StickyBackground } from '@/components/layout/StickyBackground'
 import { Animations } from '@/lib/animations'
 import { CldImage } from 'next-cloudinary'
+
 const container = {
   hidden: { opacity: 0 },
   visible: {
@@ -22,7 +23,7 @@ const container = {
 export default function Home() {
   return (
     <>
-      <StickyBackground image="/home/home-background-2.jpg"/>
+      <StickyBackground image="home/home-background"/>
       <div className="min-h-screen px-2 sm:px-4 py-4 sm:py-8 flex items-center dark">
         <motion.div 
           variants={container}

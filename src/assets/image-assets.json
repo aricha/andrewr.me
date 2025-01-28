@@ -1,18 +1,10 @@
 {
-  "home/home-background-2": {
-    "publicId": "home/home-background-2",
-    "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854393/home/home-background-2.jpg",
-    "relativePath": "home/home-background-2.jpg"
-  },
   "home/home-background": {
     "publicId": "home/home-background",
     "width": 4032,
     "height": 3024,
     "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854394/home/home-background.jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738047103/home/home-background.jpg",
     "relativePath": "home/home-background.jpg"
   },
   "home/profile": {
@@ -47,53 +39,13 @@
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854399/travel/intro-hero.jpg",
     "relativePath": "travel/intro-hero.jpg"
   },
-  "travel/stories/acatenango": {
-    "publicId": "travel/stories/acatenango",
-    "width": 3024,
-    "height": 4032,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854400/travel/stories/acatenango.jpg",
-    "relativePath": "travel/stories/acatenango.jpg"
-  },
-  "travel/stories/camino": {
-    "publicId": "travel/stories/camino",
-    "width": 3024,
-    "height": 4032,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854401/travel/stories/camino.jpg",
-    "relativePath": "travel/stories/camino.jpg"
-  },
-  "travel/stories/cave-camping": {
-    "publicId": "travel/stories/cave-camping",
-    "width": 3024,
-    "height": 4032,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854402/travel/stories/cave-camping.jpg",
-    "relativePath": "travel/stories/cave-camping.jpg"
-  },
-  "travel/stories/sailing-colombia": {
-    "publicId": "travel/stories/sailing-colombia",
-    "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854403/travel/stories/sailing-colombia.jpg",
-    "relativePath": "travel/stories/sailing-colombia.jpg"
-  },
-  "travel/stories/stories-background": {
-    "publicId": "travel/stories/stories-background",
+  "travel/stories-background": {
+    "publicId": "travel/stories-background",
     "width": 5712,
     "height": 4284,
     "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854404/travel/stories/stories-background.jpg",
-    "relativePath": "travel/stories/stories-background.jpg"
-  },
-  "travel/stories/vietnam/motorbike": {
-    "publicId": "travel/stories/vietnam/motorbike",
-    "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854405/travel/stories/vietnam/motorbike.jpg",
-    "relativePath": "travel/stories/vietnam/motorbike.jpg"
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046597/travel/stories-background.jpg",
+    "relativePath": "travel/stories-background.jpg"
   },
   "travel/summary-bg": {
     "publicId": "travel/summary-bg",
@@ -102,6 +54,46 @@
     "format": "jpg",
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854406/travel/summary-bg.jpg",
     "relativePath": "travel/summary-bg.jpg"
+  },
+  "travel-stories/acatenango": {
+    "publicId": "travel-stories/acatenango",
+    "width": 3024,
+    "height": 4032,
+    "format": "jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046599/travel-stories/acatenango.jpg",
+    "relativePath": "travel-stories/acatenango.jpg"
+  },
+  "travel-stories/camino": {
+    "publicId": "travel-stories/camino",
+    "width": 3024,
+    "height": 4032,
+    "format": "jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046600/travel-stories/camino.jpg",
+    "relativePath": "travel-stories/camino.jpg"
+  },
+  "travel-stories/cave-camping": {
+    "publicId": "travel-stories/cave-camping",
+    "width": 3024,
+    "height": 4032,
+    "format": "jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046603/travel-stories/cave-camping.jpg",
+    "relativePath": "travel-stories/cave-camping.jpg"
+  },
+  "travel-stories/sailing-colombia": {
+    "publicId": "travel-stories/sailing-colombia",
+    "width": 4032,
+    "height": 3024,
+    "format": "jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046605/travel-stories/sailing-colombia.jpg",
+    "relativePath": "travel-stories/sailing-colombia.jpg"
+  },
+  "travel-stories/vietnam/motorbike": {
+    "publicId": "travel-stories/vietnam/motorbike",
+    "width": 4032,
+    "height": 3024,
+    "format": "jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046606/travel-stories/vietnam/motorbike.jpg",
+    "relativePath": "travel-stories/vietnam/motorbike.jpg"
   },
   "work/abstergo": {
     "publicId": "work/abstergo",
@@ -119,28 +111,12 @@
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854408/work/calculator.png",
     "relativePath": "work/calculator.png"
   },
-  "work/home-cameras-ipad": {
-    "publicId": "work/home-cameras-ipad",
-    "width": 960,
-    "height": 692,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854409/work/home-cameras-ipad.png",
-    "relativePath": "work/home-cameras-ipad.png"
-  },
-  "work/home-cameras-iphone-2": {
-    "publicId": "work/home-cameras-iphone-2",
-    "width": 490,
-    "height": 1008,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854409/work/home-cameras-iphone-2.png",
-    "relativePath": "work/home-cameras-iphone-2.png"
-  },
   "work/home-cameras-iphone": {
     "publicId": "work/home-cameras-iphone",
     "width": 490,
     "height": 1008,
     "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854411/work/home-cameras-iphone.png",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738047121/work/home-cameras-iphone.png",
     "relativePath": "work/home-cameras-iphone.png"
   },
   "work/home-green-wallpaper": {
@@ -151,14 +127,6 @@
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854412/work/home-green-wallpaper.jpg",
     "relativePath": "work/home-green-wallpaper.jpg"
   },
-  "work/home-red-wallpaper": {
-    "publicId": "work/home-red-wallpaper",
-    "width": 2732,
-    "height": 2732,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854413/work/home-red-wallpaper.jpg",
-    "relativePath": "work/home-red-wallpaper.jpg"
-  },
   "work/homekit-location-automation": {
     "publicId": "work/homekit-location-automation",
     "width": 640,
@@ -166,14 +134,6 @@
     "format": "png",
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854414/work/homekit-location-automation.png",
     "relativePath": "work/homekit-location-automation.png"
-  },
-  "work/ios5-wallpaper": {
-    "publicId": "work/ios5-wallpaper",
-    "width": 2048,
-    "height": 2048,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854415/work/ios5-wallpaper.png",
-    "relativePath": "work/ios5-wallpaper.png"
   },
   "work/ios7-wallpaper": {
     "publicId": "work/ios7-wallpaper",
@@ -183,14 +143,6 @@
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854416/work/ios7-wallpaper.png",
     "relativePath": "work/ios7-wallpaper.png"
   },
-  "work/ios9-wallpaper": {
-    "publicId": "work/ios9-wallpaper",
-    "width": 1262,
-    "height": 1262,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854417/work/ios9-wallpaper.jpg",
-    "relativePath": "work/ios9-wallpaper.jpg"
-  },
   "work/jukebox": {
     "publicId": "work/jukebox",
     "width": 772,
@@ -199,20 +151,12 @@
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854417/work/jukebox.png",
     "relativePath": "work/jukebox.png"
   },
-  "work/living-room-background-2": {
-    "publicId": "work/living-room-background-2",
-    "width": 1024,
-    "height": 769,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854418/work/living-room-background-2.jpg",
-    "relativePath": "work/living-room-background-2.jpg"
-  },
   "work/living-room-background": {
     "publicId": "work/living-room-background",
     "width": 1024,
-    "height": 768,
+    "height": 769,
     "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854419/work/living-room-background.jpg",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738047127/work/living-room-background.jpg",
     "relativePath": "work/living-room-background.jpg"
   },
   "work/merge": {
@@ -238,5 +182,13 @@
     "format": "png",
     "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854422/work/settings-search.png",
     "relativePath": "work/settings-search.png"
+  },
+  "work/wwdc-talk": {
+    "publicId": "work/wwdc-talk",
+    "width": 3840,
+    "height": 2160,
+    "format": "png",
+    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738032523/work/wwdc-talk.png",
+    "relativePath": "work/wwdc-talk.png"
   }
 }

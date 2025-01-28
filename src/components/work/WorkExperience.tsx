@@ -3,6 +3,7 @@
 import { ReactNode } from 'react'
 import { StickyBackground } from '../layout/StickyBackground'
 import { LucideIcon } from 'lucide-react'
+import { ImageAssetKey } from '@/types/image-asset'
 
 interface WorkExperienceProps {
   company: string
@@ -10,8 +11,9 @@ interface WorkExperienceProps {
   period: string
   description: string
   Icon: LucideIcon
-  backgroundImage: string
+  backgroundImage: ImageAssetKey
   children?: ReactNode
+  lazy?: boolean
 }
 
 export function WorkExperience({
@@ -22,6 +24,7 @@ export function WorkExperience({
   Icon,
   backgroundImage,
   children,
+  lazy = true
 }: WorkExperienceProps) {
   return (
     <div className={`text-zinc-100 min-h-screen relative snap-start`}>
@@ -29,6 +32,7 @@ export function WorkExperience({
         image={backgroundImage} 
         hasBlur={true}
         imageStyle={{ filter: 'brightness(0.8)' }} 
+        lazy={lazy}
       />
 
       {/* Content */}

@@ -14,7 +14,7 @@ export default function InternshipWorkExperience() {
       I first joined Apple as an intern in 2013 on the iOS Apps & Frameworks team, where I was able to help fix a variety of bugs for the release of iOS 7. Across my two internships in 2013 and 2014, I was able to work on a number of different projects and prototypes and demo them to senior leadership. Here are two of them that wound up shipping:
       "
       Icon={Smartphone}
-      backgroundImage="/work/ios7-wallpaper.png"
+      backgroundImage="work/ios7-wallpaper"
     >
       <ProjectEntry
         title="Search in Settings"

@@ -9,7 +9,7 @@ export default function TravelIntro() {
   return (
     <div className="snap-start relative w-full min-h-screen">
       <StickyBackground
-        image="/travel/intro-hero.jpg"
+        image="travel/intro-hero"
         hasBlur={false}
         imageStyle={{ objectPosition: '80% 50%' }}
       />

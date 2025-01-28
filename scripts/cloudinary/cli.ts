@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { processDirectory } from './upload';
+import parseArgs from 'yargs-parser';
 
 function printUsage() {
   console.log(`
@@ -18,25 +19,32 @@ Example:
 }
 
 async function main() {
-  const args = process.argv.slice(2);
+  const parsed = parseArgs(process.argv.slice(2), {
+    string: ['output'],
+    boolean: ['help'],
+    alias: {
+      output: ['o'],
+      help: ['h']
+    },
+    configuration: {
+      'strip-aliased': true,
+      'strip-dashed': true
+    }
+  });
 
-  if (args.includes('-h') || args.includes('--help')) {
+  if (parsed.help) {
     printUsage();
     process.exit(0);
   }
 
-  const directory = args[0];
+  // Convert positional argument to string
+  const [directory] = parsed._.map(arg => String(arg));
+  const outputPath = parsed.output || 'image-assets.json';
+
   if (!directory) {
     console.error('Error: Directory path is required');
     printUsage();
     process.exit(1);
-  }
-
-  // Parse output path
-  let outputPath = 'image-assets.json';
-  const outputIndex = args.findIndex(arg => arg === '-o' || arg === '--output');
-  if (outputIndex !== -1 && args[outputIndex + 1]) {
-    outputPath = args[outputIndex + 1];
   }
 
   try {
@@ -47,4 +55,4 @@ async function main() {
   }
 }
 
-main();
+main().catch(console.error);

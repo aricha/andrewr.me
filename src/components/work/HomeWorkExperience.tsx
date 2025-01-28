@@ -16,7 +16,7 @@ export default function HomeWorkExperience() {
       I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory 
       "
       Icon={HomeKitIcon}
-      backgroundImage="work/home-green-wallpaper.jpg"
+      backgroundImage="work/home-green-wallpaper"
     >
       <ProjectEntry
         title="HomeKit Secure Video"
@@ -25,7 +25,7 @@ export default function HomeWorkExperience() {
         "
       >
         <PhonePocketImage
-          src="work/home-cameras-iphone-2"
+          src="work/home-cameras-iphone"
           alt="HomeKit Secure Video"
         />
       </ProjectEntry>

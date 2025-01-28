@@ -14,7 +14,8 @@ export default function VisionWorkExperience() {
       role="visionOS UI Frameworks"
       period="2019 - 2024"
       Icon={AppleVisionIcon}
-      backgroundImage="/work/living-room-background-2.jpg"
+      backgroundImage="work/living-room-background"
+      lazy={false}
       description="
         I had the opportunity to help build visionOS from the early days of Apple Vision Pro, 
         working with some amazing people to figure out how people should build apps in a 3D spatial environment. 

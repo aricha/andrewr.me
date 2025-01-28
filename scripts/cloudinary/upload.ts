@@ -34,8 +34,11 @@ const requiredEnvVars = [
   'CLOUDINARY_API_SECRET',
 ] as const;
 
-function getEnvVar(name: typeof requiredEnvVars[number]): string {
+function getEnvVar(name: string): string {
   config({ path: '.env.local' });
+  if (!requiredEnvVars.includes(name as typeof requiredEnvVars[number])) {
+    throw new Error(`Invalid environment variable name: ${name}`);
+  }
   const value = process.env[name];
   if (!value) {
     throw new Error(`Missing required environment variable: ${name}`);
@@ -73,12 +76,6 @@ async function uploadImage(filepath: string, basePath: string): Promise<ImageAss
     // Calculate the relative path from the base directory
     const relativePath = path.relative(basePath, filepath);
     
-    // Remove the file extension for the Cloudinary public ID
-    const publicIdPath = relativePath.replace(/\.[^/.]+$/, '');
-    
-    // Replace Windows backslashes with forward slashes if present
-    const normalizedPath = publicIdPath.replace(/\\/g, '/');
-
     const folder = path.dirname(relativePath);
 
     console.log('Uploading image:', filepath, 'to folder:', folder);
@@ -111,7 +108,7 @@ async function uploadImage(filepath: string, basePath: string): Promise<ImageAss
   }
 }
 
-async function processDirectory(directoryPath: string, outputPath: string = 'image-assets.json'): Promise<{ [key: string]: ImageAsset }> {
+async function processDirectory(directoryPath: string, outputPath: string): Promise<{ [key: string]: ImageAsset }> {
   try {
     configureCloudinary();
     const results: { [key: string]: ImageAsset } = {};

@@ -14,7 +14,7 @@ export default function JailbreakWorkExperience() {
       I got my start in iOS development while in university by getting involved in the iOS jailbreak community. I worked on building “tweaks”, or extensions that modified the OS itself, for jailbroken devices. I learned how to reverse engineer the internals of the OS, hook into the right functions, and use it to build cool tweaks. Some of these were eventually added as native iOS features by Apple!
       "
       Icon={Wrench}
-      backgroundImage="/work/og-iphone-wallpaper.jpg"
+      backgroundImage="work/og-iphone-wallpaper"
     >
       <ProjectEntry
         title="Abstergo"

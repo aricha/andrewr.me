@@ -20,8 +20,9 @@ export default function TravelSummary({
   return (
     <section className="snap-start relative w-full min-h-screen content-center">
       <StickyBackground
-        image="/travel/summary-bg.jpg"
+        image="travel/summary-bg"
         hasBlur={false}
+        lazy={true}
       />
 
       <motion.div
