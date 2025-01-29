@@ -38,6 +38,7 @@ export default function VisionWorkExperience() {
                 fill
                 priority
                 className="rounded-lg object-cover"
+                sizes="(max-width: 640px) 80vw, (max-width: 1024px) 38vw, 390px"
               />
               <div className='absolute z-1 inset-0 bg-black/20 rounded-lg'>
                 <div className='absolute w-16 h-16 inset-0 bg-black/30 backdrop-blur-xl rounded-full flex justify-center items-center mx-auto my-auto'>
