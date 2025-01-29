@@ -9,7 +9,10 @@ export const metadata = {
   title: 'Andrew Richardson',
   description: 'Portfolio of Andrew Richardson, a software engineer and traveler.',
   icons: {
-    icon: { url: '/icon.svg', type: 'image/svg+xml' },
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { rel: 'icon', url: '/icon.svg' }
+    ]
   },
   openGraph: {
     title: 'Andrew Richardson',
