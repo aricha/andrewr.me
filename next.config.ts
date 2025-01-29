@@ -5,7 +5,6 @@ import remarkGfm from 'remark-gfm'
 
 const nextConfig: NextConfig = {
   output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
-  basePath: process.env.NODE_ENV === 'production' ? '/andrewr.me' : '',
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
     unoptimized: true,
