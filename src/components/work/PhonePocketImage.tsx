@@ -23,6 +23,7 @@ export function PhonePocketImage({ src, alt, className, imageClassName }: PhoneP
         width={getImageAsset(src)?.width}
         className={`max-w-72 w-full sm:px-0 mx-auto ${imageClassName}`}
         sizes="(max-width: 640px) 66vw, (max-width: 768px) 50vw, 33vw"
+        priority
       />
     </div>
   );
