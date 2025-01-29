@@ -1,54 +1,50 @@
 #!/usr/bin/env node
 import { processDirectory } from './upload';
-import parseArgs from 'yargs-parser';
-
-function printUsage() {
-  console.log(`
-Usage: cloudinary-upload <directory> [options]
-
-Arguments:
-  directory               Directory containing images to upload
-
-Options:
-  -o, --output <path>    Output path for the JSON assets file (default: "image-assets.json")
-  -h, --help             Show this help message
-
-Example:
-  cloudinary-upload ./images -o ./data/image-assets.json
-`);
-}
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
 async function main() {
-  const parsed = parseArgs(process.argv.slice(2), {
-    string: ['output'],
-    boolean: ['help'],
-    alias: {
-      output: ['o'],
-      help: ['h']
-    },
-    configuration: {
-      'strip-aliased': true,
-      'strip-dashed': true
-    }
-  });
+  const parsedArgv = await yargs(hideBin(process.argv))
+    .usage('Usage: $0 <directory> [options]')
+    .command('* <directory>', 'Upload images from directory', (yargs) => {
+      return yargs.positional('directory', {
+        describe: 'Directory containing images to upload',
+        type: 'string',
+        demandOption: true
+      });
+    })
+    .options({
+      'output': {
+        alias: 'o',
+        describe: 'Output path for the JSON assets file',
+        type: 'string',
+        default: 'image-assets.json'
+      },
+      'overwrite': {
+        describe: 'Overwrite existing images',
+        type: 'boolean',
+        default: true
+      }
+    })
+    .example('$0 "./images" -o ./data/image-assets.json --no-overwrite', 'Upload images with specified options')
+    .help('h')
+    .alias('h', 'help')
+    .strict()
+    .parseAsync();
 
-  if (parsed.help) {
-    printUsage();
-    process.exit(0);
-  }
-
-  // Convert positional argument to string
-  const [directory] = parsed._.map(arg => String(arg));
-  const outputPath = parsed.output || 'image-assets.json';
-
-  if (!directory) {
-    console.error('Error: Directory path is required');
-    printUsage();
-    process.exit(1);
-  }
+  const directory = parsedArgv.directory as string;
+  const outputPath = parsedArgv.output as string;
+  const overwrite = parsedArgv.overwrite as boolean;
+  
+  console.log('Directory:', directory);
+  console.log('Output path:', outputPath);
+  console.log('Overwrite:', overwrite);
 
   try {
-    await processDirectory(directory, outputPath);
+    await processDirectory(directory, outputPath, { 
+      overwrite
+    });
+    console.log('Upload completed successfully');
   } catch (error) {
     console.error('Failed to process images:', error);
     process.exit(1);

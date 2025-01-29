@@ -2,193 +2,461 @@
   "home/home-background": {
     "publicId": "home/home-background",
     "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738047103/home/home-background.jpg",
-    "relativePath": "home/home-background.jpg"
+    "height": 3024
   },
   "home/profile": {
     "publicId": "home/profile",
     "width": 3637,
-    "height": 3635,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854395/home/profile.jpg",
-    "relativePath": "home/profile.jpg"
+    "height": 3635
   },
   "home/travel": {
     "publicId": "home/travel",
     "width": 4000,
-    "height": 3000,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854397/home/travel.jpg",
-    "relativePath": "home/travel.jpg"
+    "height": 3000
   },
   "home/wwdc-talk-zoom": {
     "publicId": "home/wwdc-talk-zoom",
     "width": 1958,
-    "height": 1459,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854398/home/wwdc-talk-zoom.png",
-    "relativePath": "home/wwdc-talk-zoom.png"
+    "height": 1459
   },
   "travel/intro-hero": {
     "publicId": "travel/intro-hero",
     "width": 4070,
-    "height": 5712,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854399/travel/intro-hero.jpg",
-    "relativePath": "travel/intro-hero.jpg"
+    "height": 5712
   },
   "travel/stories-background": {
     "publicId": "travel/stories-background",
     "width": 5712,
-    "height": 4284,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046597/travel/stories-background.jpg",
-    "relativePath": "travel/stories-background.jpg"
+    "height": 4284
   },
   "travel/summary-bg": {
     "publicId": "travel/summary-bg",
     "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854406/travel/summary-bg.jpg",
-    "relativePath": "travel/summary-bg.jpg"
+    "height": 3024
   },
   "travel-stories/acatenango": {
     "publicId": "travel-stories/acatenango",
     "width": 3024,
-    "height": 4032,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046599/travel-stories/acatenango.jpg",
-    "relativePath": "travel-stories/acatenango.jpg"
+    "height": 4032
   },
   "travel-stories/camino": {
     "publicId": "travel-stories/camino",
     "width": 3024,
-    "height": 4032,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046600/travel-stories/camino.jpg",
-    "relativePath": "travel-stories/camino.jpg"
+    "height": 4032
   },
   "travel-stories/cave-camping": {
     "publicId": "travel-stories/cave-camping",
     "width": 3024,
-    "height": 4032,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046603/travel-stories/cave-camping.jpg",
-    "relativePath": "travel-stories/cave-camping.jpg"
+    "height": 4032
+  },
+  "travel-stories/hang-en/1": {
+    "publicId": "travel-stories/hang-en/1",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/hang-en/2": {
+    "publicId": "travel-stories/hang-en/2",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/hang-en/3": {
+    "publicId": "travel-stories/hang-en/3",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/hang-en/4": {
+    "publicId": "travel-stories/hang-en/4",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/hang-en/5": {
+    "publicId": "travel-stories/hang-en/5",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/hang-en/6": {
+    "publicId": "travel-stories/hang-en/6",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/hang-en/7": {
+    "publicId": "travel-stories/hang-en/7",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/hang-en/8": {
+    "publicId": "travel-stories/hang-en/8",
+    "width": 4032,
+    "height": 3024
   },
   "travel-stories/sailing-colombia": {
     "publicId": "travel-stories/sailing-colombia",
     "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046605/travel-stories/sailing-colombia.jpg",
-    "relativePath": "travel-stories/sailing-colombia.jpg"
+    "height": 3024
+  },
+  "travel-stories/vietnam/1": {
+    "publicId": "travel-stories/vietnam/1",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/10": {
+    "publicId": "travel-stories/vietnam/10",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/11": {
+    "publicId": "travel-stories/vietnam/11",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/12": {
+    "publicId": "travel-stories/vietnam/12",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/13": {
+    "publicId": "travel-stories/vietnam/13",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/14": {
+    "publicId": "travel-stories/vietnam/14",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/15": {
+    "publicId": "travel-stories/vietnam/15",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/16": {
+    "publicId": "travel-stories/vietnam/16",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/17": {
+    "publicId": "travel-stories/vietnam/17",
+    "width": 2560,
+    "height": 1180
+  },
+  "travel-stories/vietnam/18": {
+    "publicId": "travel-stories/vietnam/18",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/19": {
+    "publicId": "travel-stories/vietnam/19",
+    "width": 1280,
+    "height": 958
+  },
+  "travel-stories/vietnam/2": {
+    "publicId": "travel-stories/vietnam/2",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/20": {
+    "publicId": "travel-stories/vietnam/20",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/21": {
+    "publicId": "travel-stories/vietnam/21",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/22": {
+    "publicId": "travel-stories/vietnam/22",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/23": {
+    "publicId": "travel-stories/vietnam/23",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/24": {
+    "publicId": "travel-stories/vietnam/24",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/25": {
+    "publicId": "travel-stories/vietnam/25",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/26": {
+    "publicId": "travel-stories/vietnam/26",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/27": {
+    "publicId": "travel-stories/vietnam/27",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/28": {
+    "publicId": "travel-stories/vietnam/28",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/29": {
+    "publicId": "travel-stories/vietnam/29",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/3": {
+    "publicId": "travel-stories/vietnam/3",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/30": {
+    "publicId": "travel-stories/vietnam/30",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/31": {
+    "publicId": "travel-stories/vietnam/31",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/32": {
+    "publicId": "travel-stories/vietnam/32",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/33": {
+    "publicId": "travel-stories/vietnam/33",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/34": {
+    "publicId": "travel-stories/vietnam/34",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/35": {
+    "publicId": "travel-stories/vietnam/35",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/36": {
+    "publicId": "travel-stories/vietnam/36",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/37": {
+    "publicId": "travel-stories/vietnam/37",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/38": {
+    "publicId": "travel-stories/vietnam/38",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/39": {
+    "publicId": "travel-stories/vietnam/39",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/4": {
+    "publicId": "travel-stories/vietnam/4",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/40": {
+    "publicId": "travel-stories/vietnam/40",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/41": {
+    "publicId": "travel-stories/vietnam/41",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/42": {
+    "publicId": "travel-stories/vietnam/42",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/43": {
+    "publicId": "travel-stories/vietnam/43",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/44": {
+    "publicId": "travel-stories/vietnam/44",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/45": {
+    "publicId": "travel-stories/vietnam/45",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/46": {
+    "publicId": "travel-stories/vietnam/46",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/47": {
+    "publicId": "travel-stories/vietnam/47",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/48": {
+    "publicId": "travel-stories/vietnam/48",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/49": {
+    "publicId": "travel-stories/vietnam/49",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/5": {
+    "publicId": "travel-stories/vietnam/5",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/50": {
+    "publicId": "travel-stories/vietnam/50",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/51": {
+    "publicId": "travel-stories/vietnam/51",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/52": {
+    "publicId": "travel-stories/vietnam/52",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/53": {
+    "publicId": "travel-stories/vietnam/53",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/54": {
+    "publicId": "travel-stories/vietnam/54",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/55": {
+    "publicId": "travel-stories/vietnam/55",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/56": {
+    "publicId": "travel-stories/vietnam/56",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/57": {
+    "publicId": "travel-stories/vietnam/57",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/58": {
+    "publicId": "travel-stories/vietnam/58",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/59": {
+    "publicId": "travel-stories/vietnam/59",
+    "width": 3024,
+    "height": 4032
+  },
+  "travel-stories/vietnam/6": {
+    "publicId": "travel-stories/vietnam/6",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/60": {
+    "publicId": "travel-stories/vietnam/60",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/7": {
+    "publicId": "travel-stories/vietnam/7",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/8": {
+    "publicId": "travel-stories/vietnam/8",
+    "width": 4032,
+    "height": 3024
+  },
+  "travel-stories/vietnam/9": {
+    "publicId": "travel-stories/vietnam/9",
+    "width": 4032,
+    "height": 3024
   },
   "travel-stories/vietnam/motorbike": {
     "publicId": "travel-stories/vietnam/motorbike",
     "width": 4032,
-    "height": 3024,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738046606/travel-stories/vietnam/motorbike.jpg",
-    "relativePath": "travel-stories/vietnam/motorbike.jpg"
+    "height": 3024
   },
   "work/abstergo": {
     "publicId": "work/abstergo",
     "width": 772,
-    "height": 1604,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854407/work/abstergo.png",
-    "relativePath": "work/abstergo.png"
+    "height": 1604
   },
   "work/calculator": {
     "publicId": "work/calculator",
     "width": 490,
-    "height": 1008,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854408/work/calculator.png",
-    "relativePath": "work/calculator.png"
+    "height": 1008
   },
   "work/home-cameras-iphone": {
     "publicId": "work/home-cameras-iphone",
     "width": 490,
-    "height": 1008,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738047121/work/home-cameras-iphone.png",
-    "relativePath": "work/home-cameras-iphone.png"
+    "height": 1008
   },
   "work/home-green-wallpaper": {
     "publicId": "work/home-green-wallpaper",
     "width": 2732,
-    "height": 2732,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854412/work/home-green-wallpaper.jpg",
-    "relativePath": "work/home-green-wallpaper.jpg"
+    "height": 2732
   },
   "work/homekit-location-automation": {
     "publicId": "work/homekit-location-automation",
     "width": 640,
-    "height": 1294,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854414/work/homekit-location-automation.png",
-    "relativePath": "work/homekit-location-automation.png"
+    "height": 1294
   },
   "work/ios7-wallpaper": {
     "publicId": "work/ios7-wallpaper",
     "width": 1500,
-    "height": 1500,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854416/work/ios7-wallpaper.png",
-    "relativePath": "work/ios7-wallpaper.png"
+    "height": 1500
   },
   "work/jukebox": {
     "publicId": "work/jukebox",
     "width": 772,
-    "height": 1604,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854417/work/jukebox.png",
-    "relativePath": "work/jukebox.png"
+    "height": 1604
   },
   "work/living-room-background": {
     "publicId": "work/living-room-background",
     "width": 1024,
-    "height": 769,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738047127/work/living-room-background.jpg",
-    "relativePath": "work/living-room-background.jpg"
+    "height": 769
   },
   "work/merge": {
     "publicId": "work/merge",
     "width": 776,
-    "height": 1502,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854420/work/merge.png",
-    "relativePath": "work/merge.png"
+    "height": 1502
   },
   "work/og-iphone-wallpaper": {
     "publicId": "work/og-iphone-wallpaper",
     "width": 1999,
-    "height": 2000,
-    "format": "jpg",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854421/work/og-iphone-wallpaper.jpg",
-    "relativePath": "work/og-iphone-wallpaper.jpg"
+    "height": 2000
   },
   "work/settings-search": {
     "publicId": "work/settings-search",
     "width": 490,
-    "height": 1008,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1737854422/work/settings-search.png",
-    "relativePath": "work/settings-search.png"
+    "height": 1008
   },
   "work/wwdc-talk": {
     "publicId": "work/wwdc-talk",
     "width": 3840,
-    "height": 2160,
-    "format": "png",
-    "url": "https://res.cloudinary.com/dgvfoa5ly/image/upload/v1738032523/work/wwdc-talk.png",
-    "relativePath": "work/wwdc-talk.png"
+    "height": 2160
   }
 }

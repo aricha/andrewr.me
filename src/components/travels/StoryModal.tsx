@@ -32,7 +32,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
       <motion.div
         layoutId={layoutId}
         transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-        className="relative min-w-[400px] w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950/70 backdrop-blur-xl rounded-2xl overflow-y-auto flex flex-col"
+        className="relative min-w-[400px] w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950 rounded-2xl overflow-y-auto flex flex-col"
         style={{
           minHeight: 'calc(min(100vh, 1000px))',
         }}

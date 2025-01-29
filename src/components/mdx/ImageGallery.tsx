@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { CldImage } from 'next-cloudinary';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ImageAssetKey } from '@/types/image-asset';
 
 interface ImageGalleryProps {
-  images: string[];
+  images: ImageAssetKey[];
   alt?: string;
 }
 
@@ -24,11 +25,11 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
 
   return (
     <>
-      <div className="grid grid-cols-3 gap-4 my-8 not-prose">
+      <div className="flex flex-wrap gap-4 my-8 not-prose justify-center items-center">
         {images.map((image, index) => (
           <div
             key={image}
-            className="relative aspect-square cursor-pointer"
+            className="relative aspect-square cursor-pointer basis-[calc(33.333%-0.67rem)] flex-shrink-0"
             onClick={() => {
               setCurrentIndex(index);
               setIsFullscreen(true);
@@ -38,7 +39,10 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
               src={image}
               alt={`${alt} ${index + 1}`}
               fill
+              quality={50}
+              loading="lazy"
               className="object-cover rounded-lg hover:opacity-90 transition-opacity"
+              sizes="(max-width: 900px) 33vw, 275px"
             />
           </div>
         ))}
@@ -75,7 +79,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
                 src={images[currentIndex]}
                 alt={`${alt} ${currentIndex + 1}`}
                 fill
-                className="object-cover"
+                className="object-contain"
               />
             </div>
 

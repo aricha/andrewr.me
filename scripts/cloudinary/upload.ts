@@ -16,15 +16,16 @@ interface ImageAsset {
   publicId: string;
   width: number;
   height: number;
-  format: string;
-  url: string;
-  relativePath: string;  // Store the relative path for organization
 }
 
 interface CloudinaryConfig {
   cloud_name: string;
   api_key: string;
   api_secret: string;
+}
+
+interface UploadOptions {
+  overwrite?: boolean;
 }
 
 // Configure Cloudinary with type safety
@@ -68,7 +69,7 @@ async function getImageDimensions(filepath: string): Promise<ImageDimensions> {
   };
 }
 
-async function uploadImage(filepath: string, basePath: string): Promise<ImageAsset> {
+async function uploadImage(filepath: string, basePath: string, options: UploadOptions = {}): Promise<ImageAsset> {
   try {
     // Get image dimensions before upload
     const dimensions = await getImageDimensions(filepath);
@@ -86,6 +87,7 @@ async function uploadImage(filepath: string, basePath: string): Promise<ImageAss
         folder: folder, // Base folder in Cloudinary
         use_filename: true,
         unique_filename: false, // We want to keep our exact folder structure
+        overwrite: options.overwrite ?? true, // Default to true if not specified
       }, (error, result) => {
         if (error) reject(error);
         else if (result) resolve(result);
@@ -98,9 +100,6 @@ async function uploadImage(filepath: string, basePath: string): Promise<ImageAss
       publicId: result.public_id,
       width: dimensions.width,
       height: dimensions.height,
-      format: result.format,
-      url: result.secure_url,
-      relativePath
     };
   } catch (error) {
     console.error(`Error uploading ${filepath}:`, error);
@@ -108,7 +107,7 @@ async function uploadImage(filepath: string, basePath: string): Promise<ImageAss
   }
 }
 
-async function processDirectory(directoryPath: string, outputPath: string): Promise<{ [key: string]: ImageAsset }> {
+async function processDirectory(directoryPath: string, outputPath: string, options: UploadOptions = {}): Promise<{ [key: string]: ImageAsset }> {
   try {
     configureCloudinary();
     const results: { [key: string]: ImageAsset } = {};
@@ -123,7 +122,7 @@ async function processDirectory(directoryPath: string, outputPath: string): Prom
         if (entry.isDirectory()) {
           await processDir(fullPath);
         } else if (entry.isFile() && imageFileRegex.test(entry.name)) {
-          const result = await uploadImage(fullPath, directoryPath);
+          const result = await uploadImage(fullPath, directoryPath, options);
           results[result.publicId] = result;
         }
       }
@@ -146,5 +145,5 @@ async function processDirectory(directoryPath: string, outputPath: string): Prom
 }
 
 // Export types and functions
-export type { ImageAsset, ImageDimensions };
+export type { ImageAsset, ImageDimensions, UploadOptions };
 export { uploadImage, processDirectory, configureCloudinary };
