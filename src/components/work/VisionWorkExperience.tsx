@@ -6,6 +6,7 @@ import { WorkExperience } from './WorkExperience';
 
 import AppleVisionIcon from '@/assets/work/vision-pro-icon.svg'
 import { CldImage } from 'next-cloudinary';
+import { Footer } from '../layout/Footer';
 
 export default function VisionWorkExperience() {
   return (
@@ -49,6 +50,7 @@ export default function VisionWorkExperience() {
           </Link>
         </VisionWindow>
       </ProjectEntry>
+
       <ProjectEntry
         title="Privacy-preserving hover effects"
         description={<>
@@ -65,6 +67,8 @@ export default function VisionWorkExperience() {
           />
         </VisionWindow>
       </ProjectEntry>
+
+      <Footer />
     </WorkExperience>
   )
 }

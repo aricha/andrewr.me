@@ -1,10 +1,11 @@
 'use client'
-import { InlineSocialLinks } from '@/components/InlineSocialLinks'
 
-export function Footer() {
+export function Footer({ className }: { className?: string }) {
+  const currentYear = new Date().getFullYear()
+  
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <InlineSocialLinks />
+    <div className={`w-full text-center text-xs text-zinc-100/40 ${className}`}>
+      <p>© {currentYear} Andrew Richardson. All rights reserved.</p>
     </div>
   )
 }

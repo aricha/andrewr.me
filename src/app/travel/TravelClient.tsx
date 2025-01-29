@@ -21,7 +21,7 @@ export function TravelClient({ stories, travelData }: TravelClientProps) {
       <div className="flex flex-col min-h-screen">
         <div
           ref={scrollContainerRef}
-          className="flex-grow h-screen overflow-y-auto snap-y"
+          className="flex-grow h-screen overflow-y-auto snap-y relative"
         >
           <TravelIntro />
           <TravelSummary travelData={travelData} />

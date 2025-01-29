@@ -13,10 +13,11 @@ export function Layout({ children, scrollContainer, navBarMaxWidth = 'regular' }
   const hideNavBar = pathname === '/'
 
   return (
-    <div className={`flex flex-col min-h-screen`}>
+    <div className="flex flex-col min-h-screen">
       {hideNavBar ? null : <Navigation navBarMaxWidth={navBarMaxWidth} scrollContainer={scrollContainer} />}
-      <main className="flex-grow">{children}</main>
-      {/* <Footer /> */}
+      <main className="flex-grow">
+        {children}
+      </main>
     </div>
   )
 }
