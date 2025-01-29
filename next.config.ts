@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
   output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
