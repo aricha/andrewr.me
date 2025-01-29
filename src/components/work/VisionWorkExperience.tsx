@@ -54,7 +54,7 @@ export default function VisionWorkExperience() {
       <ProjectEntry
         title="Privacy-preserving hover effects"
         description={<>
-          Privacy is a core tenet of the Vision Pro, and your gaze patterns are extremely sensitive – they can be used to tell all kinds of things about you. I was tasked with the challenge of figuring out how to display UI feedback when looking at elements of an app without revealing to the app where you’re looking. I helped design and architect the solution for this, known as “hover effects”, from the core system behavior up to the visual appearance and the public APIs, which also received <Link className='underline' href='https://patents.google.com/patent/US12683411B2/en' target='_blank' rel='noopener noreferrer'>a patent</Link>. This was featured in the announce keynote for the Vision Pro, which was a thrill for me!
+          Privacy is a core tenet of the Vision Pro, and your gaze patterns are extremely sensitive – they can be used to tell all kinds of things about you. I was tasked with the challenge of figuring out how to display UI feedback when looking at elements of an app without revealing to the app where you’re looking. I helped design and architect the solution for this, known as “hover effects”, from the core system behavior up to the visual appearance and the public APIs, which also received <Link className='underline' href='https://patents.google.com/patent/US12131170B2/en' target='_blank' rel='noopener noreferrer'>a patent</Link>. This was featured in the announce keynote for the Vision Pro, which was a thrill for me!
         </>}
         orientation="right">
         <VisionWindow orientation="right">
