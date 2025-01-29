@@ -7,9 +7,6 @@ export interface ImageAsset {
   publicId: string;
   width: number;
   height: number;
-  format: string;
-  url: string;
-  relativePath: string;
 }
 
 export function getImageAsset(key: ImageAssetKey): ImageAsset {
