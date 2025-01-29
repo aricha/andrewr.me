@@ -10,7 +10,7 @@ export const metadata = {
   description: 'Portfolio of Andrew Richardson, a software engineer and traveler.',
   icons: {
     icon: [
-      { url: '/icon.svg', type: 'image/svg+xml' },
+      { rel: 'icon', url: '/icon.svg', type: 'image/svg+xml' },
       { rel: 'icon', url: '/icon.svg' }
     ]
   },
