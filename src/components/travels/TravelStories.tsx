@@ -56,7 +56,7 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
                   alt={story.title}
                   fill
                   loading='lazy'
-                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  className="object-cover transition-transform ease-out duration-500 group-hover:scale-105"
                   sizes={
                     story.prominent 
                     ? "(max-width: 768px) 100vw, (max-width: 1024px) 66vw, (max-width: 1280px) 50vw, 640px"

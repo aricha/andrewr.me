@@ -1,6 +1,5 @@
 'use client'
 
-import { Laptop, Plane } from 'lucide-react'
 import React from 'react';
 import { motion } from 'framer-motion'
 import { Card, CardLink } from '@/components/Card'
@@ -29,7 +28,7 @@ export default function Home() {
           variants={container}
           initial="hidden"
           animate="visible"
-          className="grid grid-cols-2 gap-4 max-w-lg sm:max-w-4xl mx-auto"
+          className="grid grid-cols-2 gap-4 max-w-md sm:max-w-4xl mx-auto"
         >
           <motion.div 
             variants={Animations.appearVariants}
@@ -47,11 +46,11 @@ export default function Home() {
                 />
               </div>
               <div className="p-4">
-                <h3 className="text-lg text-zinc-700 dark:text-zinc-300">
+                <h3 className="text-base sm:text-lg text-zinc-700 dark:text-zinc-300">
                   {`👋, you've reached the home of`}
                 </h3>
-                <h1 className="text-4xl font-bold mb-4 text-zinc-950 dark:text-zinc-100">Andrew Richardson</h1>
-                <p className="text-xl text-zinc-700 dark:text-zinc-200">
+                <h1 className="text-3xl sm:text-4xl font-bold mb-2 sm:mb-4 text-zinc-950 dark:text-zinc-100">Andrew Richardson</h1>
+                <p className="text-lg sm:text-xl text-zinc-700 dark:text-zinc-200">
                 {`I'm a software engineer and travel addict from Vancouver 🇨🇦.
                 I live to explore, try new things, and get out in nature. I've been lucky to spend 2024 on sabbatical traveling the world. 
                 When I'm working, I love to build cool things and specialize in UI for  platforms.`}
@@ -60,17 +59,17 @@ export default function Home() {
               </div>
             </Card>
           </motion.div>
-          <div className="col-span-2 xs sm:col-span-1 grid grid-cols-2 sm:grid-cols-1 gap-4 sm:h-full">
+          <div className="col-span-2 sm:col-span-1 grid grid-cols-2 sm:grid-cols-1 gap-4 sm:h-full">
             <motion.div variants={Animations.appearVariants}>
               <CardLink
-                href="/work" label="Work" icon={Laptop}
-                imageSrc='/home/wwdc-talk-zoom.png' imageAlt="Work"
+                href="/work" label="Work"
+                imageSrc='home/wwdc-talk-zoom' imageAlt="Work"
               />
             </motion.div>
             <motion.div variants={Animations.appearVariants}>
               <CardLink
-                href="/travel" label="Travel" icon={Plane}
-                imageSrc='/home/travel.jpg' imageAlt="Travel"
+                href="/travel" label="Travel"
+                imageSrc='home/travel' imageAlt="Travel"
               />
             </motion.div>
           </div>
