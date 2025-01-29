@@ -2,18 +2,13 @@ import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 import { getCldOgImageUrl } from 'next-cloudinary'
-
+import { Metadata } from 'next'
 const inter = Inter({ subsets: ['latin'] })
 
-export const metadata = {
+export const metadata: Metadata = {
   title: 'Andrew Richardson',
   description: 'Portfolio of Andrew Richardson, a software engineer and traveler.',
-  icons: {
-    icon: [
-      { rel: 'icon', url: '/icon.svg', type: 'image/svg+xml' },
-      { rel: 'icon', url: '/icon.svg' }
-    ]
-  },
+  icons: '/icon.svg',
   openGraph: {
     title: 'Andrew Richardson',
     description: 'Portfolio of Andrew Richardson, a software engineer and traveler.',
