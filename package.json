@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "upload-images": "tsx scripts/cloudinary/cli.ts",
-    "generate-blur": "tsx scripts/generate-blur-data.ts"
+    "generate-blur": "tsx scripts/generate-blur-data.ts",
+    "generate-favicons": "tsx scripts/generate-favicons.ts"
   },
   "dependencies": {
     "@cloudinary-util/url-loader": "^6.0.0",
@@ -55,6 +56,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "postcss": "^8.4.49",
+    "sharp": "^0.33.5",
     "tailwindcss": "^3.4.17",
     "tsx": "^4.19.2",
     "typescript": "^5",
