@@ -11,6 +11,7 @@ import { Footer } from '../layout/Footer';
 export default function VisionWorkExperience() {
   return (
     <WorkExperience
+      id="apple-vision"
       company="Apple"
       role="visionOS UI Frameworks"
       period="2019 - 2024"

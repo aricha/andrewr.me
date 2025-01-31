@@ -18,7 +18,7 @@ export default function TravelSummary({
   travelData,
 }: TravelSummaryProps) {
   return (
-    <section className="snap-start relative w-full min-h-screen content-center">
+    <section id="summary" className="snap-start relative w-full min-h-screen content-center">
       <PageBackground
         image="travel/summary-bg"
         hasBlur={false}

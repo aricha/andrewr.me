@@ -17,7 +17,7 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
   const [selectedStory, setSelectedStory] = useState<TravelStory | null>(null);
 
   return (
-    <section className="snap-start relative w-full min-h-screen flex flex-col">
+    <section id="stories" className="snap-start relative w-full min-h-screen flex flex-col">
       <PageBackground
         image="travel/stories-background"
         hasBlur={false}

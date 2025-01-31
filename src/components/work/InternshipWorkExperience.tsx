@@ -7,6 +7,7 @@ import { PhonePocketImage } from './PhonePocketImage';
 export default function InternshipWorkExperience() {
   return (
     <WorkExperience
+      id="apple-internship"
       company="Apple"
       role="iOS Intern"
       period="2013 - 2014"

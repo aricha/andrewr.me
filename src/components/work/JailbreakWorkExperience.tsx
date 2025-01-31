@@ -7,6 +7,7 @@ import { PhonePocketImage } from './PhonePocketImage';
 export default function JailbreakWorkExperience() {
   return (
     <WorkExperience
+      id="jailbreak"
       company="Jailbreak"
       role="iOS Jailbreak Developer"
       period="2011 - 2013"

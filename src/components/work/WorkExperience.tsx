@@ -6,6 +6,7 @@ import { LucideIcon } from 'lucide-react'
 import { ImageAssetKey } from '@/types/image-asset'
 
 interface WorkExperienceProps {
+  id: string
   company: string
   role: string
   period: string
@@ -17,6 +18,7 @@ interface WorkExperienceProps {
 }
 
 export function WorkExperience({
+  id,
   company,
   role,
   period,
@@ -24,10 +26,10 @@ export function WorkExperience({
   Icon,
   backgroundImage,
   children,
-  lazy = true
+  lazy = true,
 }: WorkExperienceProps) {
   return (
-    <div className={`text-zinc-100 min-h-screen relative snap-start`}>
+    <div id={id} className={`text-zinc-100 min-h-screen relative snap-start`}>
       <PageBackground 
         image={backgroundImage} 
         hasBlur={true}

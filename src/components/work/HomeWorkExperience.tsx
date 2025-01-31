@@ -9,6 +9,7 @@ import Link from 'next/link';
 export default function HomeWorkExperience() {
   return (
     <WorkExperience
+      id="apple-home"
       company="Apple"
       role="Home app"
       period="2015 - 2019"
