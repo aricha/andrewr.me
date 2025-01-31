@@ -25,7 +25,7 @@ export function ImageGallery({ images, alt = '' }: ImageGalleryProps) {
 
   return (
     <>
-      <div className="flex flex-wrap gap-4 my-8 not-prose justify-center items-center">
+      <div className="flex flex-wrap -mx-2 sm:mx-0 gap-2 sm:gap-4 my-8 not-prose justify-center items-center">
         {images.map((image, index) => (
           <div
             key={image}

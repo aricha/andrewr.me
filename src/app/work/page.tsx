@@ -19,7 +19,7 @@ export default function Work() {
       >
         <div 
           ref={scrollContainerRef}
-          className="flex-grow h-screen overflow-y-auto snap-y"
+          className="flex-grow h-screen overflow-y-auto snap-y snap-mandatory"
         >
           <VisionWorkExperience />
           <HomeWorkExperience />

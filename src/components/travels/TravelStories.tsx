@@ -38,7 +38,7 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
           >
             Stories
           </h1>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4 auto-rows-[250px]">
+          <div className="grid grid-cols-1 min-[400px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3 md:gap-4 auto-rows-[100px] sm:auto-rows-[125px]">
             {stories.map((story, index) => (
               <motion.div
                 key={story.title}
@@ -47,7 +47,7 @@ export default function TravelStories({ stories }: TravelStoriesProps) {
                 whileInView="visible"
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className={`relative group cursor-pointer ${story.prominent ? 'row-span-2 col-span-2' : ''}`}
+                className={`relative group cursor-pointer ${story.prominent ? 'row-span-3 md:row-span-4 col-span-2' : 'row-span-2 col-span-2 min-[400px]:col-span-1'}`}
                 onClick={() => setSelectedStory(story)}
                 layoutId={`story-${story.title}`}
               >

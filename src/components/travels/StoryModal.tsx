@@ -32,9 +32,10 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
       <motion.div
         layoutId={layoutId}
         transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-        className="relative min-w-[400px] w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950 rounded-2xl overflow-y-auto flex flex-col"
+        className="relative w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950 rounded-2xl overflow-y-auto flex flex-col"
         style={{
           minHeight: 'calc(min(100vh, 1000px))',
+          minWidth: 'calc(min(100vw, 400px))',
         }}
         onClick={(e) => e.stopPropagation()}
       >
@@ -55,7 +56,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
               sizes="(max-width: 900px) 100vw, 900px"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 px-8 pb-6">
+            <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-6">
               <h2 className="text-3xl font-bold text-white">
                 {story.title}
               </h2>
@@ -66,7 +67,7 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
               )}
             </div>
           </div>
-          <div className="p-6 prose prose-invert prose-stone max-w-none flex-1">
+          <div className="py-6 px-4 sm:px-8 prose prose-invert prose-stone max-w-none flex-1">
             <Suspense fallback={<LoadingContent />}>
               <StoryContent />
             </Suspense>
