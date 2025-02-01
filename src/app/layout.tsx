@@ -36,7 +36,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  viewportFit: 'cover',
+  viewportFit: 'cover'
 }
 
 export default function RootLayout({
@@ -45,7 +45,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className='snap-y snap-mandatory dark'>
       <body className={inter.className}>
         <Providers>{children}</Providers>
       </body>

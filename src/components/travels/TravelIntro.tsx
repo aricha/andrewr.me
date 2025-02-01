@@ -16,7 +16,7 @@ export default function TravelIntro() {
 
       {/* Content */}
       <div className="page-max-width-wide">
-        <div className="relative z-10 max-w-md min-h-screen flex flex-col sm:justify-center mx-auto sm:mx-0 pb-8 pt-[calc(100vh-10rem)] sm:pt-0">
+        <div className="relative z-10 max-w-md min-h-screen flex flex-col sm:justify-center mx-auto sm:mx-0 pb-8 pt-[calc(100vh-14rem)] sm:pt-0">
           <div>
             {/* Headings */}
             <div className="flex flex-col gap-8 text-zinc-50 mb-8">

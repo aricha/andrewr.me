@@ -12,17 +12,14 @@ export type NavBarMaxWidth = 'regular' | 'wide'
 
 export interface NavigationProps {
   navBarMaxWidth?: NavBarMaxWidth
-  scrollContainer?: React.RefObject<HTMLDivElement | null>
 }
 
-export function Navigation({ navBarMaxWidth = 'regular', scrollContainer }: NavigationProps) {
+export function Navigation({ navBarMaxWidth = 'regular' }: NavigationProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSocialDropdownOpen, setIsSocialDropdownOpen] = useState(false)
   const socialButtonRef = useRef<HTMLButtonElement>(null)
   const pathname = usePathname()
-  const { scrollY } = useScroll({
-    container: scrollContainer, layoutEffect: false
-  })
+  const { scrollY } = useScroll()
   const [hasScrolled, setHasScrolled] = useState(false)
 
   useMotionValueEvent(scrollY, 'change', (latest: number) => {
