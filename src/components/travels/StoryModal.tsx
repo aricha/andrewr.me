@@ -26,8 +26,9 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-      className="fixed inset-0 z-50 flex items-center justify-center px-4 pt-4 bg-black/60 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm"
       onClick={onClose}
+      style={{ paddingTop: 'max(16px, env(safe-area-inset-top))' }}
     >
       <motion.div
         layoutId={layoutId}
@@ -41,7 +42,8 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 rounded-button"
+          className="absolute right-4 z-10 rounded-button"
+          style={{ top: 'max(16px, env(safe-area-inset-top))' }}
         >
           <X size={24} />
         </button>
