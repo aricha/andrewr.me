@@ -14,7 +14,7 @@ export default function HomeWorkExperience() {
       role="Home app"
       period="2015 - 2019"
       description="
-      I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory 
+      I worked on the Home app team for almost 5 years, from the beginning of the first version of the app in iOS 10. I had the opportunity to work on many different parts of the app, from the core appearance to accessory controls, home cameras, and automations.
       "
       Icon={HomeKitIcon}
       backgroundImage="work/home-green-wallpaper"
