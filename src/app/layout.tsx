@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 import { getCldOgImageUrl } from 'next-cloudinary'
-import { Metadata } from 'next'
+import { Metadata, Viewport } from 'next'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -31,6 +31,12 @@ export const metadata: Metadata = {
       }
     ],
   },
+}
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
 }
 
 export default function RootLayout({

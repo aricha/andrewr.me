@@ -7,6 +7,7 @@ import { TravelStory } from '@/types/travel';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
 import { storyImports } from '@/content/travel/config';
+import { createPortal } from 'react-dom'
 
 interface StoryModalProps {
   story: TravelStory;
@@ -21,64 +22,66 @@ export default function StoryModal({ story, onClose, layoutId }: StoryModalProps
   });
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-      className="fixed inset-0 z-50 flex items-center justify-center px-4 bg-black/60 backdrop-blur-sm"
-      onClick={onClose}
-      style={{ paddingTop: 'max(16px, env(safe-area-inset-top))' }}
-    >
+    typeof window !== 'undefined' && createPortal(
       <motion.div
-        layoutId={layoutId}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
         transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
-        className="relative w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950 rounded-2xl overflow-y-auto flex flex-col"
-        style={{
-          minHeight: 'calc(min(100vh, 1000px))',
-          minWidth: 'calc(min(100vw, 400px))',
-        }}
-        onClick={(e) => e.stopPropagation()}
+        className="fixed top-0 left-0 right-0 bottom-0 z-50 w-full h-screen px-2 sm:px-4 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
       >
-        <button
-          onClick={onClose}
-          className="absolute right-4 z-10 rounded-button"
-          style={{ top: 'max(16px, env(safe-area-inset-top))' }}
+        <motion.div
+          layoutId={layoutId}
+          transition={{ type: 'spring', bounce: 0.3, duration: 0.75 }}
+          className="relative w-full h-fit max-h-[100%] max-w-[900px] bg-zinc-950 rounded-2xl overflow-y-auto flex flex-col mx-auto"
+          style={{
+            minHeight: 'calc(min(100vh, 1000px))',
+            minWidth: 'calc(min(100vw, 400px))',
+            marginTop: 'calc(16px + env(safe-area-inset-top))',
+          }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <X size={24} />
-        </button>
+          <button
+            onClick={onClose}
+            className="absolute right-4 z-10 rounded-button top-4"
+          >
+            <X size={24} />
+          </button>
 
-        <div className="overflow-y-auto">
-          <div className="relative h-[60vh] min-h-96 max-h-[600px] flex-none">
-            <CldImage
-              src={story.image}
-              alt={story.title}
-              fill
-              className="object-cover"
-              sizes="(max-width: 900px) 100vw, 900px"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-6">
-              <h2 className="text-3xl font-bold text-white">
-                {story.title}
-              </h2>
-              {story.description && (
-                <p className="text-lg text-zinc-200 mt-1">
-                  {story.description}
-                </p>
-              )}
+          <div className="overflow-y-auto">
+            <div className="relative h-[60vh] min-h-96 max-h-[600px] flex-none">
+              <CldImage
+                src={story.image}
+                alt={story.title}
+                fill
+                className="object-cover"
+                sizes="(max-width: 900px) 100vw, 900px"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-8 pb-6">
+                <h2 className="text-3xl font-bold text-white">
+                  {story.title}
+                </h2>
+                {story.description && (
+                  <p className="text-lg text-zinc-200 mt-1">
+                    {story.description}
+                  </p>
+                )}
+              </div>
+            </div>
+            <div className="py-6 px-4 sm:px-8 prose prose-invert prose-stone max-w-none flex-1">
+              <Suspense fallback={<LoadingContent />}>
+                <StoryContent />
+              </Suspense>
             </div>
           </div>
-          <div className="py-6 px-4 sm:px-8 prose prose-invert prose-stone max-w-none flex-1">
-            <Suspense fallback={<LoadingContent />}>
-              <StoryContent />
-            </Suspense>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
+        </motion.div>
+      </motion.div>,
+      document.body
+    )
   );
-} 
+}
 
 const LoadingContent = () => (
   <div className="animate-pulse space-y-4">
