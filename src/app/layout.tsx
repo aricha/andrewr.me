@@ -2,6 +2,8 @@ import { Inter } from 'next/font/google'
 import { Providers } from './providers'
 import './globals.css'
 import { getCldOgImageUrl } from 'next-cloudinary'
+import { Analytics } from '@vercel/analytics/react'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import { Metadata, Viewport } from 'next'
 const inter = Inter({ subsets: ['latin'] })
 
@@ -48,6 +50,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className='snap-y snap-mandatory dark'>
       <body className={inter.className}>
         <Providers>{children}</Providers>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   )
