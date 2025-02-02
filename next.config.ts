@@ -6,6 +6,15 @@ import remarkGfm from 'remark-gfm'
 const nextConfig: NextConfig = {
   output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
+  redirects: async () => {
+    return [
+      {
+        source: '/about',
+        destination: '/',
+        permanent: true,
+      },
+    ]
+  },
   images: {
     remotePatterns: [
       {
