@@ -4,7 +4,6 @@ import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
 
 const nextConfig: NextConfig = {
-  output: process.env.NODE_ENV === 'production' ? 'export' : undefined,
   pageExtensions: ['js', 'jsx', 'mdx', 'ts', 'tsx'],
   redirects: async () => {
     return [
